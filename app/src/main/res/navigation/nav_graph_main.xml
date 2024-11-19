@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_order_detail"
+            app:destination="@id/fragment_cart" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_order"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.order.OrderFragment"
+        android:label="Order"
+        tools:layout="@layout/fragment_order">
+
+        <action
+            android:id="@+id/action_order_to_detail"
+            app:destination="@id/fragment_detail"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_order_to_map"
+            app:destination="@id/fragment_map" />
+
+        <action
+            android:id="@+id/action_order_to_cart"
+            app:destination="@id/fragment_cart" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_my_page"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageFragment"
+        android:label="My Page"
+        tools:layout="@layout/fragment_mypage">
+
+        <action
+            android:id="@+id/action_my_page_to_setting"
+            app:destination="@id/fragment_setting" />
+
+        <action
+            android:id="@+id/action_my_page_to_order_detail"
+            app:destination="@id/fragment_order_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting">
+
+        <action
+            android:id="@+id/action_setting_to_app_theme"
+            app:destination="@id/fragment_app_theme_bottom_sheet" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.map.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map">
+
+        <action
+            android:id="@+id/action_map_to_map_dialog"
+            app:destination="@id/fragment_map_dialog" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_detail"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailFragment"
+        android:label="Detail"
+        tools:layout="@layout/fragment_menu_detail">
+
+        <action
+            android:id="@+id/action_to_orderFragment"
+            app:destination="@id/fragment_order"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/detail_to_rating_dialog"
+            app:destination="@id/fragment_rating_dialog" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_cart"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_shopping_list">
+
+        <action
+            android:id="@+id/cart_to_shop_dialog"
+            app:destination="@id/fragment_shop_dialog" />
+
+        <action
+            android:id="@+id/cart_to_t_out_dialog"
+            app:destination="@id/fragment_t_out_dialog" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_order_detail"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.orderdetail.OrderDetailFragment"
+        android:label="Order Detail"
+        tools:layout="@layout/fragment_order_detail" />
+
+    <dialog
+        android:id="@+id/fragment_map_dialog"
+        android:name="com.ssafy.smartstore_ui.map.MapDialogFragment"
+        android:label="Map Dialog"
+        tools:layout="@layout/fragment_map_dialog" />
+
+    <dialog
+        android:id="@+id/fragment_app_theme_bottom_sheet"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.setting.AppThemeBottomSheetFragment"
+        android:label="App Theme"
+        tools:layout="@layout/fragment_app_theme_bottom_sheet" />
+
+    <dialog
+        android:id="@+id/fragment_shop_dialog"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopDialogFragment"
+        android:label="Shop Dialog"
+        tools:layout="@layout/fragment_shop_dialog" />
+
+    <dialog
+        android:id="@+id/fragment_t_out_dialog"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.cart.TOutDialogFragment"
+        android:label="T Out Dialog"
+        tools:layout="@layout/fragment_t_out_dialog" />
+
+    <dialog
+        android:id="@+id/fragment_rating_dialog"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.RatingDialogFragment"
+        android:label="Rating Dialog"
+        tools:layout="@layout/fragment_rating_dialog" />
+
+</navigation>

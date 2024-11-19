@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.signin.LoginViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".login.LoginFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_logo_login"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/logo"
+            app:layout_constraintBottom_toTopOf="@id/tv_title_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_title_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/eland_choice_m"
+            android:text="@string/text_login"
+            android:textColor="@color/coffee_dark_brown"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/et_id_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo_login" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_id_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/textview_regular"
+            android:hint="@string/text_hint_id"
+            android:onTextChanged="@{(id, s, b, c) -> vm.validateUserId(id)}"
+            android:text="@={vm.userId}"
+            app:layout_constraintBottom_toTopOf="@id/et_pw_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_login" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_pw_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/textview_regular"
+            android:hint="@string/text_hint_pw"
+            android:inputType="textPassword"
+            android:onTextChanged="@{(pass, s, b, c) -> vm.validateUserPass(pass)}"
+            android:text="@={vm.userPass}"
+            app:layout_constraintBottom_toTopOf="@id/btn_login_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_id_login" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_login_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@{(vm.loginUiState.loginBtnEnable == true) ? @drawable/button_regular : @drawable/button_non_color}"
+            android:enabled="@{vm.loginUiState.loginBtnEnable}"
+            android:onClick="@{() -> vm.onClickLogin()}"
+            android:text="@string/text_button_login"
+            android:textColor="@{(vm.loginUiState.loginBtnEnable == true) ? @color/neutral_white : @color/black}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_join_login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_pw_login" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_join_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_regular"
+            android:onClick="@{() -> vm.onClickJoin()}"
+            android:text="@string/text_button_join"
+            android:textColor="@color/neutral_white"
+            app:layout_constraintBottom_toBottomOf="@id/btn_login_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_login_login"
+            app:layout_constraintTop_toTopOf="@id/btn_login_login" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

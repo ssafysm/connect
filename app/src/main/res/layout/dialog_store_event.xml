@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">  <!-- 배경색 추가 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_dialog_store_event_img"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                style="@style/Text.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="이용 알림"
+                android:textSize="30sp" />
+
+            <TextView
+                style="@style/Text.light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="1. 스마트스토어 방문을 환영합니다. 즐거운 시간 보내세요."
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/Text.light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="2. 매장내 이용시 테이블의 NFC를 태그하면 해당 테이블로 음료를 가져다드립니다."
+                android:textSize="24sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 버튼을 담을 컨테이너 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackground"
+            android:text="확인"
+            android:textColor="@android:color/black" />
+    </FrameLayout>
+</LinearLayout>

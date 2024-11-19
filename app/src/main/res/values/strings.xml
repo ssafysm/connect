@@ -1,0 +1,99 @@
+<resources>
+
+    <!-- App Name -->
+    <string name="app_name">Smartstore Jetpack Starter</string>
+
+    <!-- Common -->
+    <string name="text_no_orders">주문 내역이 없습니다</string>
+    <string name="text_confirm">확인</string>
+    <string name="text_cancel">취소</string>
+
+    <!-- Splash -->
+    <string name="text_splash">카페에 입장중입니다…</string>
+
+    <!-- Main -->
+    <string name="description_fab_main">Shopping Cart</string>
+    <string name="description_fab_order">Go To Order</string>
+
+    <!-- Home -->
+    <string name="text_nickname_end">님</string>
+    <string name="text_greeting">좋은 하루 보내세요.</string>
+    <string name="text_notice">알림판</string>
+    <string name="text_latest_orders">최근 주문 내역</string>
+    <string name="text_name_end">님.</string>
+    <string name="text_welcome">오늘도 좋은 하루 되세요.</string>
+    <string name="text_today_event">오늘의 이벤트</string>
+
+    <!-- Order -->
+    <string name="text_price">가격</string>
+    <string name="text_count">수량</string>
+    <string name="text_rating">평점</string>
+    <string name="text_enroll">등록</string>
+    <string name="text_put_cart">담기</string>
+
+    <!-- My Page -->
+    <string name="text_hello">안녕하세요.</string>
+    <string name="text_step">단계</string>
+    <string name="text_next_level">다음 레벨까지</string>
+    <string name="text_remain">잔 남았습니다.</string>
+    <string name="text_slash">/</string>
+    <string name="text_orders">주문내역</string>
+    <string name="text_six_months">(최근 6개월)</string>
+
+    <!-- Setting -->
+    <string name="text_settings">환경설정</string>
+    <string name="text_theme">테마</string>
+    <string name="text_theme_primary">기본</string>
+    <string name="text_theme_spring">봄</string>
+    <string name="text_theme_summer">여름</string>
+    <string name="text_theme_autumn">가을</string>
+    <string name="text_theme_winter">겨울</string>
+
+    <!-- Order -->
+    <string name="text_distance">매장과의 거리가 350m 입니다.</string>
+    <string name="text_menu">메뉴</string>
+
+    <!-- Order Detail -->
+    <string name="text_order_detail">주문상세</string>
+    <string name="text_order_finish">주문완료</string>
+
+    <!-- Rating Dialog -->
+    <string name="text_select_rating">별점선택</string>
+
+    <!-- Shopping List -->
+    <string name="text_cart">장바구니</string>
+    <string name="text_take_out">T-out</string>
+    <string name="text_shop">매장</string>
+    <string name="text_total_start">총</string>
+    <string name="text_total_end">개</string>
+    <string name="text_try_order">주문하기</string>
+
+    <!-- Shopping Dialog -->
+    <string name="text_table_nfc">Table NFC를 찍어주세요.</string>
+
+    <!-- Take Out Dialog -->
+    <string name="text_alarm">알림</string>
+    <string name="text_take_out_confirm">현재 고객님의 위치가 매장과 200m 이상 떨어져 있습니다.\n정말 주문하시겠습니까?</string>
+
+    <!-- Item Layout -->
+    <string name="text_order_finish_notice">주문하신 메뉴가 나왔습니다.</string>
+    <string name="text_pick_up_finish">픽업완료</string>
+
+    <!-- Login, Join -->
+    <string name="text_login">Login</string>
+    <string name="text_hint_id">ID</string>
+    <string name="text_hint_pw">PW</string>
+    <string name="text_button_login">LOGIN</string>
+    <string name="text_button_join">JOIN</string>
+    <string name="text_join">Join</string>
+    <string name="text_hint_join_id">아이디를 입력하세요.</string>
+    <string name="text_hint_join_pw">비밀번호를 입력하세요.</string>
+    <string name="text_hint_join_nickname">별명을 입력하세요.</string>
+    <string name="text_menu_home">Home</string>
+    <string name="text_menu_order">Order</string>
+    <string name="text_menu_mypage">Mypage</string>
+    <string name="text_go_cart">장바구니 담기</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

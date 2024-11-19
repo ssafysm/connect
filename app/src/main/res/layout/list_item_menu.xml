@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="product"
+            type="com.ssafy.smartstore_jetpack.domain.model.Product" />
+
+        <variable
+            name="clickListener"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.order.ProductClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClickProduct(product)}"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:transitionName="@{`menu_detail_` + product.id}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:photoUrl="@{product.img}" />
+
+        <TextView
+            android:id="@+id/tv_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@{product.name}"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_menu"
+            app:layout_constraintStart_toEndOf="@id/iv_menu"
+            app:layout_constraintTop_toTopOf="@id/iv_menu" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

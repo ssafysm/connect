@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.orderdetail.OrderDetailListAdapter" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_order_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundCustomTheme="@{vm.appThemeName}"
+            tools:context=".orderdetail.OrderDetailFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_top_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <TextView
+                android:id="@+id/tv_title_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/eland_choice_b"
+                android:text="@string/text_order_detail"
+                android:textColor="@color/coffee_point_red"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/tv_complete_order_detail"
+                app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
+                app:layout_constraintTop_toBottomOf="@id/gl_top_order_detail" />
+
+            <TextView
+                android:id="@+id/tv_complete_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/eland_choice_b"
+                android:text="@string/text_order_finish"
+                android:textColor="@color/coffee_dark_brown"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_date_order_detail"
+                app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_order_detail" />
+
+            <TextView
+                android:id="@+id/tv_date_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/eland_choice_b"
+                android:textColor="@color/coffee_dark_brown"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_price_order_detail"
+                app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
+                app:layout_constraintTop_toBottomOf="@id/tv_complete_order_detail" />
+
+            <TextView
+                android:id="@+id/tv_price_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/eland_choice_b"
+                android:textColor="@color/coffee_dark_brown"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/rv_order_detail"
+                app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
+                app:layout_constraintTop_toBottomOf="@id/tv_date_order_detail" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_order_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:adapter="@{adapter}"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/gl_bottom_order_detail"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_order_detail"
+                app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
+                app:layout_constraintTop_toBottomOf="@id/tv_price_order_detail"
+                app:submitData="@{vm.selectedOrder.details}"
+                tools:listitem="@layout/list_item_order_detail_list" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

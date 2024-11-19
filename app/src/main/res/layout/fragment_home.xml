@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+        <variable
+            name="noticeAdapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.home.NoticeAdapter" />
+
+        <variable
+            name="orderAdapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.home.OrderAdapter" />
+
+        <variable
+            name="eventAdapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.home.EventAdapter" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fragment_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:backgroundCustomTheme="@{vm.appThemeName}"
+                tools:context=".home.HomeFragment">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_start_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_top_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="16dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_title_home"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:background="@drawable/background_radius_bottom"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/RoundedBottomCorners"
+                    app:strokeWidth="0dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_title_home"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/background_radius_bottom"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/home_title" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/tv_name_home"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:fontFamily="@font/pretendardsemibold"
+                                android:text="@{vm.user.user.name}"
+                                android:textColor="@color/black"
+                                android:textSize="24sp"
+                                app:layout_constraintBottom_toTopOf="@id/tv_welcome_home"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_name_end_home"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardsemibold"
+                                android:text="@string/text_name_end"
+                                android:textColor="@color/black"
+                                android:textSize="24sp"
+                                app:layout_constraintBottom_toBottomOf="@id/tv_name_home"
+                                app:layout_constraintStart_toEndOf="@id/tv_name_home"
+                                app:layout_constraintTop_toTopOf="@id/tv_name_home" />
+
+                            <TextView
+                                android:id="@+id/tv_welcome_home"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:fontFamily="@font/pretendardsemibold"
+                                android:text="@string/text_welcome"
+                                android:textColor="@color/black"
+                                android:textSize="24sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </FrameLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_grade_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_home"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_title_home">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_grade_home"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_grade_gold"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_grade_home"
+                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintEnd_toStartOf="@id/tv_grade_home"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_grade_home" />
+
+                        <TextView
+                            android:id="@+id/tv_grade_home"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="GOLD"
+                            android:textColor="@color/black"
+                            android:textSize="24sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_grade_home"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ProgressBar
+                            android:id="@+id/pb_grade_home"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:max="25"
+                            android:progress="4"
+                            android:progressDrawable="@drawable/layer_list_gold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/tv_grade_home"
+                            app:layout_constraintTop_toBottomOf="@id/tv_grade_home" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/tv_today_event_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/text_today_event"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_grade_home" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_today_event_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:adapter="@{eventAdapter}"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/tv_latest_order_home"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_home"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/tv_today_event_home"
+                    app:submitData="@{vm.events}"
+                    tools:listitem="@layout/list_item_event" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_today_event_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_latest_order_home"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_home"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/tv_today_event_home"
+                    app:submitDataViewPager="@{vm.events}" />
+
+                <TextView
+                    android:id="@+id/tv_latest_order_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/text_latest_orders"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/vp_today_event_home" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_latest_order_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:adapter="@{orderAdapter}"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/gl_bottom_home"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/tv_latest_order_home"
+                    app:submitData="@{vm.ordersMonth}"
+                    tools:listitem="@layout/list_item_latest_order" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/iv_empty_home"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_empty_list"
+                    android:fontFamily="@font/eland_choice_b"
+                    android:text="@string/text_no_orders"
+                    android:textSize="32sp"
+                    android:visibility="gone"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_home"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_home"
+                    app:layout_constraintTop_toBottomOf="@id/tv_latest_order_home" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_end_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_bottom_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.86132175" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_home"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_notice_home"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                app:noticeCustomTheme="@{vm.appThemeName}" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </FrameLayout>
+
+</layout>

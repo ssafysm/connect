@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.signin.LoginViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_join"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".join.JoinFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_logo_join"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/logo"
+            app:layout_constraintBottom_toTopOf="@id/tv_title_join"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_title_join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/eland_choice_m"
+            android:text="@string/text_join"
+            android:textColor="@color/coffee_dark_brown"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/et_id_join"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo_join" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_id_join"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/textview_regular"
+            android:hint="@string/text_hint_join_id"
+            android:onTextChanged="@{(id, s, b, c) -> vm.validateJoinId(id)}"
+            android:text="@={vm.joinId}"
+            app:layout_constraintBottom_toTopOf="@id/et_pw_join"
+            app:layout_constraintEnd_toStartOf="@id/btn_check_join"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_join" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_check_join"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="32dp"
+            android:background="@{(vm.joinUiState.isIdCheckBtnState == true) ? @drawable/button_regular : @drawable/button_regular_red}"
+            android:onClick="@{() -> vm.onClickCheckId()}"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/check"
+            app:layout_constraintBottom_toBottomOf="@id/et_id_join"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_id_join" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_pw_join"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/textview_regular"
+            android:hint="@string/text_hint_join_pw"
+            android:onTextChanged="@{(pass, s, b, c) -> vm.validateJoinPass(pass)}"
+            android:text="@={vm.joinPass}"
+            app:layout_constraintBottom_toTopOf="@id/et_nickname_join"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_id_join" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_nickname_join"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/textview_regular"
+            android:hint="@string/text_hint_join_nickname"
+            android:onTextChanged="@{(name, s, b, c) -> vm.validateJoinName(name)}"
+            android:text="@={vm.joinName}"
+            app:layout_constraintBottom_toTopOf="@id/btn_join"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_pw_join" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_join"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="48dp"
+            android:background="@{(vm.joinUiState.isJoinBtnEnable == true) ? @drawable/button_regular : @drawable/button_non_color}"
+            android:enabled="@{vm.joinUiState.isJoinBtnEnable}"
+            android:onClick="@{() -> vm.onClickGoToJoin()}"
+            android:text="@string/text_button_join"
+            android:textColor="@{(vm.joinUiState.isJoinBtnEnable == true) ? @color/neutral_white : @color/black}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_nickname_join" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/fragment_rating_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/neutral_white"
+            tools:context=".detail.RatingDialogFragment">
+
+            <TextView
+                android:id="@+id/tv_title_rating_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32sp"
+                android:fontFamily="@font/eland_choice_b"
+                android:text="@string/text_select_rating"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RatingBar
+                android:id="@+id/rb_rating_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:progressTint="@color/teal_200"
+                android:rating="4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_rating_dialog" />
+
+            <TextView
+                android:id="@+id/tv_confirm_rating_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16sp"
+                android:onClick="@{() -> vm.onClickInsertComment()}"
+                android:text="@string/text_confirm"
+                android:textColor="@color/coffee_brown_light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rb_rating_dialog" />
+
+            <TextView
+                android:id="@+id/tv_cancel_rating_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> vm.onClickCommentCancel()}"
+                android:text="@string/text_cancel"
+                android:textColor="@color/coffee_brown_light"
+                app:layout_constraintBottom_toBottomOf="@id/tv_confirm_rating_dialog"
+                app:layout_constraintEnd_toStartOf="@id/tv_confirm_rating_dialog"
+                app:layout_constraintTop_toTopOf="@id/tv_confirm_rating_dialog" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

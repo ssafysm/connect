@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.views.main.MainActivity">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="88dp"
+            android:contentDescription="@string/description_fab_main"
+            android:onClick="@{() -> vm.onClickToCart()}"
+            android:src="@drawable/shopping_cart"
+            android:visibility="@{(vm.fabState == true) ? View.VISIBLE : View.GONE}"
+            app:fabCustomTheme="@{vm.appThemeName}"
+            app:tint="@color/black" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_main"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:navGraph="@navigation/nav_graph_main" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bab_main"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_gravity="bottom"
+            android:padding="4dp"
+            android:visibility="@{(vm.bnvState == true) ? View.VISIBLE : View.GONE}"
+            app:bottomNavigationBarCustomTheme="@{vm.appThemeName}"
+            app:fabAlignmentMode="center"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="16dp">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bnv_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                app:elevation="0dp"
+                app:itemActiveIndicatorStyle="@null"
+                app:itemBackground="@android:color/transparent"
+                app:itemIconTint="@drawable/selector_bnv_text"
+                app:itemRippleColor="@android:color/transparent"
+                app:itemTextColor="@drawable/selector_bnv_text"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_nav" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_fab_order"
+            android:src="@drawable/shopping_list"
+            android:visibility="@{(vm.bnvState == true) ? View.VISIBLE : View.GONE}"
+            app:fabCustomSize="72dp"
+            app:fabCustomTheme="@{vm.appThemeName}"
+            app:layout_anchor="@id/bab_main"
+            app:layout_anchorGravity="center"
+            app:tint="@color/black" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

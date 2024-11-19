@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListAdapter" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:backgroundCustomTheme="@{vm.appThemeName}"
+        tools:context=".cart.CartFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_top_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <TextView
+            android:id="@+id/tv_title_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/eland_choice_b"
+            android:text="@string/text_cart"
+            android:textColor="@color/coffee_point_red"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/gl_start_cart"
+            app:layout_constraintTop_toBottomOf="@id/gl_top_cart" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_tout_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@{(vm.nfcMode == true) ? @drawable/button_non_color : @drawable/button_color}"
+            android:onClick="@{() -> vm.onClickNFCFalse()}"
+            android:text="@string/text_take_out"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_cart"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_cart"
+            app:layout_constraintTop_toBottomOf="@id/gl_top_cart" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_shop_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@{(vm.nfcMode == true) ? @drawable/button_color : @drawable/button_non_color}"
+            android:onClick="@{() -> vm.onClickNFCTrue()}"
+            android:text="@string/text_shop"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_cart"
+            app:layout_constraintEnd_toStartOf="@id/btn_tout_cart"
+            app:layout_constraintTop_toBottomOf="@id/gl_top_cart" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:adapter="@{adapter}"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/tv_count_cart"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_cart"
+            app:layout_constraintStart_toEndOf="@id/gl_start_cart"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_cart"
+            app:submitData="@{vm.shoppingList}"
+            tools:listitem="@layout/list_item_shopping_list" />
+
+        <TextView
+            android:id="@+id/tv_count_title_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/eland_choice_b"
+            android:text="@string/text_total_start"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_order_cart"
+            app:layout_constraintStart_toEndOf="@id/gl_start_cart" />
+
+        <TextView
+            android:id="@+id/tv_count_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/eland_choice_b"
+            android:text="@{vm.totalOrder}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_order_cart"
+            app:layout_constraintStart_toEndOf="@id/tv_count_title_cart" />
+
+        <TextView
+            android:id="@+id/tv_count_end_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/eland_choice_b"
+            android:text="@string/text_total_end"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_order_cart"
+            app:layout_constraintStart_toEndOf="@id/tv_count_cart" />
+
+        <TextView
+            android:id="@+id/tv_price_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/eland_choice_b"
+            android:text="@{vm.totalPrice}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_order_cart"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_cart" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_order_cart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_color"
+            android:backgroundTint="@{(vm.shoppingListUiState.isOrderBtnEnable == true) ? @color/coffee_brown_light : @color/coffee_point_red}"
+            android:enabled="@{vm.shoppingListUiState.isOrderBtnEnable}"
+            android:onClick="@{() -> vm.onClickOrder()}"
+            android:text="@string/text_try_order"
+            android:textColor="@{(vm.shoppingListUiState.isOrderBtnEnable == true) ? @color/neutral_white : @color/black}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/gl_bottom_cart"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_cart"
+            app:layout_constraintStart_toEndOf="@id/gl_start_cart" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_bottom_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="16dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

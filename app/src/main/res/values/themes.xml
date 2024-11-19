@@ -1,0 +1,167 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    
+    <!-- Base application theme. -->
+    <style name="Theme.SmartstoreUI" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/coffee_brown</item>
+
+        <item name="colorPrimaryVariant">@color/coffee_brown</item>
+
+        <!--Rating Bar-->
+        <item name="colorControlNormal">@color/coffee_light_gray</item>
+
+        <item name="colorControlActivated">@color/coffee_point_red</item>
+
+        <item name="android:statusBarColor">@color/background_sub</item>
+
+    </style>
+
+    <!-- Modal Bottom Sheet -->
+    <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+
+        <item name="bottomSheetStyle">@style/RoundCornerModalStyle</item>
+
+    </style>
+
+    <style name="RoundCornerModalStyle" parent="Widget.Design.BottomSheet.Modal">
+
+        <item name="android:background">@drawable/shape_bottom_sheet</item>
+
+    </style>
+    
+    <!-- Concept Theme -->
+    <style name="Theme.Spring" parent="Theme.SmartstoreUI">
+
+        <item name="colorPrimary">@color/spring_primary</item>
+
+        <item name="colorSecondary">@color/spring_secondary</item>
+
+        <item name="android:statusBarColor">@color/spring_secondary</item>
+
+    </style>
+
+    <style name="Theme.Summer" parent="Theme.SmartstoreUI">
+
+        <item name="colorPrimary">@color/summer_primary</item>
+
+        <item name="colorSecondary">@color/summer_secondary</item>
+
+        <item name="android:statusBarColor">@color/summer_secondary</item>
+
+    </style>
+
+    <style name="Theme.Autumn" parent="Theme.SmartstoreUI">
+
+        <item name="colorPrimary">@color/autumn_primary</item>
+
+        <item name="colorSecondary">@color/autumn_secondary</item>
+
+        <item name="android:statusBarColor">@color/autumn_secondary</item>
+
+    </style>
+
+    <style name="Theme.Winter" parent="Theme.SmartstoreUI">
+
+        <item name="colorPrimary">@color/winter_primary</item>
+
+        <item name="colorSecondary">@color/winter_secondary</item>
+
+        <item name="android:statusBarColor">@color/winter_secondary</item>
+
+    </style>
+
+    <!-- Splash Screen -->
+    <style name="Theme.SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="windowActionBar">false</item>
+
+        <item name="windowNoTitle">true</item>
+
+        <!--        <item name="android:windowLightStatusBar">true</item> -->
+
+        <item name="android:windowBackground">@drawable/splash_background</item>
+
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="S">@android:color/transparent</item>
+
+    </style>
+
+    <style name="Theme.MyApp.Main" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="android:statusBarColor">@color/background_sub</item>
+
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">@color/background_sub</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@null</item>
+
+        <item name="windowSplashScreenAnimationDuration">0</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.SmartstoreUI</item>
+
+    </style>
+
+    <style name="RoundedBottomCorners" parent="">
+
+        <item name="cornerFamily">rounded</item>
+
+        <item name="cornerSizeBottomLeft">16dp</item>
+
+        <item name="cornerSizeBottomRight">16dp</item>
+
+        <item name="cornerSizeTopLeft">0dp</item>
+
+        <item name="cornerSizeTopRight">0dp</item>
+
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+
+        <item name="android:background">@android:color/transparent</item>
+
+        <item name="elevation">0dp</item>
+
+    </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+
+        <item name="android:textSize">24sp</item>
+
+        <item name="fontFamily">@font/pretendardsemibold</item>
+
+    </style>
+
+    <style name="AppTheme" parent="android:Theme.Material">
+        <item name="android:colorPrimaryDark">@color/coffee_brown</item>
+    </style>
+
+    <style name="Text.Regular" parent="android:TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/coffee_dark_brown</item>
+        <item name="android:fontFamily">@font/eland_choice_m</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Text.Title" parent="android:TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/coffee_dark_brown</item>
+        <item name="android:fontFamily">@font/eland_choice_b</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Text.light" parent="android:TextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/coffee_dark_brown</item>
+        <item name="android:fontFamily">@font/eland_choice_l</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:background">@color/coffee_brown</item>
+    </style>
+
+
+</resources>
