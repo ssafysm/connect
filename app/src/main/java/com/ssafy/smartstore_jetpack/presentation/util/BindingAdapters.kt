@@ -3,9 +3,12 @@ package com.ssafy.smartstore_jetpack.presentation.util
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
@@ -16,8 +19,10 @@ import coil.transform.RoundedCornersTransformation
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.textfield.TextInputLayout
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.ApplicationClass
+import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import timber.log.Timber
 
 @BindingAdapter("app:backgroundCustomTheme")
@@ -211,11 +216,70 @@ fun ImageView.bindImage(src: String?) {
 }
 
 @BindingAdapter("app:eventImage")
-fun ImageView.bindEventImage(src: String) {
-    load(src) {
-        transformations(RoundedCornersTransformation(20F))
+fun ImageView.bindEventImage(src: String?) {
+    if (!src.isNullOrEmpty()) {
+        load(src) {
+            transformations(RoundedCornersTransformation(20F))
+        }
+    } else {
+        this.setImageResource(R.drawable.logo)
     }
-    scaleType = ImageView.ScaleType.CENTER_INSIDE
+    scaleType = ImageView.ScaleType.CENTER_CROP
+}
+
+@BindingAdapter("app:homeBanner")
+fun ImageView.bindHomeBanner(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> load(R.drawable.home_banner_spring) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        "여름" -> load(R.drawable.home_banner_summer) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        "가을" -> load(R.drawable.home_banner_autumn) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        "겨울" -> load(R.drawable.home_banner_winter) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        else -> load(R.drawable.home_banner_main) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+    }
+}
+
+@BindingAdapter("app:homeBannerBackground")
+fun CardView.bindHomeBannerBackground(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> setBackgroundResource(R.drawable.background_banner_spring)
+
+        "여름" -> setBackgroundResource(R.drawable.background_banner_summer)
+
+        "가을" -> setBackgroundResource(R.drawable.background_banner_autumn)
+
+        "겨울" -> setBackgroundResource(R.drawable.background_banner_winter)
+
+        else -> setBackgroundResource(R.drawable.background_banner)
+    }
+}
+
+@BindingAdapter("app:homeBannerText")
+fun TextView.bindHomeBannerText(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
+
+        "여름" -> setTextColor(resources.getColor(R.color.neutral_100, context.theme))
+
+        "가을" -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
+
+        "겨울" -> setTextColor(resources.getColor(R.color.neutral_100, context.theme))
+
+        else -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
+    }
 }
 
 @SuppressLint("DiscouragedApi")
@@ -230,6 +294,83 @@ fun ImageView.bindStamp(src: String) {
         scaleType = ImageView.ScaleType.CENTER_CROP
     } else {
         load(R.drawable.seeds)
+    }
+}
+
+@SuppressLint("ResourceType")
+@BindingAdapter("app:validatePassword", "app:newPasswordCustomTheme")
+fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName: String) {
+    val hintColor = when (appThemeName) {
+        "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
+
+        "여름" -> ContextCompat.getColor(context, R.color.summer_secondary)
+
+        "가을" -> ContextCompat.getColor(context, R.color.autumn_secondary)
+
+        "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
+
+        else -> ContextCompat.getColor(context, R.color.background_sub)
+    }
+
+    when (passwordUiState.newPasswordValidState) {
+        PasswordState.VALID -> {
+            helperText = "사용해도 좋은 비밀번호에요."
+            defaultHintTextColor = ColorStateList.valueOf(hintColor)
+        }
+
+        PasswordState.INIT -> {
+            helperText = ""
+            error = ""
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.neutral_70)
+            )
+        }
+
+        else -> {
+            error = "유효한 비밀번호가 아니에요."
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.sub_alert)
+            )
+        }
+    }
+}
+
+
+@SuppressLint("ResourceType")
+@BindingAdapter("app:validatePasswordConfirm", "app:newPasswordConfirmCustomTheme")
+fun TextInputLayout.bindPasswordConfirm(passwordUiState: PasswordUiState, appThemeName: String) {
+    val hintColor = when (appThemeName) {
+        "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
+
+        "여름" -> ContextCompat.getColor(context, R.color.summer_secondary)
+
+        "가을" -> ContextCompat.getColor(context, R.color.autumn_secondary)
+
+        "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
+
+        else -> ContextCompat.getColor(context, R.color.background_sub)
+    }
+
+    when (passwordUiState.newPasswordConfirmValidState) {
+        PasswordState.VALID -> {
+            helperText = "비밀번호가 일치해요."
+            defaultHintTextColor = ColorStateList.valueOf(hintColor)
+        }
+
+        PasswordState.INIT -> {
+            helperText = ""
+            error = ""
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.neutral_70)
+            )
+        }
+
+        else -> {
+            error = "비밀번호가 일치하지 않아요."
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.sub_alert)
+            )
+        }
     }
 }
 

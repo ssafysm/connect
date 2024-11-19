@@ -16,6 +16,11 @@ import java.util.TimeZone
 
 object CommonUtils {
 
+    private val passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>])[A-Za-z\\d!@#$%^&*(),.?\":{}|<>]{8,16}$".toRegex()
+
+    fun validatePassword(password: CharSequence): Boolean =
+        passwordRegex.matches(password)
+
     fun makeComma(num: Int): String {
         val comma = DecimalFormat("#,###")
         return "￦${comma.format(num)}"
@@ -27,12 +32,7 @@ object CommonUtils {
     }
 
     fun deleteComma(num: String): Int {
-        Timber.d("Price: ${num}")
         return num.replace("원", "").replace("￦", "").replace(" ", "").replace(",", "").toInt()
-    }
-
-    fun deleteCommaWon(num: String): Int {
-        return num.replace("원", "").replace(" ", "").replace(",", "").toInt()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

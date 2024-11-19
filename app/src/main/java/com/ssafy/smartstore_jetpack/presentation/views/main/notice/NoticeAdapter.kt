@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.presentation.views.main.home
+package com.ssafy.smartstore_jetpack.presentation.views.main.notice
 
 import android.view.LayoutInflater
 import android.view.View

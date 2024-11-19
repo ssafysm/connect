@@ -11,3 +11,11 @@ enum class DuplicateState {
 enum class EmptyState {
     EMPTY, NONE
 }
+
+enum class SelectState {
+    SELECT, NONE
+}
+
+enum class PasswordState {
+    INIT, VALID, NONE
+}

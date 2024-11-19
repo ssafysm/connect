@@ -7,19 +7,17 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentHomeBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
+import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import kotlin.math.abs
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -40,13 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         initRecyclerView()
 
-        lifecycleScope.launch {
-            viewModel.homeUiEvent.collectLatest { uiEvent ->
-                if (uiEvent == HomeUiEvent.GoToOrderDetail) {
-                    findNavController().navigateSafely(R.id.action_home_to_order_detail)
-                }
-            }
-        }
+        collectLatestFlow(viewModel.homeUiEvent) { handleUiEvent(it) }
     }
 
     override fun onResume() {
@@ -108,7 +100,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             while (isActive) {
                 delay(interval)
                 val currentItem = viewPager.currentItem
-                Timber.d("Current: ${viewPager.currentItem}")
 
                 val itemCount = viewPager.adapter?.itemCount ?: 0
 
@@ -117,8 +108,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
                     else -> viewPager.currentItem = (currentItem + 1) % itemCount
                 }
-
-                Timber.d("Current: ${viewPager.currentItem}")
             }
         }
     }
@@ -126,6 +115,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun stopAutoScroll() {
         autoScrollJob?.cancel()
         autoScrollJob = null
-        Timber.d("Auto Scroll Stop")
+    }
+
+    private fun handleUiEvent(event: HomeUiEvent) = when (event) {
+        is HomeUiEvent.GoToNotice -> {
+            findNavController().navigateSafely(R.id.action_home_to_notice)
+        }
+
+        is HomeUiEvent.GoToOrderDetail -> {
+            findNavController().navigateSafely(R.id.action_home_to_order_detail)
+        }
     }
 }

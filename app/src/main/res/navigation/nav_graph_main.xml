@@ -15,6 +15,10 @@
             android:id="@+id/action_home_to_order_detail"
             app:destination="@id/fragment_cart" />
 
+        <action
+            android:id="@+id/action_home_to_notice"
+            app:destination="@id/fragment_notice" />
+
     </fragment>
 
     <fragment
@@ -64,6 +68,16 @@
         <action
             android:id="@+id/action_my_page_to_pay"
             app:destination="@id/fragment_pay" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_notice"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeFragment"
+        tools:layout="@layout/fragment_notice"
+        android:label="Notice">
+
+
 
     </fragment>
 
@@ -176,6 +190,10 @@
             android:id="@+id/cart_to_t_out_dialog"
             app:destination="@id/fragment_t_out_dialog" />
 
+        <action
+            android:id="@+id/cart_to_shop_select"
+            app:destination="@id/fragment_shop_select_bottom_sheet_dialog" />
+
     </fragment>
 
     <fragment
@@ -195,6 +213,12 @@
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.setting.AppThemeBottomSheetFragment"
         android:label="App Theme"
         tools:layout="@layout/fragment_app_theme_bottom_sheet" />
+
+    <dialog
+        android:id="@+id/fragment_shop_select_bottom_sheet_dialog"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectBottomSheetDialogFragment"
+        android:label="Shop Select"
+        tools:layout="@layout/fragment_shop_select_bottom_sheet_dialog" />
 
     <dialog
         android:id="@+id/fragment_shop_dialog"

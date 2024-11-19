@@ -20,6 +20,12 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding>(private val la
     protected val binding
         get() = requireNotNull(_binding)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setStyle(STYLE_NORMAL, R.style.TransparentBottomSheetDialogFragment)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +38,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding>(private val la
 
         _binding = DataBindingUtil.inflate<T>(inflater, layoutId, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        isCancelable = false
 
         return binding.root
     }

@@ -47,6 +47,10 @@
     <string name="text_information_eng">Information</string>
     <string name="text_coupon_eng">Coupon</string>
     <string name="text_pay_eng">Pay</string>
+    
+    <!-- Notice -->
+    <string name="text_notices">알림함</string>
+    <string name="text_notice_nothing">미확인된 알림이 없어요.</string>
 
     <!-- Setting -->
     <string name="text_settings">환경설정</string>
@@ -68,6 +72,16 @@
     <string name="text_name">별명</string>
     <string name="text_password">비밀번호</string>
     <string name="text_password_update">비밀번호 변경</string>
+
+    <!-- Password -->
+    <string name="text_of_nim">님의</string>
+    <string name="text_title_update_password">비밀번호를 변경합니다.</string>
+    <string name="text_hint_new_password">새 비밀번호</string>
+    <string name="text_hint_new_password_confirm">새 비밀번호 변경</string>
+    <string name="text_safe_password">안전한 비밀번호 만들기</string>
+    <string name="text_safe_password_description"> · 영문, 숫자 혼합하여 8~16자리 이내로 입력하세요. 특수문자는 꼭 1자 이상 포함하세요.\n
+ · 아이디와 같은 비밀번호, 생일, 학번, 전화번호 등 개인정보와 관련된 숫자, 연속된 숫자, 동일하게 반복된 숫자 등 다른 사람이 쉽게 알아낼 수 있는 비밀번호는 유출 위험이 높아요.\n
+ · 도용의 우려가 있으니, 가급적 새로운 비밀번호를 사용해 주세요.</string>
 
     <!-- Coupon -->
     <string name="text_coupon">쿠폰함</string>
@@ -93,7 +107,12 @@
     <string name="text_shop">매장</string>
     <string name="text_total_start">총</string>
     <string name="text_total_end">개</string>
+
+    <!-- Shop Select -->
+    <string name="text_shop_select">매장 선택</string>
+    <string name="text_other_shop_select">다른 매장 찾기</string>
     <string name="text_try_order">주문하기</string>
+    <string name="text_time">운영 시간</string>
 
     <!-- Shopping Dialog -->
     <string name="text_table_nfc">Table NFC를 찍어주세요.</string>
@@ -120,5 +139,7 @@
     <string name="text_menu_order">Order</string>
     <string name="text_menu_mypage">Mypage</string>
     <string name="text_go_cart">장바구니 담기</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

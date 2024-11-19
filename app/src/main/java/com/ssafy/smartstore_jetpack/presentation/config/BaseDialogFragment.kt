@@ -49,6 +49,7 @@ abstract class BaseDialogFragment<T : ViewDataBinding>(private val layoutId: Int
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 

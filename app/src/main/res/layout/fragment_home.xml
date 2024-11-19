@@ -11,7 +11,7 @@
 
         <variable
             name="noticeAdapter"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.home.NoticeAdapter" />
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter" />
 
         <variable
             name="orderAdapter"
@@ -29,7 +29,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_home"
@@ -56,9 +57,9 @@
                     android:id="@+id/mcv_title_home"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
-                    android:background="@drawable/background_radius_bottom"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="4dp"
+                    app:homeBannerBackground="@{vm.appThemeName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -73,9 +74,8 @@
                             android:id="@+id/iv_title_home"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/background_radius_bottom"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/home_title" />
+                            app:homeBanner="@{vm.appThemeName}" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -90,6 +90,7 @@
                                 android:text="@{vm.user.user.name}"
                                 android:textColor="@color/black"
                                 android:textSize="24sp"
+                                app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toTopOf="@id/tv_welcome_home"
                                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -101,6 +102,7 @@
                                 android:text="@string/text_name_end"
                                 android:textColor="@color/black"
                                 android:textSize="24sp"
+                                app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toBottomOf="@id/tv_name_home"
                                 app:layout_constraintStart_toEndOf="@id/tv_name_home"
                                 app:layout_constraintTop_toTopOf="@id/tv_name_home" />
@@ -114,6 +116,7 @@
                                 android:text="@string/text_welcome"
                                 android:textColor="@color/black"
                                 android:textSize="24sp"
+                                app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent" />
@@ -297,6 +300,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="16dp"
+                android:onClick="@{() -> vm.onClickNotice()}"
                 app:noticeCustomTheme="@{vm.appThemeName}" />
 
         </androidx.appcompat.widget.Toolbar>

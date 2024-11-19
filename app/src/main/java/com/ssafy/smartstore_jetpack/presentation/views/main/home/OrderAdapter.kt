@@ -25,9 +25,9 @@ class OrderAdapter(private val viewModel: MainViewModel) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(order: Order, clickListener: HomeClickListener) {
+        fun bind(order: Order, viewModel: MainViewModel) {
             binding.order = order
-            binding.vm = clickListener as MainViewModel
+            binding.vm = viewModel
             binding.tvOrderNumberOrder.text = "주문번호 : ${order.id}"
             val totalCount = order.details.sumOf { it.quantity }
             binding.tvOrderListOrder.text = when (totalCount) {

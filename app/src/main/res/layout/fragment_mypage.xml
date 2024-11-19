@@ -20,7 +20,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_my_page"

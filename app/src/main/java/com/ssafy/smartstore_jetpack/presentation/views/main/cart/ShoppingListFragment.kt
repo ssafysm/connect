@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShoppingListBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
+import com.ssafy.smartstore_jetpack.presentation.util.BlurHelper.applyBlur
+import com.ssafy.smartstore_jetpack.presentation.util.BlurHelper.clearBlur
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,7 +42,6 @@ class ShoppingListFragment :
     override fun onStart() {
         super.onStart()
 
-        // NFC 리더 모드 활성화
         nfcAdapter?.enableReaderMode(
             requireActivity(),
             { tag -> readNfcTag(tag) },
@@ -58,7 +59,6 @@ class ShoppingListFragment :
     override fun onStop() {
         super.onStop()
 
-        // NFC 리더 모드 비활성화
         nfcAdapter?.disableReaderMode(requireActivity())
     }
 
@@ -98,19 +98,22 @@ class ShoppingListFragment :
 
     private fun handleUiEvent(event: ShoppingListUiEvent) = when (event) {
         is ShoppingListUiEvent.ShopOrder -> {
-            findNavController().navigateSafely(R.id.cart_to_shop_dialog)
+
         }
 
         is ShoppingListUiEvent.TakeOutOrder -> {
-            findNavController().navigateSafely(R.id.cart_to_t_out_dialog)
+            findNavController().navigateSafely(R.id.cart_to_shop_select)
+            applyBlur(binding.fragmentShoppingList, 20F)
         }
 
         is ShoppingListUiEvent.FinishOrder -> {
             requireActivity().supportFragmentManager.popBackStack()
+            clearBlur(binding.fragmentShoppingList)
         }
 
         is ShoppingListUiEvent.OrderFail -> {
             Toast.makeText(requireContext(), "주문에 실패했어요ㅠㅠ", Toast.LENGTH_SHORT).show()
+            clearBlur(binding.fragmentShoppingList)
         }
 
         else -> {}

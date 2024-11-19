@@ -6,6 +6,7 @@ import com.ssafy.smartstore_jetpack.domain.model.Comment
 import com.ssafy.smartstore_jetpack.domain.model.Order
 import com.ssafy.smartstore_jetpack.domain.model.OrderDetail
 import com.ssafy.smartstore_jetpack.domain.model.Product
+import com.ssafy.smartstore_jetpack.domain.model.Shop
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
 import com.ssafy.smartstore_jetpack.domain.model.Status
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
@@ -26,21 +27,25 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListen
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.CommentClickListener
-import com.ssafy.smartstore_jetpack.presentation.views.main.cart.EmptyState
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.OrderUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.ProductClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteCommaWon
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validatePassword
+import com.ssafy.smartstore_jetpack.presentation.util.EmptyState
+import com.ssafy.smartstore_jetpack.presentation.util.PasswordState
+import com.ssafy.smartstore_jetpack.presentation.util.SelectState
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.EventUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -122,6 +127,21 @@ class MainViewModel @Inject constructor(
     private val _totalPrice = MutableStateFlow<String>("0원")
     val totalPrice = _totalPrice.asStateFlow()
 
+    private val _shops = MutableStateFlow<List<Shop>>(emptyList())
+    val shops = _shops.asStateFlow()
+
+    private val _selectShop = MutableStateFlow<Shop?>(null)
+    val selectShop = _selectShop.asStateFlow()
+
+    private val _newPassword = MutableStateFlow<String>("")
+    val newPassword = _newPassword
+
+    private val _newPasswordConfirm = MutableStateFlow<String>("")
+    val newPasswordConfirm = _newPasswordConfirm
+
+    private val _notices = MutableStateFlow<List<String>>(emptyList())
+    val notice = _notices.asStateFlow()
+
     /****** Ui State ******/
     private val _bnvState = MutableStateFlow<Boolean>(true)
     val bnvState = _bnvState.asStateFlow()
@@ -146,6 +166,12 @@ class MainViewModel @Inject constructor(
 
     private val _couponUiState = MutableStateFlow<CouponUiState>(CouponUiState())
     val couponUiState = _couponUiState.asStateFlow()
+
+    private val _passwordUiState = MutableStateFlow<PasswordUiState>(PasswordUiState())
+    val passwordUiState = _passwordUiState.asStateFlow()
+
+    private val _noticeUiState = MutableStateFlow<NoticeUiState>(NoticeUiState())
+    val noticeUiState = _noticeUiState.asStateFlow()
 
     /****** Ui Event ******/
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
@@ -175,6 +201,7 @@ class MainViewModel @Inject constructor(
     init {
         setEvents()
         setTheme()
+        setShop()
         getUser()
         getLastMonthOrders()
         getLast6MonthsOrders()
@@ -195,7 +222,7 @@ class MainViewModel @Inject constructor(
                     when (index) {
                         -1 -> {
                             _totalOrder.value = (_totalOrder.value.toInt() + detail.quantity).toString()
-                            _totalPrice.value = makeComma((deleteCommaWon(_totalPrice.value) + (detail.quantity * detail.unitPrice.toInt())))
+                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (detail.quantity * deleteComma(detail.unitPrice))))
                             add(
                                 ShoppingCart(
                                     menuId = detail.productId,
@@ -203,7 +230,7 @@ class MainViewModel @Inject constructor(
                                     menuName = detail.productName,
                                     menuCnt = detail.quantity.toString(),
                                     menuPrice = detail.unitPrice,
-                                    totalPrice = (detail.unitPrice.toInt() * detail.quantity).toString(),
+                                    totalPrice = (deleteComma(detail.unitPrice) * detail.quantity).toString(),
                                     type = ""
                                 )
                             )
@@ -212,14 +239,14 @@ class MainViewModel @Inject constructor(
                         else -> {
                             val newCount = this[index].menuCnt.toInt() + detail.quantity
                             _totalOrder.value = (_totalOrder.value.toInt() + detail.quantity).toString()
-                            _totalPrice.value = makeComma((deleteCommaWon(_totalPrice.value) + (detail.quantity * detail.unitPrice.toInt())))
+                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (detail.quantity * deleteComma(detail.unitPrice))))
                             this[index] = ShoppingCart(
                                 menuId = detail.productId,
                                 menuImg = detail.img,
                                 menuName = detail.productName,
                                 menuCnt = newCount.toString(),
                                 menuPrice = detail.unitPrice,
-                                totalPrice = (newCount * detail.unitPrice.toInt()).toString(),
+                                totalPrice = (newCount * deleteComma(detail.unitPrice)).toString(),
                                 type = ""
                             )
                         }
@@ -236,6 +263,12 @@ class MainViewModel @Inject constructor(
             _selectedOrder.value = order
             _selectedOrderDetails.value = order.details
             _historyUiEvent.emit(HistoryUiEvent.GoToOrderDetail)
+        }
+    }
+
+    override fun onClickNotice() {
+        viewModelScope.launch {
+            _homeUiEvent.emit(HomeUiEvent.GoToNotice)
         }
     }
 
@@ -443,6 +476,18 @@ class MainViewModel @Inject constructor(
         _nfcMode.value = false
     }
 
+    override fun onClickShop() {
+        viewModelScope.launch {
+            _shoppingUiEvent.emit(ShoppingListUiEvent.ShopOrder)
+        }
+    }
+
+    override fun onClickTakeout() {
+        viewModelScope.launch {
+            _shoppingUiEvent.emit(ShoppingListUiEvent.TakeOutOrder)
+        }
+    }
+
     override fun onClickOrder() {
         viewModelScope.launch {
             when (_nfcMode.value) {
@@ -454,6 +499,28 @@ class MainViewModel @Inject constructor(
                     _shoppingUiEvent.emit(ShoppingListUiEvent.TakeOutOrder)
                 }
             }
+        }
+    }
+
+    override fun onClickShopClose() {
+        viewModelScope.launch {
+            _selectShop.value = null
+            _shoppingListUiState.update { it.copy(shopSelectState = SelectState.NONE) }
+            _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
+        }
+    }
+
+    override fun onClickShopSelect(shop: Shop) {
+        viewModelScope.launch {
+            _selectShop.value = shop
+            _shoppingListUiState.update { it.copy(shopSelectState = SelectState.SELECT) }
+        }
+    }
+
+    override fun onClickShopSelectCancel() {
+        viewModelScope.launch {
+            _selectShop.value = null
+            _shoppingListUiState.update { it.copy(shopSelectState = SelectState.NONE) }
         }
     }
 
@@ -537,6 +604,8 @@ class MainViewModel @Inject constructor(
 
     override fun onClickPassword() {
         viewModelScope.launch {
+            _newPassword.value = ""
+            _newPasswordConfirm.value = ""
             _informationUiEvent.emit(InformationUiEvent.GoToPassword)
         }
     }
@@ -603,12 +672,66 @@ class MainViewModel @Inject constructor(
 
     private fun setEvents() {
         val newEvents = mutableListOf<EventUiState>()
+
         newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/0zdpAngaKBFnlCcCqpCU4A/ko/list/image?1621844405"))
         newEvents.add(EventUiState.EventItem("https://dcenter-img.cafe24.com/d/product/2022/03/10/306c857f338c411e1bdbd90728d4fce5.png"))
         newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/jsISJfide0GLiUyXsznbgP/ko/list/image"))
         newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/0zdpAngaKBFnlCcCqpCU4A/ko/list/image?1621844405"))
         newEvents.add(EventUiState.EventItem("https://dcenter-img.cafe24.com/d/product/2022/03/10/306c857f338c411e1bdbd90728d4fce5.png"))
+
         _events.value = newEvents.toList()
+    }
+
+    private fun setShop() {
+        val newShops = mutableListOf<Shop>()
+
+        newShops.add(
+            Shop(
+                id = "1",
+                name = "구미인동",
+                image = "https://mblogthumb-phinf.pstatic.net/MjAyNDAxMThfMjUz/MDAxNzA1NTY2Mzg0Mzk2.gVwa4ygCav1gbmwGq2tWEtDvHU5ufrJVjJs-JZBIrM0g.QwyYd_P-C2LCjsTh3fEHJfAQl91scMSVaYR2gjown3Ag.JPEG.yosulpp/SE-b60fa36a-b42d-11ee-9a89-976840ec37c2.jpg?type=w800",
+                description = "경상북도 구미시 인동가산로9-3, 노블레스타워 1층(황상동)",
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+            )
+        )
+        newShops.add(
+            Shop(
+                id = "2",
+                name = "구미인의DT",
+                image = "https://mblogthumb-phinf.pstatic.net/MjAyNDAxMDVfODIg/MDAxNzA0NDU3ODE1NjE2.3eBnacAfnkYIPrf0m1X5KrLaLfkmPak_na1ei7bZnMEg.kLKFbCAieqLlg1v80b0BWxBHfYWFCZtWA_y4oJJbrBUg.JPEG.m_4862/output_2270109392.jpg?type=w800",
+                description = "경상북도 구미시 인동북길 149(인의동)",
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+            )
+        )
+        newShops.add(
+            Shop(
+                id = "3",
+                name = "구미공단",
+                image = "https://naverbooking-phinf.pstatic.net/20240611_120/1718104723924coCrQ_JPEG/image.jpg?type=f750_420_60_sharpen",
+                description = "경상북도 구미시 1공단로212, HALLA SIGMA VALLEY 104...",
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+            )
+        )
+        newShops.add(
+            Shop(
+                id = "4",
+                name = "구미옥계",
+                image = "https://mblogthumb-phinf.pstatic.net/MjAyMTA3MTRfMTEg/MDAxNjI2MjYyNzE4NDI5.AMdA_uB_i8FJNyhVzFx4pkGRyKqgzTkRRPUwbTEqflcg.wAI4J4M6MfW0_k3LKPyTGRpcii_cw-Alju6rgTGu0gog.JPEG.kilrboy89/SE-01f7a5c6-9709-4736-8f30-9f3c6d81df8a.jpg?type=w800",
+                description = "경상북도 구미시 옥계북로20(양포동)",
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+            )
+        )
+        newShops.add(
+            Shop(
+                id = "5",
+                name = "구미광평DT",
+                image = "https://naverbooking-phinf.pstatic.net/20240611_257/1718104467893XeEyG_JPEG/image.jpg?type=f750_420_60_sharpen",
+                description = "경상북도 구미시 구미대로 188(광평동)",
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+            )
+        )
+
+        _shops.value = newShops
     }
 
     private fun getUser() {
@@ -782,6 +905,40 @@ class MainViewModel @Inject constructor(
                 else -> {
                     _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
                 }
+            }
+        }
+    }
+
+    fun validateNewPassword(password: CharSequence) {
+        if (password.isBlank()) {
+            _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.INIT) }
+            return
+        }
+
+        when (validatePassword(password)) {
+            true -> {
+                _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.VALID) }
+            }
+
+            else -> {
+                _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.NONE) }
+            }
+        }
+    }
+
+    fun validateNewPasswordConfirm(passwordConfirm: CharSequence) {
+        if (passwordConfirm.isBlank()) {
+            _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.INIT) }
+            return
+        }
+
+        when (passwordConfirm.toString() == _newPassword.value) {
+            true -> {
+                _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.VALID) }
+            }
+
+            else -> {
+                _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.NONE) }
             }
         }
     }

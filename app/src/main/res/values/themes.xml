@@ -29,6 +29,18 @@
         <item name="android:background">@drawable/shape_bottom_sheet</item>
 
     </style>
+
+    <style name="TransparentBottomSheetDialogFragment" parent="Theme.Design.BottomSheetDialog">
+
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetDialogFragmentChild</item>
+
+    </style>
+
+    <style name="TransparentBottomSheetDialogFragmentChild" parent="Widget.Design.BottomSheet.Modal">
+
+        <item name="android:background">#00000000</item>
+
+    </style>
     
     <!-- Concept Theme -->
     <style name="Theme.Spring" parent="Theme.SmartstoreUI">

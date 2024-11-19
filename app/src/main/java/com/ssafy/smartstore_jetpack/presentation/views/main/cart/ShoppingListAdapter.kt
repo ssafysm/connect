@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemShoppingListBinding
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 
 class ShoppingListAdapter(private val clickListener: ShoppingListClickListener) :
@@ -20,8 +21,7 @@ class ShoppingListAdapter(private val clickListener: ShoppingListClickListener) 
         fun bindInfo(product: ShoppingCart, clickListener: ShoppingListClickListener) {
             binding.product = product
             binding.tvCountItemCart.text = "${product.menuCnt}잔"
-            binding.tvPriceItemCart.text = makeComma(product.menuPrice.toInt())
-            binding.tvSumPriceItemCart.text = makeComma(product.totalPrice.toInt())
+            binding.tvPriceItemCart.text = makeComma(deleteComma(product.menuPrice))
             binding.clCart.setOnClickListener {
                 clickListener.onClickProductDelete(layoutPosition)
             }

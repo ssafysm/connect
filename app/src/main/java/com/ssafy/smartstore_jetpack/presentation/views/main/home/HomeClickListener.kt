@@ -4,5 +4,7 @@ import com.ssafy.smartstore_jetpack.domain.model.Order
 
 interface HomeClickListener {
 
+    fun onClickNotice()
+
     fun onClickOrderDetail(order: Order)
 }
