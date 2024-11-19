@@ -3,8 +3,10 @@ package com.ssafy.smartstore_jetpack.presentation.util
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.widget.ImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,21 @@ import timber.log.Timber
 
 @BindingAdapter("app:backgroundCustomTheme")
 fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
+    when (appThemeName) {
+        "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
+
+        "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
+
+        "여름" -> setBackgroundColor(resources.getColor(R.color.summer_primary, context.theme))
+
+        "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
+
+        "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
+    }
+}
+
+@BindingAdapter("app:nestedScrollViewCustomTheme")
+fun NestedScrollView.bindNestedScrollViewBackgroundColor(appThemeName: String) {
     when (appThemeName) {
         "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
 
@@ -63,6 +80,21 @@ fun ImageView.bindNoticeBackground(appThemeName: String) {
     }
 }
 
+@BindingAdapter("app:settingsCustomTheme")
+fun ImageView.bindSettingsBackground(appThemeName: String) {
+    when (appThemeName) {
+        "기본" -> load(R.drawable.ic_settings)
+
+        "봄" -> load(R.drawable.ic_settings_spring)
+
+        "여름" -> load(R.drawable.ic_settings_summer)
+
+        "가을" -> load(R.drawable.ic_settings_autumn)
+
+        "겨울" -> load(R.drawable.ic_settings_winter)
+    }
+}
+
 @BindingAdapter("app:coordinatorCustomTheme")
 fun CoordinatorLayout.bindCoordinatorBackgroundColor(appThemeName: String) {
     when (appThemeName) {
@@ -75,6 +107,37 @@ fun CoordinatorLayout.bindCoordinatorBackgroundColor(appThemeName: String) {
         "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
 
         "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
+    }
+}
+
+@SuppressLint("UseCompatLoadingForDrawables")
+@BindingAdapter("app:switchCustomTheme")
+fun SwitchCompat.bindSwitchCustomTheme(appThemeName: String) {
+    when (appThemeName) {
+        "기본" -> {
+            thumbDrawable = resources.getDrawable(R.drawable.switch_thumb, context.theme)
+            trackDrawable = resources.getDrawable(R.drawable.switch_track, context.theme)
+        }
+
+        "봄" -> {
+            thumbDrawable = resources.getDrawable(R.drawable.switch_thumb_spring, context.theme)
+            trackDrawable = resources.getDrawable(R.drawable.switch_track_spring, context.theme)
+        }
+
+        "여름" -> {
+            thumbDrawable = resources.getDrawable(R.drawable.switch_thumb_summer, context.theme)
+            trackDrawable = resources.getDrawable(R.drawable.switch_track_summer, context.theme)
+        }
+
+        "가을" -> {
+            thumbDrawable = resources.getDrawable(R.drawable.switch_thumb_autumn, context.theme)
+            trackDrawable = resources.getDrawable(R.drawable.switch_track_autumn, context.theme)
+        }
+
+        "겨울" -> {
+            thumbDrawable = resources.getDrawable(R.drawable.switch_thumb_winter, context.theme)
+            trackDrawable = resources.getDrawable(R.drawable.switch_track_winter, context.theme)
+        }
     }
 }
 
@@ -140,7 +203,7 @@ fun FloatingActionButton.bindFloatingActionButtonBackgroundColor(appThemeName: S
 fun ImageView.bindImage(src: String?) {
     if (!src.isNullOrEmpty()) {
         load("${ApplicationClass.MENU_IMGS_URL}$src") {
-            transformations(RoundedCornersTransformation(20F))
+            transformations(RoundedCornersTransformation(10F))
         }
     } else {
         this.setImageResource(R.drawable.logo)

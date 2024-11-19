@@ -18,6 +18,7 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetUserUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetUserIdUseCase
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.GradeState
@@ -32,9 +33,14 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.order.ProductClickLi
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteCommaWon
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.EventUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -62,7 +68,7 @@ class MainViewModel @Inject constructor(
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val setAppThemeUseCase: SetAppThemeUseCase
 ) : ViewModel(), HomeClickListener, MyPageClickListener, ProductClickListener, CommentClickListener,
-    ShoppingListClickListener, SettingClickListener {
+    ShoppingListClickListener, SettingClickListener, InformationClickListener {
 
     /****** Data ******/
     private val _events = MutableStateFlow<List<EventUiState>>(emptyList())
@@ -129,11 +135,17 @@ class MainViewModel @Inject constructor(
     private val _nowEventIndex = MutableStateFlow<Int>(1)
     val nowEventIndex = _nowEventIndex.asStateFlow()
 
+    private val _isPushReceiving = MutableStateFlow<Boolean>(false)
+    val isPushReceiving = _isPushReceiving.asStateFlow()
+
     private val _shoppingListUiState = MutableStateFlow<ShoppingListUiState>(ShoppingListUiState())
     val shoppingListUiState = _shoppingListUiState.asStateFlow()
 
     private val _myPageUiState = MutableStateFlow<MyPageUiState>(MyPageUiState())
     val myPageUiState = _myPageUiState.asStateFlow()
+
+    private val _couponUiState = MutableStateFlow<CouponUiState>(CouponUiState())
+    val couponUiState = _couponUiState.asStateFlow()
 
     /****** Ui Event ******/
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
@@ -153,6 +165,12 @@ class MainViewModel @Inject constructor(
 
     private val _settingUiEvent = MutableSharedFlow<SettingUiEvent>()
     val settingUiEvent = _settingUiEvent.asSharedFlow()
+
+    private val _historyUiEvent = MutableSharedFlow<HistoryUiEvent>()
+    val historyUiEvent = _historyUiEvent.asSharedFlow()
+
+    private val _informationUiEvent = MutableSharedFlow<InformationUiEvent>()
+    val informationUiEvent = _informationUiEvent.asSharedFlow()
 
     init {
         setEvents()
@@ -177,7 +195,7 @@ class MainViewModel @Inject constructor(
                     when (index) {
                         -1 -> {
                             _totalOrder.value = (_totalOrder.value.toInt() + detail.quantity).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (detail.quantity * detail.unitPrice.toInt())))
+                            _totalPrice.value = makeComma((deleteCommaWon(_totalPrice.value) + (detail.quantity * detail.unitPrice.toInt())))
                             add(
                                 ShoppingCart(
                                     menuId = detail.productId,
@@ -194,7 +212,7 @@ class MainViewModel @Inject constructor(
                         else -> {
                             val newCount = this[index].menuCnt.toInt() + detail.quantity
                             _totalOrder.value = (_totalOrder.value.toInt() + detail.quantity).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (detail.quantity * detail.unitPrice.toInt())))
+                            _totalPrice.value = makeComma((deleteCommaWon(_totalPrice.value) + (detail.quantity * detail.unitPrice.toInt())))
                             this[index] = ShoppingCart(
                                 menuId = detail.productId,
                                 menuImg = detail.img,
@@ -217,7 +235,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _selectedOrder.value = order
             _selectedOrderDetails.value = order.details
-            _myPageUiEvent.emit(MyPageUiEvent.GoToOrderDetail)
+            _historyUiEvent.emit(HistoryUiEvent.GoToOrderDetail)
         }
     }
 
@@ -258,7 +276,7 @@ class MainViewModel @Inject constructor(
                     when (index) {
                         -1 -> {
                             _totalOrder.value = (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (_selectProductCount.value.toInt() * it.price.toInt())))
+                            _totalPrice.value = makeCommaWon((deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(it.price))))
                             add(
                                 ShoppingCart(
                                     menuId = it.id,
@@ -266,7 +284,7 @@ class MainViewModel @Inject constructor(
                                     menuName = it.name,
                                     menuCnt = _selectProductCount.value,
                                     menuPrice = it.price,
-                                    totalPrice = (_selectProductCount.value.toInt() * it.price.toInt()).toString(),
+                                    totalPrice = (_selectProductCount.value.toInt() * deleteComma(it.price)).toString(),
                                     type = it.type
                                 )
                             )
@@ -275,14 +293,14 @@ class MainViewModel @Inject constructor(
                         else -> {
                             val newCount = this[index].menuCnt.toInt() + _selectProductCount.value.toInt()
                             _totalOrder.value = (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (_selectProductCount.value.toInt() * it.price.toInt())))
+                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(it.price))))
                             this[index] = ShoppingCart(
                                 menuId = it.id,
                                 menuImg = it.img,
                                 menuName = it.name,
                                 menuCnt = newCount.toString(),
                                 menuPrice = it.price,
-                                totalPrice = (newCount * it.price.toInt()).toString(),
+                                totalPrice = (newCount * deleteComma(it.price)).toString(),
                                 type = it.type
                             )
                         }
@@ -493,29 +511,33 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun setTheme() {
+    override fun onClickHistory() {
         viewModelScope.launch {
-            val appTheme = getAppTheme().first()
-            _appThemeName.value = appTheme
-            Timber.d("App Theme: ${_appThemeName.value}")
+            _myPageUiEvent.emit(MyPageUiEvent.GoToHistory)
         }
     }
 
-    private fun getUser() {
+    override fun onClickInformation() {
         viewModelScope.launch {
-            val response =
-                getUserUseCase.getUserInfo(getUserId().first())
-            when (response.status) {
-                Status.SUCCESS -> {
-                    _user.value = response.data
-                    validateGrade()
-                    Timber.d("User: ${_user.value}")
-                }
+            _myPageUiEvent.emit(MyPageUiEvent.GoToInformation)
+        }
+    }
 
-                else -> {
-                    Timber.d("${response.data}")
-                }
-            }
+    override fun onClickCoupon() {
+        viewModelScope.launch {
+            _myPageUiEvent.emit(MyPageUiEvent.GoToCoupon)
+        }
+    }
+
+    override fun onClickPay() {
+        viewModelScope.launch {
+            _myPageUiEvent.emit(MyPageUiEvent.GoToPay)
+        }
+    }
+
+    override fun onClickPassword() {
+        viewModelScope.launch {
+            _informationUiEvent.emit(InformationUiEvent.GoToPassword)
         }
     }
 
@@ -571,6 +593,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun setTheme() {
+        viewModelScope.launch {
+            val appTheme = getAppTheme().first()
+            _appThemeName.value = appTheme
+            Timber.d("App Theme: ${_appThemeName.value}")
+        }
+    }
+
     private fun setEvents() {
         val newEvents = mutableListOf<EventUiState>()
         newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/0zdpAngaKBFnlCcCqpCU4A/ko/list/image?1621844405"))
@@ -579,6 +609,24 @@ class MainViewModel @Inject constructor(
         newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/0zdpAngaKBFnlCcCqpCU4A/ko/list/image?1621844405"))
         newEvents.add(EventUiState.EventItem("https://dcenter-img.cafe24.com/d/product/2022/03/10/306c857f338c411e1bdbd90728d4fce5.png"))
         _events.value = newEvents.toList()
+    }
+
+    private fun getUser() {
+        viewModelScope.launch {
+            val response =
+                getUserUseCase.getUserInfo(getUserId().first())
+            when (response.status) {
+                Status.SUCCESS -> {
+                    _user.value = response.data
+                    validateGrade()
+                    Timber.d("User: ${_user.value}")
+                }
+
+                else -> {
+                    Timber.d("${response.data}")
+                }
+            }
+        }
     }
 
     private fun validateGrade() {
@@ -680,6 +728,12 @@ class MainViewModel @Inject constructor(
 
     fun setEventsIndex(index: Int) {
         _nowEventIndex.value = index
+    }
+
+    fun setPushReceiving(isPushReceiving: Boolean) {
+        viewModelScope.launch {
+            _isPushReceiving.value = isPushReceiving
+        }
     }
 
     fun setTableNumber(number: Int) {

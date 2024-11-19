@@ -11,300 +11,388 @@
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
-        <variable
-            name="adapter"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.orderdetail.OrderListAdapter" />
-
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_my_page"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:backgroundCustomTheme="@{vm.appThemeName}"
-        tools:context=".mypage.MyPageFragment">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_start_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="16dp" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_top_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="16dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fragment_my_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="144dp"
+                app:backgroundCustomTheme="@{vm.appThemeName}"
+                tools:context=".mypage.MyPageFragment">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_user_my_page"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/user"
-            app:layout_constraintBottom_toBottomOf="@id/tv_greeting_my_page"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toBottomOf="@id/gl_top_my_page" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_start_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="16dp" />
 
-        <TextView
-            android:id="@+id/tv_user_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@{vm.user.user.name}"
-            android:textColor="@color/coffee_dark_brown"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/iv_user_my_page"
-            app:layout_constraintTop_toBottomOf="@id/gl_top_my_page" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_top_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="32dp" />
 
-        <TextView
-            android:id="@+id/tv_greeting_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_hello"
-            android:textColor="@color/coffee_brown_light"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_user_my_page"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_my_page" />
+                <TextView
+                    android:id="@+id/tv_user_name_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardblack"
+                    android:text="@{vm.user.user.name}"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="32sp"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/gl_top_my_page" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:onClick="@{() -> vm.onClickSettings()}"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintBottom_toBottomOf="@id/tv_greeting_my_page"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/iv_logout_my_page"
-            app:layout_constraintTop_toBottomOf="@id/gl_top_my_page" />
+                <TextView
+                    android:id="@+id/tv_user_name_end_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardblack"
+                    android:text="님,"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="32sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_user_name_my_page"
+                    app:layout_constraintStart_toEndOf="@id/tv_user_name_my_page"
+                    app:layout_constraintTop_toTopOf="@id/tv_user_name_my_page" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_logout_my_page"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:onClick="@{() -> vm.onClickLogout()}"
-            android:src="@drawable/logout"
-            app:layout_constraintBottom_toBottomOf="@id/tv_greeting_my_page"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
-            app:layout_constraintTop_toBottomOf="@id/gl_top_my_page" />
+                <TextView
+                    android:id="@+id/tv_greeting_my_page"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardregular"
+                    android:text="@string/text_hello"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_name_my_page" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_rating_my_page"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_rating_my_page"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_rating_my_page"
-            app:stampImage="@{vm.user.grade.img}" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_grade_my_page"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/tv_greeting_my_page">
 
-        <TextView
-            android:id="@+id/tv_rating_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@{vm.user.grade.title}"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/iv_rating_my_page"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_my_page" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
-        <TextView
-            android:id="@+id/tv_rating_step_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@{vm.user.grade.step}"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_rating_my_page"
-            app:layout_constraintStart_toEndOf="@id/tv_rating_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_rating_my_page" />
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_grade_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_grade_gold"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_grade_my_page"
+                            app:layout_constraintDimensionRatio="1:1"
+                            app:layout_constraintEnd_toStartOf="@id/tv_grade_my_page"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_grade_my_page" />
 
-        <TextView
-            android:id="@+id/tv_rating_step_title_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_step"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_rating_my_page"
-            app:layout_constraintStart_toEndOf="@id/tv_rating_step_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_rating_my_page" />
+                        <TextView
+                            android:id="@+id/tv_grade_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="GOLD"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="24sp"
+                            app:layout_constraintStart_toEndOf="@id/iv_grade_my_page"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_next_level"
-            android:textColor="@color/coffee_light_gray"
-            android:textSize="16sp"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toBottomOf="@id/tv_rating_my_page" />
+                        <TextView
+                            android:id="@+id/tv_grade_end_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="등급"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="24sp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_grade_my_page"
+                            app:layout_constraintStart_toEndOf="@id/tv_grade_my_page"
+                            app:layout_constraintTop_toTopOf="@id/tv_grade_my_page" />
 
-        <TextView
-            android:id="@+id/tv_description_remain_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@{vm.user.grade.to}"
-            android:textColor="@color/coffee_light_gray"
-            android:textSize="16sp"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_description"
-            app:layout_constraintStart_toEndOf="@id/tv_description"
-            app:layout_constraintTop_toTopOf="@id/tv_description" />
+                        <ProgressBar
+                            android:id="@+id/pb_grade_my_page"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:max="25"
+                            android:progress="4"
+                            android:progressDrawable="@drawable/layer_list_gold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/tv_grade_my_page"
+                            app:layout_constraintTop_toBottomOf="@id/tv_grade_my_page" />
 
-        <TextView
-            android:id="@+id/tv_description_end_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_remain"
-            android:textColor="@color/coffee_light_gray"
-            android:textSize="16sp"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_description"
-            app:layout_constraintStart_toEndOf="@id/tv_description_remain_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_description" />
+                        <TextView
+                            android:id="@+id/tv_remain_message_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/pretendardregular"
+                            android:text="다음 등급까지 21잔 남았습니다."
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/pb_grade_my_page" />
 
-        <ProgressBar
-            android:id="@+id/pb_my_page"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_rating_my_page"
-            app:layout_constraintEnd_toStartOf="@id/tv_remain_my_page"
-            app:layout_constraintStart_toEndOf="@id/tv_rating_step_title_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_rating_my_page" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_remain_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:textSize="20sp"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_rating_my_page"
-            app:layout_constraintEnd_toStartOf="@id/tv_slash_my_page"
-            app:layout_constraintStart_toEndOf="@id/pb_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_rating_my_page" />
+                </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tv_slash_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_slash"
-            android:textSize="20sp"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_remain_my_page"
-            app:layout_constraintEnd_toStartOf="@id/tv_max_my_page"
-            app:layout_constraintStart_toEndOf="@id/tv_remain_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_remain_my_page" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_history_my_page"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> vm.onClickHistory()}"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/mcv_information_my_page"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_grade_my_page">
 
-        <TextView
-            android:id="@+id/tv_max_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@{vm.user.grade.stepMax}"
-            android:textSize="20sp"
-            android:visibility="@{(vm.myPageUiState.isCoffeeTree == true) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_remain_my_page"
-            app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
-            app:layout_constraintStart_toEndOf="@id/tv_slash_my_page"
-            app:layout_constraintTop_toTopOf="@id/tv_remain_my_page" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_space_my_page"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/space"
-            app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_history_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_history"
+                            app:layout_constraintBottom_toTopOf="@id/tv_history_my_page"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/tv_order_tag_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_orders"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toBottomOf="@id/iv_space_my_page" />
+                        <TextView
+                            android:id="@+id/tv_history_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="@string/text_history_eng"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_history_my_page" />
 
-        <TextView
-            android:id="@+id/tv_six_months_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_six_months"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_order_tag_my_page"
-            app:layout_constraintStart_toEndOf="@id/tv_order_tag_my_page" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/iv_empty_my_page"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/button_transparent"
-            android:fontFamily="@font/eland_choice_b"
-            android:text="@string/text_no_orders"
-            android:textSize="32sp"
-            android:visibility="gone"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_tag_my_page" />
+                </com.google.android.material.card.MaterialCardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_my_page"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:adapter="@{adapter}"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
-            app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_tag_my_page"
-            app:submitData="@{vm.orders6Months}"
-            tools:listitem="@layout/list_item_order" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_information_my_page"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> vm.onClickInformation()}"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
+                    app:layout_constraintStart_toEndOf="@id/mcv_history_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_grade_my_page">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_end_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="16dp" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_bottom_my_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="16dp" />
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_information_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_information"
+                            app:layout_constraintBottom_toTopOf="@id/tv_information_my_page"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/tv_information_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="@string/text_information_eng"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_information_my_page" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_coupon_my_page"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> vm.onClickCoupon()}"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintBottom_toTopOf="@id/gl_bottom_my_page"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/mcv_pay_my_page"
+                    app:layout_constraintStart_toEndOf="@id/gl_start_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_history_my_page">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_coupon_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_coupon"
+                            app:layout_constraintBottom_toTopOf="@id/tv_coupon_my_page"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/tv_coupon_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="@string/text_coupon_eng"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_coupon_my_page" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_pay_my_page"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> vm.onClickPay()}"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintBottom_toTopOf="@id/gl_bottom_my_page"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/gl_end_my_page"
+                    app:layout_constraintStart_toEndOf="@id/mcv_coupon_my_page"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_information_my_page">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_pay_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_pay"
+                            app:layout_constraintBottom_toTopOf="@id/tv_pay_my_page"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/tv_pay_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:text="@string/text_pay_eng"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_pay_my_page" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_end_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_bottom_my_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_end="64dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_my_page"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            android:paddingBottom="16dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_settings_my_page"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> vm.onClickSettings()}"
+                app:settingsCustomTheme="@{vm.appThemeName}" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </FrameLayout>
 
 </layout>

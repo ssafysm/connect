@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.presentation.views.main.orderdetail
+package com.ssafy.smartstore_jetpack.presentation.views.main.history
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -16,16 +16,17 @@ import com.ssafy.smartstore_jetpack.domain.model.Order
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListener
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.dateFormat
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
-class OrderListAdapter(private val clickListener: MyPageClickListener) :
+class OrderListAdapter(private val viewModel: MainViewModel) :
     ListAdapter<Order, OrderListAdapter.OrderViewHolder>(diffUtil) {
 
     inner class OrderViewHolder(private val binding: ListItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bindInfo(order: Order, clickListener: MyPageClickListener) {
+        fun bindInfo(order: Order, viewModel: MainViewModel) {
             binding.tvOrderNumberOrder.text = "주문번호 : ${order.id}"
             val totalCount = order.details.sumOf { it.quantity }
             binding.tvOrderListOrder.text = when (totalCount) {
@@ -40,7 +41,7 @@ class OrderListAdapter(private val clickListener: MyPageClickListener) :
             }
             binding.tvPriceOrder.text = makeComma(totalPrice)
             binding.order = order
-            binding.clickListener = clickListener
+            binding.vm = viewModel
             binding.tvDateOrder.text = dateFormat(order.orderTime)
         }
     }
@@ -53,7 +54,7 @@ class OrderListAdapter(private val clickListener: MyPageClickListener) :
         )
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
-        holder.bindInfo(currentList[position], clickListener)
+        holder.bindInfo(currentList[position], viewModel)
     }
 
     companion object {

@@ -8,5 +8,13 @@ interface MyPageClickListener {
 
     fun onClickSettings()
 
+    fun onClickHistory()
+
+    fun onClickInformation()
+
+    fun onClickCoupon()
+
+    fun onClickPay()
+
     fun onClickLogout()
 }

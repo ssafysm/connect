@@ -30,15 +30,23 @@
     <string name="text_rating">평점</string>
     <string name="text_enroll">등록</string>
     <string name="text_put_cart">담기</string>
+    <string name="text_hint_comment">코멘트를 입력하세요.</string>
+    <string name="text_rating_end">점</string>
+    <string name="text_go_to_cart">담기</string>
+    <string name="text_go_to_order">주문하기</string>
 
     <!-- My Page -->
-    <string name="text_hello">안녕하세요.</string>
+    <string name="text_hello">오늘도 좋은 하루 되세요.</string>
     <string name="text_step">단계</string>
     <string name="text_next_level">다음 레벨까지</string>
     <string name="text_remain">잔 남았습니다.</string>
     <string name="text_slash">/</string>
     <string name="text_orders">주문내역</string>
     <string name="text_six_months">(최근 6개월)</string>
+    <string name="text_history_eng">History</string>
+    <string name="text_information_eng">Information</string>
+    <string name="text_coupon_eng">Coupon</string>
+    <string name="text_pay_eng">Pay</string>
 
     <!-- Setting -->
     <string name="text_settings">환경설정</string>
@@ -48,13 +56,32 @@
     <string name="text_theme_summer">여름</string>
     <string name="text_theme_autumn">가을</string>
     <string name="text_theme_winter">겨울</string>
+    <string name="text_push_notification">푸시 알림</string>
+    <string name="text_version">버전 정보</string>
+
+    <!-- History -->
+    <string name="text_history">히스토리</string>
+
+    <!-- Information -->
+    <string name="text_information">계정 설정</string>
+    <string name="text_id">아이디</string>
+    <string name="text_name">별명</string>
+    <string name="text_password">비밀번호</string>
+    <string name="text_password_update">비밀번호 변경</string>
+
+    <!-- Coupon -->
+    <string name="text_coupon">쿠폰함</string>
+    <string name="text_no_coupon">사용 가능한 쿠폰이 없어요.</string>
+
+    <!-- Pay -->
+    <string name="text_pay">결제 정보</string>
 
     <!-- Order -->
     <string name="text_distance">매장과의 거리가 350m 입니다.</string>
     <string name="text_menu">메뉴</string>
 
     <!-- Order Detail -->
-    <string name="text_order_detail">주문상세</string>
+    <string name="text_order_detail">주문 내역</string>
     <string name="text_order_finish">주문완료</string>
 
     <!-- Rating Dialog -->
@@ -93,7 +120,5 @@
     <string name="text_menu_order">Order</string>
     <string name="text_menu_mypage">Mypage</string>
     <string name="text_go_cart">장바구니 담기</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

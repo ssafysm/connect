@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.history.OrderListAdapter" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:backgroundCustomTheme="@{vm.appThemeName}"
+            tools:context=".presentation.views.main.history.HistoryFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_top_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <TextView
+                android:id="@+id/tv_title_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardblack"
+                android:text="@string/text_history"
+                android:textColor="@color/neutral_100"
+                android:textSize="32sp"
+                app:layout_constraintStart_toEndOf="@id/gl_start_history"
+                app:layout_constraintTop_toBottomOf="@id/gl_top_history" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_my_page"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:adapter="@{adapter}"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_history"
+                app:layout_constraintStart_toEndOf="@id/gl_start_history"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_history"
+                app:submitData="@{vm.orders6Months}"
+                tools:listitem="@layout/list_item_order" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

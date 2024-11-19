@@ -68,7 +68,6 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
         lifecycleScope.launch {
             viewModel.selectedProduct.collectLatest { product ->
                 if ((product != null) && (product.productRatingAvg != null)) {
-                    binding.rbDetail.rating = product.productRatingAvg.toFloat()
                     binding.ablMenuDetail.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
                         val totalScrollRange = binding.ablMenuDetail.totalScrollRange
                         val collapseRatio = abs(verticalOffset).toFloat() / totalScrollRange
@@ -93,13 +92,12 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
                 }
             }
         }
-        binding.rvDetail.scrollToPosition(0)
         binding.ivTitleDetail.transitionName = "menu_detail_${viewModel.selectedProduct.value?.id}"
     }
 
     private fun handleUiEvent(event: MenuDetailUiEvent) = when (event) {
         is MenuDetailUiEvent.SubmitComment ->{
-            binding.rvDetail.scrollToPosition(0)
+            binding.rvDetail.smoothScrollToPosition(0)
         }
 
         is MenuDetailUiEvent.SelectRating -> {

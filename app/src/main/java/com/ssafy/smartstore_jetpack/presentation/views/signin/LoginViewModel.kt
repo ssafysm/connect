@@ -8,8 +8,8 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetUserUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetUserIdUseCase
-import com.ssafy.smartstore_jetpack.presentation.views.signin.join.DuplicateState
-import com.ssafy.smartstore_jetpack.presentation.views.signin.join.InputValidState
+import com.ssafy.smartstore_jetpack.presentation.util.DuplicateState
+import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
 import com.ssafy.smartstore_jetpack.presentation.views.signin.join.JoinClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.signin.join.JoinUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.signin.join.JoinUiState

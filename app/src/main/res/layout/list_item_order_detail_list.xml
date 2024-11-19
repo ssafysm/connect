@@ -31,11 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/eland_choice_b"
+            android:fontFamily="@font/pretendardsemibold"
             android:text="@{orderDetail.productName}"
-            android:textColor="@color/coffee_dark_brown"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_price_item_order_detail"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_sum_price_item_order_detail"
             app:layout_constraintStart_toEndOf="@id/iv_item_order_detail"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,36 +43,25 @@
             android:id="@+id/tv_count_item_order_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:textColor="@color/coffee_dark_brown"
-            android:textSize="20sp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_name_item_order_detail"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_name_item_order_detail"
             app:layout_constraintTop_toTopOf="@id/tv_name_item_order_detail" />
-
-        <TextView
-            android:id="@+id/tv_price_item_order_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:textColor="@color/coffee_dark_brown"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_item_order_detail"
-            app:layout_constraintTop_toBottomOf="@id/tv_name_item_order_detail" />
 
         <TextView
             android:id="@+id/tv_sum_price_item_order_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/eland_choice_b"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_price_item_order_detail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_price_item_order_detail" />
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/pretendardregular"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_item_order_detail"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_item_order_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

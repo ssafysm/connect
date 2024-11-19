@@ -50,8 +50,74 @@
             app:destination="@id/fragment_setting" />
 
         <action
-            android:id="@+id/action_my_page_to_order_detail"
+            android:id="@+id/action_my_page_to_history"
+            app:destination="@id/fragment_history" />
+
+        <action
+            android:id="@+id/action_my_page_to_information"
+            app:destination="@id/fragment_information" />
+
+        <action
+            android:id="@+id/action_my_page_to_coupon"
+            app:destination="@id/fragment_coupon" />
+
+        <action
+            android:id="@+id/action_my_page_to_pay"
+            app:destination="@id/fragment_pay" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_history"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_history">
+
+        <action
+            android:id="@+id/action_history_to_order_detail"
             app:destination="@id/fragment_order_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_information"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationFragment"
+        tools:layout="@layout/fragment_information"
+        android:label="Information">
+
+        <action
+            android:id="@+id/action_information_to_password"
+            app:destination="@id/fragment_password" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_coupon"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponFragment"
+        android:label="Coupon"
+        tools:layout="@layout/fragment_coupon">
+
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_pay"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.pay.PayFragment"
+        tools:layout="@layout/fragment_pay"
+        android:label="Pay">
+
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_password"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordFragment"
+        android:label="Password"
+        tools:layout="@layout/fragment_password">
+
+
 
     </fragment>
 

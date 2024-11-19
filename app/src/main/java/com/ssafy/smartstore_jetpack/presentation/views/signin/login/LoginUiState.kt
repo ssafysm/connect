@@ -1,6 +1,6 @@
 package com.ssafy.smartstore_jetpack.presentation.views.signin.login
 
-import com.ssafy.smartstore_jetpack.presentation.views.signin.join.InputValidState
+import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
 
 data class LoginUiState(
     val userIdValidState: InputValidState = InputValidState.NONE,

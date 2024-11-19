@@ -9,31 +9,29 @@
             type="com.ssafy.smartstore_jetpack.domain.model.Order" />
 
         <variable
-            name="clickListener"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListener" />
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_item_order"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/textview_regular">
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="@{() -> vm.onClickOrder(order)}"
+        android:padding="16dp"
+        app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/iv_order"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/button_non_color"
             android:scaleType="fitStart"
             app:layout_constraintBottom_toTopOf="@id/tv_order_number_order"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,10 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
-            android:textColor="@color/coffee_dark_brown"
+            android:fontFamily="@font/pretendardsemibold"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/tv_order_list_order"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_order" />
 
@@ -54,10 +52,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
-            android:textColor="@color/coffee_dark_brown"
+            android:fontFamily="@font/pretendardsemibold"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/tv_price_order"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_order_number_order" />
 
@@ -66,10 +64,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
-            android:textColor="@color/coffee_dark_brown"
+            android:fontFamily="@font/pretendardsemibold"
+            android:textColor="@color/neutral_100"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/tv_date_order"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_order_list_order" />
 
@@ -78,29 +76,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
-            android:textColor="@color/coffee_dark_brown"
-            app:layout_constraintBottom_toTopOf="@id/iv_cart_order"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/pretendardregular"
+            android:textColor="@color/neutral_100"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_price_order" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/iv_cart_order"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_color"
-            android:onClick="@{() -> clickListener.onClickOrder(order)}"
-            android:text="@string/text_pick_up_finish"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_date_order" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

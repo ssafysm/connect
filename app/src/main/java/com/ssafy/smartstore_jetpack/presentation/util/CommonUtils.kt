@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.ssafy.smartstore_jetpack.app.ApplicationClass
 import com.ssafy.smartstore_jetpack.data.entity.OrderResponse
+import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
@@ -17,10 +18,20 @@ object CommonUtils {
 
     fun makeComma(num: Int): String {
         val comma = DecimalFormat("#,###")
-        return "${comma.format(num)} 원"
+        return "￦${comma.format(num)}"
+    }
+
+    fun makeCommaWon(num: Int): String {
+        val comma = DecimalFormat("#,###")
+        return "${comma.format(num)}원"
     }
 
     fun deleteComma(num: String): Int {
+        Timber.d("Price: ${num}")
+        return num.replace("원", "").replace("￦", "").replace(" ", "").replace(",", "").toInt()
+    }
+
+    fun deleteCommaWon(num: String): Int {
         return num.replace("원", "").replace(" ", "").replace(",", "").toInt()
     }
 

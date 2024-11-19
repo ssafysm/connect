@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemOrderDetailListBinding
 import com.ssafy.smartstore_jetpack.domain.model.OrderDetail
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
 
 class OrderDetailListAdapter :
     ListAdapter<OrderDetail, OrderDetailListAdapter.OrderDetailListViewHolder>(diffUtil) {
@@ -21,8 +21,7 @@ class OrderDetailListAdapter :
             val unitPrice = orderDetail.unitPrice.split("원")[0].toInt()
             binding.orderDetail = orderDetail
             binding.tvCountItemOrderDetail.text = "${orderDetail.quantity}잔"
-            binding.tvPriceItemOrderDetail.text = makeComma(orderDetail.unitPrice.toInt())
-            binding.tvSumPriceItemOrderDetail.text = makeComma(unitPrice * orderDetail.quantity)
+            binding.tvSumPriceItemOrderDetail.text = makeCommaWon(unitPrice * orderDetail.quantity)
         }
     }
 

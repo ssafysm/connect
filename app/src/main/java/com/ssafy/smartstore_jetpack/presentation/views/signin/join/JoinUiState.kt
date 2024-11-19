@@ -1,5 +1,8 @@
 package com.ssafy.smartstore_jetpack.presentation.views.signin.join
 
+import com.ssafy.smartstore_jetpack.presentation.util.DuplicateState
+import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
+
 data class JoinUiState(
     val joinIdValidState: InputValidState = InputValidState.NONE,
     val joinPassValidState: InputValidState = InputValidState.NONE,
@@ -9,12 +12,4 @@ data class JoinUiState(
     val isJoinBtnEnable: Boolean =
         ((joinIdDuplicateState == DuplicateState.NONE) && (joinIdValidState == InputValidState.VALID) && (joinPassValidState == InputValidState.VALID) && (joinNameValidState == InputValidState.VALID))
     val isIdCheckBtnState: Boolean = (joinIdDuplicateState == DuplicateState.NONE)
-}
-
-enum class InputValidState {
-    NONE, VALID
-}
-
-enum class DuplicateState {
-    DUPLICATE, NONE
 }
