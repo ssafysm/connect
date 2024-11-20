@@ -42,8 +42,6 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
 
         binding.vm = viewModel
 
-        Timber.d("Fragment Manager BackStack: ${requireActivity().supportFragmentManager.backStackEntryCount}")
-
         viewModel.setBnvState(false)
         initRecyclerView()
         initViews()

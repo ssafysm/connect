@@ -16,7 +16,10 @@ import java.util.TimeZone
 
 object CommonUtils {
 
+    private val idRegex = "^[a-zA-Z0-9]{2,12}$".toRegex()
     private val passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>])[A-Za-z\\d!@#$%^&*(),.?\":{}|<>]{8,16}$".toRegex()
+
+    fun validateId(id: CharSequence): Boolean = idRegex.matches(id)
 
     fun validatePassword(password: CharSequence): Boolean =
         passwordRegex.matches(password)

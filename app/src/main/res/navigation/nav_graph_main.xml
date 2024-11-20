@@ -45,8 +45,14 @@
         android:id="@+id/fragment_join"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinFragment"
         android:label="Join"
+        app:popUpTo="@id/fragment_login"
         tools:layout="@layout/fragment_join">
 
+        <action
+            android:id="@+id/action_join_to_login"
+            app:destination="@id/fragment_login"
+            app:popUpTo="@id/fragment_join"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -111,9 +117,8 @@
     <fragment
         android:id="@+id/fragment_notice"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeFragment"
-        tools:layout="@layout/fragment_notice"
-        android:label="Notice">
-
+        android:label="Notice"
+        tools:layout="@layout/fragment_notice">
 
 
     </fragment>
@@ -133,8 +138,8 @@
     <fragment
         android:id="@+id/fragment_information"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationFragment"
-        tools:layout="@layout/fragment_information"
-        android:label="Information">
+        android:label="Information"
+        tools:layout="@layout/fragment_information">
 
         <action
             android:id="@+id/action_information_to_password"
@@ -149,15 +154,13 @@
         tools:layout="@layout/fragment_coupon">
 
 
-
     </fragment>
 
     <fragment
         android:id="@+id/fragment_pay"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.pay.PayFragment"
-        tools:layout="@layout/fragment_pay"
-        android:label="Pay">
-
+        android:label="Pay"
+        tools:layout="@layout/fragment_pay">
 
 
     </fragment>
@@ -167,7 +170,6 @@
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordFragment"
         android:label="Password"
         tools:layout="@layout/fragment_password">
-
 
 
     </fragment>
@@ -203,9 +205,10 @@
         tools:layout="@layout/fragment_menu_detail">
 
         <action
-            android:id="@+id/action_to_orderFragment"
+            android:id="@+id/action_detail_to_order"
             app:destination="@id/fragment_order"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/fragment_detail"
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/detail_to_rating_dialog"

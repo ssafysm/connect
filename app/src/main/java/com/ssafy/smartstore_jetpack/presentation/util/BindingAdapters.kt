@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.presentation.util
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
@@ -22,8 +23,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.ApplicationClass
+import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import timber.log.Timber
+import kotlin.math.log
 
 @BindingAdapter("app:backgroundCustomTheme")
 fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
@@ -312,6 +316,139 @@ fun ImageView.bindStamp(src: String) {
     }
 }
 
+@BindingAdapter("app:buttonCustomTheme")
+fun Button.bindButtonBackground(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+        "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+        "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+        "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+        else -> setBackgroundResource(R.drawable.shape_background_sub)
+    }
+}
+
+@BindingAdapter("app:enableLogin", "app:enableLoginCustomTheme")
+fun Button.bindEnableCustomTheme(loginUiState: LoginUiState, appThemeName: String) {
+    when (loginUiState.isLoginBtnEnable) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+                "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+                "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+                "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+                else -> setBackgroundResource(R.drawable.shape_background_sub)
+            }
+        }
+
+        else -> setBackgroundResource(R.drawable.button_disabled)
+    }
+}
+
+@BindingAdapter("app:enableJoin", "app:enableJoinCustomTheme")
+fun Button.bindEnableJoinCustomTheme(joinUiState: JoinUiState, appThemeName: String) {
+    when (joinUiState.isJoinBtnEnable) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+                "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+                "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+                "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+                else -> setBackgroundResource(R.drawable.shape_background_sub)
+            }
+        }
+
+        else -> setBackgroundResource(R.drawable.button_disabled)
+    }
+}
+
+@SuppressLint("ResourceType")
+@BindingAdapter("app:validateNewPassword", "app:passwordCustomTheme")
+fun TextInputLayout.bindNewPassword(joinUiState: JoinUiState, appThemeName: String) {
+    val hintColor = when (appThemeName) {
+        "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
+
+        "여름" -> ContextCompat.getColor(context, R.color.summer_secondary)
+
+        "가을" -> ContextCompat.getColor(context, R.color.autumn_secondary)
+
+        "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
+
+        else -> ContextCompat.getColor(context, R.color.background_sub)
+    }
+
+    when (joinUiState.joinPassValidState) {
+        PasswordState.VALID -> {
+            helperText = "사용해도 좋은 비밀번호에요."
+            defaultHintTextColor = ColorStateList.valueOf(hintColor)
+        }
+
+        PasswordState.INIT -> {
+            helperText = ""
+            error = ""
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.neutral_70)
+            )
+        }
+
+        else -> {
+            error = "유효한 비밀번호가 아니에요."
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.sub_alert)
+            )
+        }
+    }
+}
+
+@SuppressLint("ResourceType")
+@BindingAdapter("app:validateNewPasswordConfirm", "app:passwordConfirmCustomTheme")
+fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeName: String) {
+    val hintColor = when (appThemeName) {
+        "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
+
+        "여름" -> ContextCompat.getColor(context, R.color.summer_secondary)
+
+        "가을" -> ContextCompat.getColor(context, R.color.autumn_secondary)
+
+        "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
+
+        else -> ContextCompat.getColor(context, R.color.background_sub)
+    }
+
+    when (joinUiState.joinPassConfirmValidState) {
+        PasswordState.VALID -> {
+            helperText = "사용해도 좋은 비밀번호에요."
+            defaultHintTextColor = ColorStateList.valueOf(hintColor)
+        }
+
+        PasswordState.INIT -> {
+            helperText = ""
+            error = ""
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.neutral_70)
+            )
+        }
+
+        else -> {
+            error = "유효한 비밀번호가 아니에요."
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.sub_alert)
+            )
+        }
+    }
+}
+
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validatePassword", "app:newPasswordCustomTheme")
 fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName: String) {
@@ -349,7 +486,6 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
         }
     }
 }
-
 
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validatePasswordConfirm", "app:newPasswordConfirmCustomTheme")

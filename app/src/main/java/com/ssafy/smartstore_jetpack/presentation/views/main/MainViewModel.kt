@@ -24,6 +24,7 @@ import com.ssafy.smartstore_jetpack.domain.usecase.SetUserIdUseCase
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validateId
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validatePassword
 import com.ssafy.smartstore_jetpack.presentation.util.DuplicateState
 import com.ssafy.smartstore_jetpack.presentation.util.EmptyState
@@ -100,6 +101,9 @@ class MainViewModel @Inject constructor(
 
     private val _joinPass = MutableStateFlow<String>("")
     val joinPass = _joinPass
+
+    private val _joinPassConfirm = MutableStateFlow<String>("")
+    val joinPassConfirm = _joinPassConfirm
 
     private val _joinName = MutableStateFlow<String>("")
     val joinName = _joinName
@@ -368,7 +372,8 @@ class MainViewModel @Inject constructor(
                             _joinUiState.update {
                                 it.copy(
                                     joinIdValidState = InputValidState.NONE,
-                                    joinPassValidState = InputValidState.NONE,
+                                    joinPassValidState = PasswordState.INIT,
+                                    joinPassConfirmValidState = PasswordState.INIT,
                                     joinNameValidState = InputValidState.NONE,
                                     joinIdDuplicateState = DuplicateState.DUPLICATE
                                 )
@@ -1161,18 +1166,53 @@ class MainViewModel @Inject constructor(
     }
 
     fun validateJoinId(id: CharSequence) {
-        when (id.isNotBlank()) {
-            true -> _joinUiState.update { it.copy(joinIdValidState = InputValidState.VALID) }
+        if (id.isBlank()) {
+            _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
+            return
+        }
 
-            else -> _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
+        when (validateId(id)) {
+            true -> {
+                _joinUiState.update { it.copy(joinIdValidState = InputValidState.VALID) }
+            }
+
+            else -> {
+                _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
+            }
         }
     }
 
     fun validateJoinPass(pass: CharSequence) {
-        when (pass.isNotBlank()) {
-            true -> _joinUiState.update { it.copy(joinPassValidState = InputValidState.VALID) }
+        if (pass.isBlank()) {
+            _joinUiState.update { it.copy(joinPassValidState = PasswordState.INIT) }
+            return
+        }
 
-            else -> _joinUiState.update { it.copy(joinPassValidState = InputValidState.NONE) }
+        when (validatePassword(pass)) {
+            true -> {
+                _joinUiState.update { it.copy(joinPassValidState = PasswordState.VALID) }
+            }
+
+            else -> {
+                _joinUiState.update { it.copy(joinPassValidState = PasswordState.NONE) }
+            }
+        }
+    }
+
+    fun validateJoinPassConfirm(passConfirm: CharSequence) {
+        if (passConfirm.isBlank()) {
+            _joinUiState.update { it.copy(joinPassConfirmValidState = PasswordState.INIT) }
+            return
+        }
+
+        when (passConfirm.toString() == _joinPass.value) {
+            true -> {
+                _joinUiState.update { it.copy(joinPassConfirmValidState = PasswordState.VALID) }
+            }
+
+            else -> {
+                _joinUiState.update { it.copy(joinPassConfirmValidState = PasswordState.NONE) }
+            }
         }
     }
 

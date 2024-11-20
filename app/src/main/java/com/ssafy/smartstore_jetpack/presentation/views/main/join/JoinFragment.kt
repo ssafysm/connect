@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentJoinBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
@@ -47,7 +48,7 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
         }
 
         is JoinUiEvent.GoToLogin -> {
-            requireActivity().supportFragmentManager.popBackStack()
+            findNavController().navigateSafely(R.id.action_join_to_login)
         }
     }
 }
