@@ -19,4 +19,10 @@ class CouponFragment : BaseFragment<FragmentCouponBinding>(R.layout.fragment_cou
 
         binding.vm = viewModel
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
+    }
 }

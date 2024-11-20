@@ -19,4 +19,10 @@ class PayFragment : BaseFragment<FragmentPayBinding>(R.layout.fragment_pay) {
 
         binding.vm = viewModel
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
+    }
 }

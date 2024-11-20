@@ -23,6 +23,12 @@ class InformationFragment : BaseFragment<FragmentInformationBinding>(R.layout.fr
         collectLatestFlow(viewModel.informationUiEvent) { handleUiEvent(it) }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
+    }
+
     private fun handleUiEvent(event: InformationUiEvent) = when (event) {
         is InformationUiEvent.GoToPassword -> {
             findNavController().navigateSafely(R.id.action_information_to_password)

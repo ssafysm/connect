@@ -64,7 +64,7 @@ class ShoppingListFragment :
 
     private fun initAdapter() {
         shoppingListAdapter = ShoppingListAdapter(viewModel)
-        binding.adapter = shoppingListAdapter
+        binding.rvCart.adapter = shoppingListAdapter
     }
 
     private fun readNfcTag(tag: Tag) {

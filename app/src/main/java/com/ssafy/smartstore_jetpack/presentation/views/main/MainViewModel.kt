@@ -458,6 +458,62 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    override fun onClickProductAdd(position: Int) {
+        val newShoppingList = mutableListOf<ShoppingCart>()
+
+        _shoppingList.value.forEachIndexed { index, shoppingCart ->
+            when (position == index) {
+                true -> {
+                    newShoppingList.add(
+                        ShoppingCart(
+                            menuId = shoppingCart.menuId,
+                            menuImg = shoppingCart.menuImg,
+                            menuName = shoppingCart.menuName,
+                            menuCnt = (shoppingCart.menuCnt.toInt() + 1).toString(),
+                            menuPrice = shoppingCart.menuPrice,
+                            totalPrice = shoppingCart.totalPrice,
+                            type = shoppingCart.type
+                        )
+                    )
+                }
+
+                else -> {
+                    newShoppingList.add(shoppingCart)
+                }
+            }
+        }
+
+        _shoppingList.value = newShoppingList.toList()
+    }
+
+    override fun onClickProductRemove(position: Int) {
+        val newShoppingList = mutableListOf<ShoppingCart>()
+
+        _shoppingList.value.forEachIndexed { index, shoppingCart ->
+            when (position == index) {
+                true -> {
+                    newShoppingList.add(
+                        ShoppingCart(
+                            menuId = shoppingCart.menuId,
+                            menuImg = shoppingCart.menuImg,
+                            menuName = shoppingCart.menuName,
+                            menuCnt = (shoppingCart.menuCnt.toInt() - 1).toString(),
+                            menuPrice = shoppingCart.menuPrice,
+                            totalPrice = shoppingCart.totalPrice,
+                            type = shoppingCart.type
+                        )
+                    )
+                }
+
+                else -> {
+                    newShoppingList.add(shoppingCart)
+                }
+            }
+        }
+
+        _shoppingList.value = newShoppingList.toList()
+    }
+
     override fun onClickProductDelete(position: Int) {
         _shoppingList.value = _shoppingList.value.toMutableList().apply {
             removeAt(position)

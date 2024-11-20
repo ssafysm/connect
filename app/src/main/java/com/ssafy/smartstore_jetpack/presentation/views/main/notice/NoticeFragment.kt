@@ -19,4 +19,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_not
 
         binding.vm = viewModel
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
+    }
 }

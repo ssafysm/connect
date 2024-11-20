@@ -56,10 +56,8 @@ fun NestedScrollView.bindNestedScrollViewBackgroundColor(appThemeName: String) {
 }
 
 @BindingAdapter("app:backgroundCustomSubTheme")
-fun ConstraintLayout.bindSubBackgroundColor(appThemeName: String) {
+fun ConstraintLayout.bindSubBackgroundColor(appThemeName: String?) {
     when (appThemeName) {
-        "기본" -> setBackgroundResource(R.drawable.shape_background_sub)
-
         "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
 
         "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
@@ -67,6 +65,8 @@ fun ConstraintLayout.bindSubBackgroundColor(appThemeName: String) {
         "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
 
         "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+        else -> setBackgroundResource(R.drawable.shape_background_sub)
     }
 }
 
@@ -264,6 +264,21 @@ fun CardView.bindHomeBannerBackground(appThemeName: String) {
         "겨울" -> setBackgroundResource(R.drawable.background_banner_winter)
 
         else -> setBackgroundResource(R.drawable.background_banner)
+    }
+}
+
+@BindingAdapter("app:countBackground")
+fun CardView.bindCountBackground(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+        "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+        "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+        "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+        else -> setBackgroundResource(R.drawable.shape_background_sub)
     }
 }
 

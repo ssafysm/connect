@@ -30,6 +30,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
         collectLatestFlow(viewModel.historyUiEvent) { handleUiEvent(it) }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
+    }
+
     private fun initAdapter() {
         orderListAdapter = OrderListAdapter(viewModel)
         binding.adapter = orderListAdapter

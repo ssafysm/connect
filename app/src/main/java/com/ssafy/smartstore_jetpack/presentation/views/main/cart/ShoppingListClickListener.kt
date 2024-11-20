@@ -20,6 +20,10 @@ interface ShoppingListClickListener {
 
     fun onClickTakeOutFinish()
 
+    fun onClickProductAdd(position: Int)
+
+    fun onClickProductRemove(position: Int)
+
     fun onClickProductDelete(position: Int)
 
     fun onClickOrder()

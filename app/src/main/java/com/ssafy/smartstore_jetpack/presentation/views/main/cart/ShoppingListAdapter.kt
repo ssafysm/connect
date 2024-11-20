@@ -10,20 +10,33 @@ import com.ssafy.smartstore_jetpack.databinding.ListItemShoppingListBinding
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
-class ShoppingListAdapter(private val clickListener: ShoppingListClickListener) :
+class ShoppingListAdapter(private val viewModel: MainViewModel) :
     ListAdapter<ShoppingCart, ShoppingListAdapter.ShoppingListHolder>(diffUtil) {
 
     inner class ShoppingListHolder(private val binding: ListItemShoppingListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bindInfo(product: ShoppingCart, clickListener: ShoppingListClickListener) {
+        fun bindInfo(product: ShoppingCart, viewModel: MainViewModel) {
             binding.product = product
-            binding.tvCountItemCart.text = "${product.menuCnt}잔"
+            binding.tvCountItemCart.text = product.menuCnt
             binding.tvPriceItemCart.text = makeComma(deleteComma(product.menuPrice))
-            binding.clCart.setOnClickListener {
-                clickListener.onClickProductDelete(layoutPosition)
+            binding.btnDeleteItemCart.setOnClickListener {
+                viewModel.onClickProductDelete(layoutPosition)
+            }
+            binding.ivAddItemCart.setOnClickListener {
+                if (product.menuCnt != "99") {
+                    viewModel.onClickProductAdd(layoutPosition)
+                }
+            }
+            binding.ivRemoveItemCart.setOnClickListener {
+                if (product.menuCnt != "1") {
+                    viewModel.onClickProductRemove(layoutPosition)
+                } else {
+                    viewModel.onClickProductDelete(layoutPosition)
+                }
             }
         }
     }
@@ -36,7 +49,7 @@ class ShoppingListAdapter(private val clickListener: ShoppingListClickListener) 
         )
 
     override fun onBindViewHolder(holder: ShoppingListHolder, position: Int) {
-        holder.bindInfo(currentList[position], clickListener)
+        holder.bindInfo(currentList[position], viewModel)
     }
 
     companion object {
@@ -44,10 +57,10 @@ class ShoppingListAdapter(private val clickListener: ShoppingListClickListener) 
         val diffUtil = object : DiffUtil.ItemCallback<ShoppingCart>() {
 
             override fun areContentsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-                (oldItem.menuId == newItem.menuId)
+                (oldItem == newItem)
 
             override fun areItemsTheSame(oldItem: ShoppingCart, newItem: ShoppingCart): Boolean =
-                (oldItem == newItem)
+                (oldItem.menuId == newItem.menuId)
         }
     }
 }
