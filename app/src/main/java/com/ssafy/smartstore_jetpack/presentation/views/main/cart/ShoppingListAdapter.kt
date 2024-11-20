@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.ListItemShoppingListBinding
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
@@ -30,6 +31,12 @@ class ShoppingListAdapter(private val viewModel: MainViewModel) :
                 if (product.menuCnt != "99") {
                     viewModel.onClickProductAdd(layoutPosition)
                 }
+            }
+            binding.ivAddItemCart.isEnabled = (product.menuCnt != "99")
+            if (product.menuCnt != "1") {
+                binding.ivRemoveItemCart.setBackgroundResource(R.drawable.ic_remove)
+            } else {
+                binding.ivRemoveItemCart.setBackgroundResource(R.drawable.ic_delete)
             }
             binding.ivRemoveItemCart.setOnClickListener {
                 if (product.menuCnt != "1") {

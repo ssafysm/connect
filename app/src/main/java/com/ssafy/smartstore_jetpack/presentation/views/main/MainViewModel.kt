@@ -9,9 +9,11 @@ import com.ssafy.smartstore_jetpack.domain.model.Product
 import com.ssafy.smartstore_jetpack.domain.model.Shop
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
 import com.ssafy.smartstore_jetpack.domain.model.Status
+import com.ssafy.smartstore_jetpack.domain.model.User
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetOrderUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetProductUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetUserIdUseCase
@@ -20,31 +22,39 @@ import com.ssafy.smartstore_jetpack.domain.usecase.SetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetUserIdUseCase
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validatePassword
+import com.ssafy.smartstore_jetpack.presentation.util.DuplicateState
+import com.ssafy.smartstore_jetpack.presentation.util.EmptyState
+import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
+import com.ssafy.smartstore_jetpack.presentation.util.PasswordState
+import com.ssafy.smartstore_jetpack.presentation.util.SelectState
+import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.home.EventUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.CommentClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.GradeState
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiState
-import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.CommentClickListener
-import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.OrderUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.ProductClickListener
-import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
-import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
-import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validatePassword
-import com.ssafy.smartstore_jetpack.presentation.util.EmptyState
-import com.ssafy.smartstore_jetpack.presentation.util.PasswordState
-import com.ssafy.smartstore_jetpack.presentation.util.SelectState
-import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
-import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
-import com.ssafy.smartstore_jetpack.presentation.views.main.home.EventUiState
-import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationClickListener
-import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationUiEvent
-import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingUiEvent
@@ -55,6 +65,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -69,13 +80,30 @@ class MainViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val getUserIdUseCase: GetUserIdUseCase,
     private val setUserIdUseCase: SetUserIdUseCase,
+    private val getCookieUseCase: GetCookieUseCase,
     private val setCookieUseCase: SetCookieUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val setAppThemeUseCase: SetAppThemeUseCase
-) : ViewModel(), HomeClickListener, MyPageClickListener, ProductClickListener, CommentClickListener,
-    ShoppingListClickListener, SettingClickListener, InformationClickListener {
+) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
+    ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
+    InformationClickListener {
 
     /****** Data ******/
+    private val _userId = MutableStateFlow<String>("")
+    val userId = _userId
+
+    private val _userPass = MutableStateFlow<String>("")
+    val userPass = _userPass
+
+    private val _joinId = MutableStateFlow<String>("")
+    val joinId = _joinId
+
+    private val _joinPass = MutableStateFlow<String>("")
+    val joinPass = _joinPass
+
+    private val _joinName = MutableStateFlow<String>("")
+    val joinName = _joinName
+
     private val _events = MutableStateFlow<List<EventUiState>>(emptyList())
     val events = _events.asStateFlow()
 
@@ -143,6 +171,12 @@ class MainViewModel @Inject constructor(
     val notice = _notices.asStateFlow()
 
     /****** Ui State ******/
+    private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState())
+    val loginUiState = _loginUiState.asStateFlow()
+
+    private val _joinUiState = MutableStateFlow<JoinUiState>(JoinUiState())
+    val joinUiState = _joinUiState.asStateFlow()
+
     private val _bnvState = MutableStateFlow<Boolean>(true)
     val bnvState = _bnvState.asStateFlow()
 
@@ -177,6 +211,12 @@ class MainViewModel @Inject constructor(
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
     val homeUiEvent = _homeUiEvent.asSharedFlow()
 
+    private val _loginUiEvent = MutableSharedFlow<LoginUiEvent>()
+    val loginUiEvent = _loginUiEvent.asSharedFlow()
+
+    private val _joinUiEvent = MutableSharedFlow<JoinUiEvent>()
+    val joinUiEvent = _joinUiEvent.asSharedFlow()
+
     private val _myPageUiEvent = MutableSharedFlow<MyPageUiEvent>()
     val myPageUiEvent = _myPageUiEvent.asSharedFlow()
 
@@ -198,14 +238,155 @@ class MainViewModel @Inject constructor(
     private val _informationUiEvent = MutableSharedFlow<InformationUiEvent>()
     val informationUiEvent = _informationUiEvent.asSharedFlow()
 
-    init {
-        setEvents()
-        setTheme()
-        setShop()
-        getUser()
-        getLastMonthOrders()
-        getLast6MonthsOrders()
-        getProducts()
+    override fun onClickHomeSignUp() {
+        viewModelScope.launch {
+            _homeUiEvent.emit(HomeUiEvent.GoToJoin)
+        }
+    }
+
+    override fun onClickHomeLogin() {
+        viewModelScope.launch {
+            _homeUiEvent.emit(HomeUiEvent.GoToLogin)
+        }
+    }
+
+    override fun onClickMyPageSignUp() {
+        viewModelScope.launch {
+            _myPageUiEvent.emit(MyPageUiEvent.GoToJoin)
+        }
+    }
+
+    override fun onClickMyPageLogin() {
+        viewModelScope.launch {
+            _myPageUiEvent.emit(MyPageUiEvent.GoToLogin)
+        }
+    }
+
+    override fun onClickLogin() {
+        viewModelScope.launch {
+            val response = getUserUseCase.postUserForLogin(
+                User(
+                    id = _userId.value,
+                    name = "",
+                    pass = _userPass.value,
+                    stamps = "0",
+                    stampList = emptyList()
+                )
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    val cookies = getCookies().first()
+                    cookies.let {
+                        if (it.isNotEmpty()) {
+                            Timber.d("Cookie: $cookies")
+                            setUserIdUseCase.setUserId(_userId.value)
+                            initStatesWithLogin()
+                            setCookieUseCase.setLoginCookie(it.toHashSet())
+                            _userId.value = ""
+                            _userPass.value = ""
+                            _loginUiState.update { uiState ->
+                                uiState.copy(
+                                    userIdValidState = InputValidState.NONE,
+                                    userPassValidState = InputValidState.NONE
+                                )
+                            }
+                            _loginUiEvent.emit(LoginUiEvent.GoToLogin)
+                            _joinUiEvent.emit(JoinUiEvent.GoToLogin)
+                        }
+                    }
+                }
+
+                else -> {
+                    _loginUiEvent.emit(LoginUiEvent.LoginFail)
+                }
+            }
+        }
+    }
+
+    override fun onClickJoin() {
+        viewModelScope.launch {
+            _loginUiEvent.emit(LoginUiEvent.GoToJoin)
+        }
+    }
+
+    override fun onClickCheckId() {
+        viewModelScope.launch {
+            when (_joinId.value.isBlank()) {
+                true -> {
+                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
+                    _joinUiEvent.emit(JoinUiEvent.CheckId(true))
+                }
+
+                else -> {
+                    val response = getUserUseCase.getIsUsedId(_joinId.value)
+                    when (response.status) {
+                        Status.SUCCESS -> {
+                            when (response.data) {
+                                false -> {
+                                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.NONE) }
+                                    _joinUiEvent.emit(JoinUiEvent.CheckId(response.data))
+                                }
+
+                                else -> {
+                                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
+                                    _joinUiEvent.emit(JoinUiEvent.CheckId(true))
+                                }
+                            }
+                        }
+
+                        else -> {
+                            _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
+                            _joinUiEvent.emit(JoinUiEvent.CheckId(true))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onClickGoToJoin() {
+        viewModelScope.launch {
+            val response = getUserUseCase.postUser(
+                User(
+                    id = _joinId.value,
+                    name = _joinName.value,
+                    pass = _joinPass.value,
+                    stamps = "0",
+                    stampList = emptyList()
+                )
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    when (response.data) {
+                        true -> {
+                            _userId.value = _joinId.value
+                            _joinId.value = ""
+                            _joinPass.value = ""
+                            _joinName.value = ""
+                            _joinUiState.update {
+                                it.copy(
+                                    joinIdValidState = InputValidState.NONE,
+                                    joinPassValidState = InputValidState.NONE,
+                                    joinNameValidState = InputValidState.NONE,
+                                    joinIdDuplicateState = DuplicateState.DUPLICATE
+                                )
+                            }
+                            _joinUiEvent.emit(JoinUiEvent.GoToLogin)
+                        }
+
+                        else -> {
+                            _joinUiEvent.emit(JoinUiEvent.JoinFail)
+                        }
+                    }
+                }
+
+                else -> {
+                    _joinUiEvent.emit(JoinUiEvent.JoinFail)
+                }
+            }
+        }
     }
 
     override fun onClickOrderDetail(order: Order) {
@@ -221,8 +402,13 @@ class MainViewModel @Inject constructor(
 
                     when (index) {
                         -1 -> {
-                            _totalOrder.value = (_totalOrder.value.toInt() + detail.quantity).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (detail.quantity * deleteComma(detail.unitPrice))))
+                            _totalOrder.value =
+                                (_totalOrder.value.toInt() + detail.quantity).toString()
+                            _totalPrice.value = makeComma(
+                                (deleteComma(_totalPrice.value) + (detail.quantity * deleteComma(
+                                    detail.unitPrice
+                                )))
+                            )
                             add(
                                 ShoppingCart(
                                     menuId = detail.productId,
@@ -238,8 +424,13 @@ class MainViewModel @Inject constructor(
 
                         else -> {
                             val newCount = this[index].menuCnt.toInt() + detail.quantity
-                            _totalOrder.value = (_totalOrder.value.toInt() + detail.quantity).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (detail.quantity * deleteComma(detail.unitPrice))))
+                            _totalOrder.value =
+                                (_totalOrder.value.toInt() + detail.quantity).toString()
+                            _totalPrice.value = makeComma(
+                                (deleteComma(_totalPrice.value) + (detail.quantity * deleteComma(
+                                    detail.unitPrice
+                                )))
+                            )
                             this[index] = ShoppingCart(
                                 menuId = detail.productId,
                                 menuImg = detail.img,
@@ -274,9 +465,10 @@ class MainViewModel @Inject constructor(
 
     override fun onClickLogout() {
         viewModelScope.launch {
+            _user.value = null
             setUserIdUseCase.setUserId("")
             setCookieUseCase.deleteLoginCookie()
-            _myPageUiEvent.emit(MyPageUiEvent.DoLogout)
+            _settingUiEvent.emit(SettingUiEvent.DoLogout)
         }
     }
 
@@ -308,8 +500,13 @@ class MainViewModel @Inject constructor(
                     }
                     when (index) {
                         -1 -> {
-                            _totalOrder.value = (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
-                            _totalPrice.value = makeCommaWon((deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(it.price))))
+                            _totalOrder.value =
+                                (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
+                            _totalPrice.value = makeCommaWon(
+                                (deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(
+                                    it.price
+                                )))
+                            )
                             add(
                                 ShoppingCart(
                                     menuId = it.id,
@@ -324,9 +521,15 @@ class MainViewModel @Inject constructor(
                         }
 
                         else -> {
-                            val newCount = this[index].menuCnt.toInt() + _selectProductCount.value.toInt()
-                            _totalOrder.value = (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
-                            _totalPrice.value = makeComma((deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(it.price))))
+                            val newCount =
+                                this[index].menuCnt.toInt() + _selectProductCount.value.toInt()
+                            _totalOrder.value =
+                                (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
+                            _totalPrice.value = makeComma(
+                                (deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(
+                                    it.price
+                                )))
+                            )
                             this[index] = ShoppingCart(
                                 menuId = it.id,
                                 menuImg = it.img,
@@ -471,7 +674,7 @@ class MainViewModel @Inject constructor(
                             menuName = shoppingCart.menuName,
                             menuCnt = (shoppingCart.menuCnt.toInt() + 1).toString(),
                             menuPrice = shoppingCart.menuPrice,
-                            totalPrice = shoppingCart.totalPrice,
+                            totalPrice = (deleteComma(shoppingCart.menuPrice) * (shoppingCart.menuCnt.toInt() + 1)).toString(),
                             type = shoppingCart.type
                         )
                     )
@@ -484,6 +687,9 @@ class MainViewModel @Inject constructor(
         }
 
         _shoppingList.value = newShoppingList.toList()
+        _totalOrder.value = (_shoppingList.value.sumOf { it.menuCnt.toInt() }).toString()
+        _totalPrice.value = makeComma((_shoppingList.value.sumOf { deleteComma(it.totalPrice) }))
+        Timber.d("Total Price: ${_totalPrice.value}")
     }
 
     override fun onClickProductRemove(position: Int) {
@@ -499,7 +705,7 @@ class MainViewModel @Inject constructor(
                             menuName = shoppingCart.menuName,
                             menuCnt = (shoppingCart.menuCnt.toInt() - 1).toString(),
                             menuPrice = shoppingCart.menuPrice,
-                            totalPrice = shoppingCart.totalPrice,
+                            totalPrice = (deleteComma(shoppingCart.menuPrice) * (shoppingCart.menuCnt.toInt() - 1)).toString(),
                             type = shoppingCart.type
                         )
                     )
@@ -512,6 +718,8 @@ class MainViewModel @Inject constructor(
         }
 
         _shoppingList.value = newShoppingList.toList()
+        _totalOrder.value = (_shoppingList.value.sumOf { it.menuCnt.toInt() }).toString()
+        _totalPrice.value = makeComma((_shoppingList.value.sumOf { deleteComma(it.totalPrice) }))
     }
 
     override fun onClickProductDelete(position: Int) {
@@ -892,8 +1100,29 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun getAppTheme(): Flow<String> = flow {
-        val appTheme =  getAppThemeUseCase.getAppTheme().first()
+        val appTheme = getAppThemeUseCase.getAppTheme().first()
         emit(appTheme)
+    }
+
+    private suspend fun getCookies(): Flow<Set<String>> = flow {
+        val cookies = getCookieUseCase.getLoginCookie().firstOrNull() ?: emptySet()
+        emit(cookies)
+    }
+
+    fun initStatesWithLogin() {
+        setEvents()
+        setTheme()
+        setShop()
+        getUser()
+        getLastMonthOrders()
+        getLast6MonthsOrders()
+        getProducts()
+    }
+
+    fun initStates() {
+        setEvents()
+        setTheme()
+        getProducts()
     }
 
     fun setFabState(flag: Boolean) {
@@ -912,6 +1141,46 @@ class MainViewModel @Inject constructor(
     fun setPushReceiving(isPushReceiving: Boolean) {
         viewModelScope.launch {
             _isPushReceiving.value = isPushReceiving
+        }
+    }
+
+    fun validateUserId(id: CharSequence) {
+        when (id.isNotBlank()) {
+            true -> _loginUiState.update { it.copy(userIdValidState = InputValidState.VALID) }
+
+            else -> _loginUiState.update { it.copy(userIdValidState = InputValidState.NONE) }
+        }
+    }
+
+    fun validateUserPass(pass: CharSequence) {
+        when (pass.isNotBlank()) {
+            true -> _loginUiState.update { it.copy(userPassValidState = InputValidState.VALID) }
+
+            else -> _loginUiState.update { it.copy(userPassValidState = InputValidState.NONE) }
+        }
+    }
+
+    fun validateJoinId(id: CharSequence) {
+        when (id.isNotBlank()) {
+            true -> _joinUiState.update { it.copy(joinIdValidState = InputValidState.VALID) }
+
+            else -> _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
+        }
+    }
+
+    fun validateJoinPass(pass: CharSequence) {
+        when (pass.isNotBlank()) {
+            true -> _joinUiState.update { it.copy(joinPassValidState = InputValidState.VALID) }
+
+            else -> _joinUiState.update { it.copy(joinPassValidState = InputValidState.NONE) }
+        }
+    }
+
+    fun validateJoinName(name: CharSequence) {
+        when (name.isNotBlank()) {
+            true -> _joinUiState.update { it.copy(joinNameValidState = InputValidState.VALID) }
+
+            else -> _joinUiState.update { it.copy(joinNameValidState = InputValidState.NONE) }
         }
     }
 

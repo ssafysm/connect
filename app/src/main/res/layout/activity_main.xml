@@ -27,6 +27,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="88dp"
             android:contentDescription="@string/description_fab_main"
+            android:enabled="@{(vm.user == null) ? false : true}"
             android:onClick="@{() -> vm.onClickToCart()}"
             android:src="@drawable/shopping_cart"
             android:visibility="@{(vm.fabState == true) ? View.VISIBLE : View.GONE}"

@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.setting
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
@@ -32,6 +33,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
     private fun handleUiEvent(event: SettingUiEvent) = when (event) {
         is SettingUiEvent.SelectAppTheme -> {
             findNavController().navigateSafely(R.id.action_setting_to_app_theme)
+        }
+
+        is SettingUiEvent.DoLogout -> {
+            Toast.makeText(requireContext(), "로그아웃에 성공했어요.", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         else -> {}

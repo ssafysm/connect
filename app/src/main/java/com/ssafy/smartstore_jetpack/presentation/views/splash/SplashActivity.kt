@@ -9,7 +9,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
-import com.ssafy.smartstore_jetpack.presentation.views.signin.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -34,12 +33,16 @@ class SplashActivity : AppCompatActivity() {
             viewModel.splashUiEvent.collectLatest { uiEvent ->
                 when (uiEvent) {
                     is SplashUiEvent.LoginSuccess -> {
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java).apply {
+                            putExtra("login_success", true)
+                        })
                         finish()
                     }
 
                     is SplashUiEvent.LoginFailed -> {
-                        startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java).apply {
+                            putExtra("login_success", false)
+                        })
                         finish()
                     }
                 }

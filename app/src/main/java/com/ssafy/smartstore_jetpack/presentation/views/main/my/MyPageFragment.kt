@@ -1,15 +1,14 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.my
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentMypageBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
-import com.ssafy.smartstore_jetpack.presentation.views.signin.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,29 +31,56 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
     }
 
     private fun handleUiEvent(event: MyPageUiEvent) = when (event) {
+        is MyPageUiEvent.GoToJoin -> {
+            findNavController().navigateSafely(R.id.action_my_page_to_join)
+        }
+
+        is MyPageUiEvent.GoToLogin -> {
+            findNavController().navigateSafely(R.id.action_my_page_to_login)
+        }
+
         is MyPageUiEvent.GoToSettings -> {
             findNavController().navigateSafely(R.id.action_my_page_to_setting)
         }
 
         is MyPageUiEvent.GoToHistory -> {
-            findNavController().navigateSafely(R.id.action_my_page_to_history)
+            when (viewModel.user.value) {
+                null -> {
+                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> findNavController().navigateSafely(R.id.action_my_page_to_history)
+            }
         }
 
         is MyPageUiEvent.GoToInformation -> {
-            findNavController().navigateSafely(R.id.action_my_page_to_information)
+            when (viewModel.user.value) {
+                null -> {
+                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> findNavController().navigateSafely(R.id.action_my_page_to_information)
+            }
         }
 
         is MyPageUiEvent.GoToCoupon -> {
-            findNavController().navigateSafely(R.id.action_my_page_to_coupon)
+            when (viewModel.user.value) {
+                null -> {
+                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> findNavController().navigateSafely(R.id.action_my_page_to_coupon)
+            }
         }
 
         is MyPageUiEvent.GoToPay -> {
-            findNavController().navigateSafely(R.id.action_my_page_to_pay)
-        }
+            when (viewModel.user.value) {
+                null -> {
+                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
+                }
 
-        is MyPageUiEvent.DoLogout -> {
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-            requireActivity().finish()
+                else -> findNavController().navigateSafely(R.id.action_my_page_to_pay)
+            }
         }
     }
 }

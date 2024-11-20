@@ -10,7 +10,6 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.ColorStateList
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.tech.Ndef
@@ -29,8 +28,8 @@ import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.SharedPreferencesUtil
 import com.ssafy.smartstore_jetpack.databinding.ActivityMainBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseActivity
-import com.ssafy.smartstore_jetpack.presentation.views.main.home.StoreEventDialogFragment
 import com.ssafy.smartstore_jetpack.presentation.util.PermissionChecker
+import com.ssafy.smartstore_jetpack.presentation.views.main.home.StoreEventDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -105,6 +104,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         binding.vm = viewModel
         binding.lifecycleOwner = this
+
+        when (intent.getBooleanExtra("login_success", false)) {
+            true -> viewModel.initStatesWithLogin()
+
+            else -> viewModel.initStates()
+        }
 
         preferencesUtil = SharedPreferencesUtil(this)
 

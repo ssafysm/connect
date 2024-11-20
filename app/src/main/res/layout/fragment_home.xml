@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
@@ -90,6 +92,7 @@
                                 android:text="@{vm.user.user.name}"
                                 android:textColor="@color/black"
                                 android:textSize="24sp"
+                                android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                                 app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toTopOf="@id/tv_welcome_home"
                                 app:layout_constraintStart_toStartOf="parent" />
@@ -102,6 +105,7 @@
                                 android:text="@string/text_name_end"
                                 android:textColor="@color/black"
                                 android:textSize="24sp"
+                                android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                                 app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toBottomOf="@id/tv_name_home"
                                 app:layout_constraintStart_toEndOf="@id/tv_name_home"
@@ -144,11 +148,46 @@
                         android:padding="16dp"
                         app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_sign_up_home"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/button_enabled_2"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:onClick="@{() -> vm.onClickHomeSignUp()}"
+                            android:text="@string/text_join"
+                            android:textColor="@color/neutral_white"
+                            android:textSize="20sp"
+                            android:visibility="@{(vm.user == null) ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/btn_login_home"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_login_home"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/button_enabled_3"
+                            android:fontFamily="@font/pretendardsemibold"
+                            android:onClick="@{() -> vm.onClickHomeLogin()}"
+                            android:text="@string/text_login"
+                            android:textColor="@color/neutral_white"
+                            android:textSize="20sp"
+                            android:visibility="@{(vm.user == null) ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/btn_sign_up_home"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_grade_home"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_grade_gold"
+                            android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="@id/tv_grade_home"
                             app:layout_constraintDimensionRatio="1:1"
                             app:layout_constraintEnd_toStartOf="@id/tv_grade_home"
@@ -164,6 +203,7 @@
                             android:text="GOLD"
                             android:textColor="@color/black"
                             android:textSize="24sp"
+                            android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/iv_grade_home"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -177,6 +217,7 @@
                             android:max="25"
                             android:progress="4"
                             android:progressDrawable="@drawable/layer_list_gold"
+                            android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@id/tv_grade_home"
@@ -239,6 +280,7 @@
                     android:text="@string/text_latest_orders"
                     android:textColor="@color/black"
                     android:textSize="24sp"
+                    android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
                     app:layout_constraintTop_toBottomOf="@id/vp_today_event_home" />
 
@@ -249,6 +291,7 @@
                     android:layout_marginTop="16dp"
                     android:adapter="@{orderAdapter}"
                     android:orientation="horizontal"
+                    android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@id/gl_bottom_home"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
@@ -301,6 +344,7 @@
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="16dp"
                 android:onClick="@{() -> vm.onClickNotice()}"
+                android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                 app:noticeCustomTheme="@{vm.appThemeName}" />
 
         </androidx.appcompat.widget.Toolbar>

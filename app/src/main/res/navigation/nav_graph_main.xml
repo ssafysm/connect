@@ -12,12 +12,41 @@
         tools:layout="@layout/fragment_home">
 
         <action
+            android:id="@+id/action_home_to_login"
+            app:destination="@id/fragment_login" />
+
+        <action
+            android:id="@+id/action_home_to_join"
+            app:destination="@id/fragment_join" />
+
+        <action
             android:id="@+id/action_home_to_order_detail"
             app:destination="@id/fragment_cart" />
 
         <action
             android:id="@+id/action_home_to_notice"
             app:destination="@id/fragment_notice" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_join"
+            app:destination="@id/fragment_join" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_join"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinFragment"
+        android:label="Join"
+        tools:layout="@layout/fragment_join">
+
 
     </fragment>
 
@@ -48,6 +77,14 @@
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageFragment"
         android:label="My Page"
         tools:layout="@layout/fragment_mypage">
+
+        <action
+            android:id="@+id/action_my_page_to_login"
+            app:destination="@id/fragment_login" />
+
+        <action
+            android:id="@+id/action_my_page_to_join"
+            app:destination="@id/fragment_join" />
 
         <action
             android:id="@+id/action_my_page_to_setting"

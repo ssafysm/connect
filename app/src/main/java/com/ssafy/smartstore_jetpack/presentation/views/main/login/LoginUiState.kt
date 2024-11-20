@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.presentation.views.signin.login
+package com.ssafy.smartstore_jetpack.presentation.views.main.login
 
 import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
 

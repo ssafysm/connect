@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.presentation.views.signin.join
+package com.ssafy.smartstore_jetpack.presentation.views.main.join
 
 import android.os.Bundle
 import android.view.View
@@ -7,13 +7,13 @@ import androidx.fragment.app.activityViewModels
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentJoinBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
-import com.ssafy.smartstore_jetpack.presentation.views.signin.LoginViewModel
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
 
-    private val viewModel: LoginViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -21,6 +21,12 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
         binding.vm = viewModel
 
         collectLatestFlow(viewModel.joinUiEvent) { handleUiEvent(it) }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
     }
 
     private fun handleUiEvent(event: JoinUiEvent) = when (event) {

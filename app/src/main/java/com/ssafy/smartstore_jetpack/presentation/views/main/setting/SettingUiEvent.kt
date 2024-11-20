@@ -7,4 +7,6 @@ sealed class SettingUiEvent {
     data class SubmitAppTheme(val theme: String) : SettingUiEvent()
 
     data object CloseAppTheme : SettingUiEvent()
+
+    data object DoLogout : SettingUiEvent()
 }

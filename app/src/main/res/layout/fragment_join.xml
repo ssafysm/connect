@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.ssafy.smartstore_jetpack.presentation.views.signin.LoginViewModel" />
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
     </data>
 
@@ -15,6 +15,7 @@
         android:id="@+id/fragment_join"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:backgroundCustomTheme="@{vm.appThemeName}"
         tools:context=".join.JoinFragment">
 
         <androidx.appcompat.widget.AppCompatImageView

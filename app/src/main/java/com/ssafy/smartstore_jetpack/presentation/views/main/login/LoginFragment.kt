@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.presentation.views.signin.login
+package com.ssafy.smartstore_jetpack.presentation.views.main.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,11 +10,11 @@ import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.databinding.FragmentLoginBinding
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
-import com.ssafy.smartstore_jetpack.presentation.views.signin.LoginViewModel
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login){
 
-    private val viewModel: LoginViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -24,10 +24,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         collectLatestFlow(viewModel.loginUiEvent) { handleUiEvent(it) }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.setBnvState(false)
+    }
+
     private fun handleUiEvent(event: LoginUiEvent) = when (event) {
         is LoginUiEvent.GoToLogin -> {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            requireActivity().finish()
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         is LoginUiEvent.LoginFail -> {

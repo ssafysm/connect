@@ -118,6 +118,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun handleUiEvent(event: HomeUiEvent) = when (event) {
+        is HomeUiEvent.GoToJoin -> {
+            findNavController().navigateSafely(R.id.action_home_to_join)
+        }
+
+        is HomeUiEvent.GoToLogin -> {
+            findNavController().navigateSafely(R.id.action_home_to_login)
+        }
+
         is HomeUiEvent.GoToNotice -> {
             findNavController().navigateSafely(R.id.action_home_to_notice)
         }

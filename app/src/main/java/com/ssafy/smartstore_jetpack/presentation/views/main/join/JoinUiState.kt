@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.presentation.views.signin.join
+package com.ssafy.smartstore_jetpack.presentation.views.main.join
 
 import com.ssafy.smartstore_jetpack.presentation.util.DuplicateState
 import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
