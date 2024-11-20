@@ -6,7 +6,6 @@ plugins {
     id("androidx.navigation.safeargs.kotlin") version "2.5.3" apply false
     id("com.google.dagger.hilt.android") version "2.48" apply false
 
-
     //구글서비스 추가
-//    id("com.google.gms.google-services") version "4.3.15" apply false
+    id("com.google.gms.google-services") version "4.3.15" apply false
 }

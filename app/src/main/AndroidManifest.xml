@@ -34,6 +34,7 @@
     <!-- notification 전송 permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+
     <application
         android:name="com.ssafy.smartstore_jetpack.app.ApplicationClass"
         android:allowBackup="true"
@@ -43,6 +44,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartstoreUI"
         android:usesCleartextTraffic="true">
+
+        <!-- Firebase 메시지 서비스를 위한 서비스 등록 -->
+        <service
+            android:name=".service.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".presentation.views.signin.LoginActivity"

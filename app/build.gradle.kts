@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-//    id ("com.google.gms.google-services") // 구글 서비스
+    id ("com.google.gms.google-services") // 구글 서비스
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
@@ -121,6 +121,15 @@ dependencies {
 
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // firebase 사용에 필요한 의존성 추가 firebase + database
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-database-ktx")
+
+    // firebase auth 에서 필요한 의존성 추가
+    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+
 }
 
 kapt {
