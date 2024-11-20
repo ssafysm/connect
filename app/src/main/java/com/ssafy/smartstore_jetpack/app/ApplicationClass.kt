@@ -3,6 +3,7 @@ package com.ssafy.smartstore_jetpack.app
 import android.Manifest
 import android.app.Application
 import android.content.Context
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -15,6 +16,9 @@ class ApplicationClass : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Firebase 초기화
+        FirebaseApp.initializeApp(this)
 
         sharedPreferencesUtil = SharedPreferencesUtil(myContext())
 
@@ -34,7 +38,8 @@ class ApplicationClass : Application() {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.BLUETOOTH_ADVERTISE,
-            Manifest.permission.BLUETOOTH_CONNECT
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.POST_NOTIFICATIONS
         )
 
         lateinit var sharedPreferencesUtil: SharedPreferencesUtil

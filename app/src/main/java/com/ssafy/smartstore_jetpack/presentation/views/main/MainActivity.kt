@@ -17,6 +17,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -24,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.SharedPreferencesUtil
 import com.ssafy.smartstore_jetpack.databinding.ActivityMainBinding
@@ -41,6 +43,8 @@ import org.altbeacon.beacon.Region
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+
+    private val TAG = "MainActivity_TAG"
 
     private lateinit var beaconManager: BeaconManager
     private lateinit var bluetoothManager: BluetoothManager
@@ -128,6 +132,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         checkPermissions()
 
         handleIntent(intent)  // NFC 인텐트 처리
+        initFCM()
     }
 
     private fun setNdef() {
@@ -334,5 +339,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         private const val BEACON_MINOR = "54480"
         private const val BEACON_DISTANCE = 5.0
         private const val BLUETOOTH_ADDRESS = "00:81:F9:E2:49:E1"
+    }
+
+    private fun initFCM() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "FCM 등록 토큰 가져오기 실패", task.exception)
+                return@addOnCompleteListener
+            }
+            // 새로운 FCM 등록 토큰 획득
+            val token = task.result
+            Log.d(TAG, "FCM 토큰: $token")
+            // 토큰을 Toast로 표시
+            Toast.makeText(this, "FCM 토큰: $token", Toast.LENGTH_LONG).show()
+            // 토큰을 서버로 업로드
+            if (token != null) {
+                // 서버로 토큰을 업로드하는 로직을 여기에 추가하세요.
+                // 예: uploadTokenToServer(token)
+            }
+        }
+        // 알림 채널 생성
+        createNotificationChannel("ssafy_channel", "ssafy")
     }
 }
