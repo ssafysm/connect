@@ -31,6 +31,8 @@ import com.ssafy.smartstore_jetpack.presentation.util.EmptyState
 import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
 import com.ssafy.smartstore_jetpack.presentation.util.PasswordState
 import com.ssafy.smartstore_jetpack.presentation.util.SelectState
+import com.ssafy.smartstore_jetpack.presentation.util.ShopSelectValidState
+import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
@@ -210,6 +212,12 @@ class MainViewModel @Inject constructor(
 
     private val _noticeUiState = MutableStateFlow<NoticeUiState>(NoticeUiState())
     val noticeUiState = _noticeUiState.asStateFlow()
+
+    private val _shopSelectUiState = MutableStateFlow<ShopSelectUiState>(ShopSelectUiState())
+    val shopSelectUiState = _shopSelectUiState.asStateFlow()
+
+    private val _isMapMode = MutableStateFlow<Boolean>(false)
+    val isMapMode = _isMapMode.asStateFlow()
 
     /****** Ui Event ******/
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
@@ -560,7 +568,8 @@ class MainViewModel @Inject constructor(
         if (_selectProductCount.value.toInt() < 99) {
             _selectProductCount.value = (_selectProductCount.value.toInt() + 1).toString()
             _selectedProduct.value?.let {
-                _selectedProductPrice.value = makeComma(_selectProductCount.value.toInt() * deleteComma(it.price))
+                _selectedProductPrice.value =
+                    makeComma(_selectProductCount.value.toInt() * deleteComma(it.price))
             }
         }
     }
@@ -569,7 +578,8 @@ class MainViewModel @Inject constructor(
         if (_selectProductCount.value.toInt() > 1) {
             _selectProductCount.value = (_selectProductCount.value.toInt() - 1).toString()
             _selectedProduct.value?.let {
-                _selectedProductPrice.value = makeComma(_selectProductCount.value.toInt() * deleteComma(it.price))
+                _selectedProductPrice.value =
+                    makeComma(_selectProductCount.value.toInt() * deleteComma(it.price))
             }
         }
     }
@@ -790,14 +800,24 @@ class MainViewModel @Inject constructor(
     override fun onClickShopSelect(shop: Shop) {
         viewModelScope.launch {
             _selectShop.value = shop
-            _shoppingListUiState.update { it.copy(shopSelectState = SelectState.SELECT) }
+            _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCHSELECT) }
         }
     }
 
     override fun onClickShopSelectCancel() {
         viewModelScope.launch {
             _selectShop.value = null
-            _shoppingListUiState.update { it.copy(shopSelectState = SelectState.NONE) }
+            when (_shopSelectUiState.value.selectValidState) {
+                ShopSelectValidState.MAPSELECT -> {
+                    _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.MAP) }
+                }
+
+                ShopSelectValidState.SEARCHSELECT -> {
+                    _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
+                }
+
+                else -> {}
+            }
         }
     }
 
@@ -968,7 +988,9 @@ class MainViewModel @Inject constructor(
                 name = "구미인동",
                 image = "https://mblogthumb-phinf.pstatic.net/MjAyNDAxMThfMjUz/MDAxNzA1NTY2Mzg0Mzk2.gVwa4ygCav1gbmwGq2tWEtDvHU5ufrJVjJs-JZBIrM0g.QwyYd_P-C2LCjsTh3fEHJfAQl91scMSVaYR2gjown3Ag.JPEG.yosulpp/SE-b60fa36a-b42d-11ee-9a89-976840ec37c2.jpg?type=w800",
                 description = "경상북도 구미시 인동가산로9-3, 노블레스타워 1층(황상동)",
-                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
+                latitude = 36.107860277822844,
+                longitude = 128.41873514292232
             )
         )
         newShops.add(
@@ -977,7 +999,9 @@ class MainViewModel @Inject constructor(
                 name = "구미인의DT",
                 image = "https://mblogthumb-phinf.pstatic.net/MjAyNDAxMDVfODIg/MDAxNzA0NDU3ODE1NjE2.3eBnacAfnkYIPrf0m1X5KrLaLfkmPak_na1ei7bZnMEg.kLKFbCAieqLlg1v80b0BWxBHfYWFCZtWA_y4oJJbrBUg.JPEG.m_4862/output_2270109392.jpg?type=w800",
                 description = "경상북도 구미시 인동북길 149(인의동)",
-                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
+                latitude = 36.09565743046543,
+                longitude = 128.43098473779384
             )
         )
         newShops.add(
@@ -986,7 +1010,9 @@ class MainViewModel @Inject constructor(
                 name = "구미공단",
                 image = "https://naverbooking-phinf.pstatic.net/20240611_120/1718104723924coCrQ_JPEG/image.jpg?type=f750_420_60_sharpen",
                 description = "경상북도 구미시 1공단로212, HALLA SIGMA VALLEY 104...",
-                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
+                latitude = 36.101684061858755,
+                longitude = 128.38592779265716
             )
         )
         newShops.add(
@@ -995,7 +1021,9 @@ class MainViewModel @Inject constructor(
                 name = "구미옥계",
                 image = "https://mblogthumb-phinf.pstatic.net/MjAyMTA3MTRfMTEg/MDAxNjI2MjYyNzE4NDI5.AMdA_uB_i8FJNyhVzFx4pkGRyKqgzTkRRPUwbTEqflcg.wAI4J4M6MfW0_k3LKPyTGRpcii_cw-Alju6rgTGu0gog.JPEG.kilrboy89/SE-01f7a5c6-9709-4736-8f30-9f3c6d81df8a.jpg?type=w800",
                 description = "경상북도 구미시 옥계북로20(양포동)",
-                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
+                latitude = 36.138290806168214,
+                longitude = 128.4195495105708
             )
         )
         newShops.add(
@@ -1004,7 +1032,9 @@ class MainViewModel @Inject constructor(
                 name = "구미광평DT",
                 image = "https://naverbooking-phinf.pstatic.net/20240611_257/1718104467893XeEyG_JPEG/image.jpg?type=f750_420_60_sharpen",
                 description = "경상북도 구미시 구미대로 188(광평동)",
-                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00"
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
+                latitude = 36.10361637149451,
+                longitude = 128.36360282794408
             )
         )
 
@@ -1154,6 +1184,21 @@ class MainViewModel @Inject constructor(
     fun setPushReceiving(isPushReceiving: Boolean) {
         viewModelScope.launch {
             _isPushReceiving.value = isPushReceiving
+        }
+    }
+
+    fun setMapMode(isMapMode: Boolean) {
+        viewModelScope.launch {
+            _isMapMode.value = isMapMode
+            when (_isMapMode.value) {
+                true -> {
+                    _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.MAP) }
+                }
+
+                else -> {
+                    _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
+                }
+            }
         }
     }
 

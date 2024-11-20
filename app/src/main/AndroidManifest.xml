@@ -45,6 +45,10 @@
         android:theme="@style/Theme.SmartstoreUI"
         android:usesCleartextTraffic="true">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/api_key" />
+
         <!-- Firebase 메시지 서비스를 위한 서비스 등록 -->
         <service
             android:name=".service.MyFirebaseMessagingService"
@@ -53,13 +57,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <activity
-            android:name=".presentation.views.signin.LoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MyApp.Main"
-            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".presentation.views.main.MainActivity"

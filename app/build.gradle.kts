@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("com.google.gms.google-services") // 구글 서비스
+    id ("com.google.gms.google-services")
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
@@ -9,7 +9,6 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization") version "1.5.0"
 }
-
 
 android {
     namespace = "com.ssafy.smartstore_jetpack"
@@ -66,9 +65,9 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation(libs.androidx.datastore.preferences.core.jvm)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Google Map
+    implementation("com.google.android.gms:play-services-maps:18.0.2")
+    implementation("com.google.android.gms:play-services-location:20.0.0")
 
     // ViewPager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")
@@ -130,6 +129,10 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth-ktx")
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
 
+    // JUnit Test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
 
 kapt {

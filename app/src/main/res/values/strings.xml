@@ -4,6 +4,7 @@
     <string name="app_name">Smartstore Jetpack Starter</string>
 
     <!-- Common -->
+    <string name="api_key">AIzaSyCnaS2BwLjhQ5mWZU0U8z4ppydasbHF_Sk</string>
     <string name="text_no_orders">주문 내역이 없습니다</string>
     <string name="text_confirm">확인</string>
     <string name="text_cancel">취소</string>

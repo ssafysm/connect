@@ -19,3 +19,7 @@ enum class SelectState {
 enum class PasswordState {
     INIT, VALID, NONE
 }
+
+enum class ShopSelectValidState {
+    MAP, SEARCH, MAPSELECT, SEARCHSELECT
+}
