@@ -22,6 +22,7 @@ class ShoppingListAdapter(private val viewModel: MainViewModel) :
         @SuppressLint("SetTextI18n")
         fun bindInfo(product: ShoppingCart, viewModel: MainViewModel) {
             binding.product = product
+            binding.vm = viewModel
             binding.tvCountItemCart.text = product.menuCnt
             binding.tvPriceItemCart.text = makeComma(deleteComma(product.menuPrice))
             binding.btnDeleteItemCart.setOnClickListener {

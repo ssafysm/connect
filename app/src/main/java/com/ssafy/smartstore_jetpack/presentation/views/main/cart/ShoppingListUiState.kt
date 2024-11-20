@@ -7,6 +7,5 @@ data class ShoppingListUiState(
     val shoppingListState: EmptyState = EmptyState.EMPTY,
     val shopSelectState: SelectState = SelectState.NONE
 ) {
-    val isOrderBtnEnable: Boolean = (shoppingListState == EmptyState.NONE)
-    val isShopSelecting: Boolean = (shopSelectState == SelectState.SELECT)
+    val isShoppingListEmpty: Boolean = (shoppingListState == EmptyState.NONE)
 }

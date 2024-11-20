@@ -1,9 +1,15 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -14,6 +20,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ssafy.smartstore_jetpack.R
@@ -116,15 +124,23 @@ class ShopSelectBottomSheetDialogFragment :
         try {
             if (hasLocationPermission()) {
                 mMap.isMyLocationEnabled = true
+                mMap.setOnMarkerClickListener { marker ->
+                    viewModel.shops.value.forEach { shop ->
+                        if (marker.title == shop.id) {
+                            viewModel.onClickShopSelectInMap(shop)
+                        }
+                    }
+                    true
+                }
 
                 fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                     location?.let {
                         val currentLocation = LatLng(it.latitude, it.longitude)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15F))
                         mMap.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
+                        viewModel.sortSearchedShop(it)
                     }
                 }
-
                 addShopsMarkers()
             }
         } catch (e: SecurityException) {
@@ -138,11 +154,50 @@ class ShopSelectBottomSheetDialogFragment :
                 shops.forEach { shop ->
                     val position = LatLng(shop.latitude, shop.longitude)
                     mMap.addMarker(
-                        MarkerOptions().position(position).title(shop.name)
-                    )
+                        MarkerOptions().position(position).title(shop.id).icon(createCustomMarkerIcon(shop.name))
+                    )?.showInfoWindow()
                 }
             }
         }
+    }
+
+    @SuppressLint("MissingInflatedId", "InflateParams")
+    private fun createCustomMarkerIcon(name: String): BitmapDescriptor {
+        val markerView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_marker, null)
+        val textView = markerView.findViewById<TextView>(R.id.tv_marker)
+        val imageView = markerView.findViewById<ImageView>(R.id.iv_marker)
+        textView.text = name
+
+        when (viewModel.appThemeName.value) {
+            "봄" -> {
+                imageView.setBackgroundResource(R.drawable.ic_shop_spring)
+            }
+
+            "여름" -> {
+                imageView.setBackgroundResource(R.drawable.ic_shop_summer)
+            }
+
+            "가을" -> {
+                imageView.setBackgroundResource(R.drawable.ic_shop_autumn)
+            }
+
+            "겨울" -> {
+                imageView.setBackgroundResource(R.drawable.ic_shop_winter)
+            }
+
+            else -> {
+                imageView.setBackgroundResource(R.drawable.ic_shop)
+            }
+        }
+
+
+        markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
+        val bitmap = Bitmap.createBitmap(markerView.measuredWidth, markerView.measuredHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        markerView.draw(canvas)
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     companion object {

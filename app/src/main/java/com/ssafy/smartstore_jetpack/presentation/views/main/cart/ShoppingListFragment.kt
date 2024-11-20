@@ -1,13 +1,18 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShoppingListBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
@@ -15,6 +20,7 @@ import com.ssafy.smartstore_jetpack.presentation.util.BlurHelper.applyBlur
 import com.ssafy.smartstore_jetpack.presentation.util.BlurHelper.clearBlur
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ShoppingListFragment :
@@ -24,6 +30,7 @@ class ShoppingListFragment :
     private lateinit var shoppingListAdapter: ShoppingListAdapter
     private var nfcAdapter: NfcAdapter? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -33,10 +40,51 @@ class ShoppingListFragment :
         // initEvent()
         // refreshList()
 
+        binding.clBottomCart.post {
+            val layoutHeight = binding.clBottomCart.height
+            val displayMetrics = Resources.getSystem().displayMetrics
+            val screenHeight = displayMetrics.heightPixels
+            val heightPercent = (screenHeight - layoutHeight).toFloat() / screenHeight * 100
+            val params = binding.glBottomCart.layoutParams as ConstraintLayout.LayoutParams
+
+            Timber.d("Percent: $heightPercent")
+            binding.glBottomCart.setGuidelinePercent(heightPercent - 10F)
+
+            binding.rvCart.setOnTouchListener { _, motionEvent ->
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> binding.rvCart.parent.requestDisallowInterceptTouchEvent(true)
+                    MotionEvent.ACTION_UP -> binding.rvCart.parent.requestDisallowInterceptTouchEvent(false)
+                }
+                false
+            }
+            binding.rvCart.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy > 0) {
+                        hideBottomLayout(binding.clBottomCart)
+                    } else if (dy < 0) {
+                        showBottomLayout(binding.clBottomCart)
+                    }
+                }
+            })
+        }
+
         // NFC 초기화
         nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
 
         collectLatestFlow(viewModel.shoppingUiEvent) { handleUiEvent(it) }
+    }
+
+    private fun showBottomLayout(layout: ConstraintLayout) {
+        layout.visibility = View.VISIBLE
+        layout.animate().translationY(0f).setDuration(300).start()
+    }
+
+    private fun hideBottomLayout(layout: ConstraintLayout) {
+        layout.animate().translationY(layout.height.toFloat()).setDuration(300).withEndAction {
+            layout.visibility = View.GONE
+        }.start()
     }
 
     override fun onStart() {
@@ -65,6 +113,7 @@ class ShoppingListFragment :
     private fun initAdapter() {
         shoppingListAdapter = ShoppingListAdapter(viewModel)
         binding.rvCart.adapter = shoppingListAdapter
+        binding.rvCart.setHasFixedSize(false)
     }
 
     private fun readNfcTag(tag: Tag) {

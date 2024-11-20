@@ -1,5 +1,6 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
+import com.google.android.gms.maps.model.Marker
 import com.ssafy.smartstore_jetpack.domain.model.Shop
 
 interface ShoppingListClickListener {
@@ -15,6 +16,8 @@ interface ShoppingListClickListener {
     fun onClickShopClose()
 
     fun onClickShopSelect(shop: Shop)
+
+    fun onClickShopSelectInMap(shop: Shop)
 
     fun onClickShopSelectCancel()
 

@@ -1,7 +1,10 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.ssafy.smartstore_jetpack.domain.model.Comment
 import com.ssafy.smartstore_jetpack.domain.model.Order
 import com.ssafy.smartstore_jetpack.domain.model.OrderDetail
@@ -62,6 +65,7 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiS
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,6 +78,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.abs
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -164,6 +169,12 @@ class MainViewModel @Inject constructor(
     private val _shops = MutableStateFlow<List<Shop>>(emptyList())
     val shops = _shops.asStateFlow()
 
+    private val _searchedShops = MutableStateFlow<List<Shop>>(emptyList())
+    val searchedShops = _searchedShops.asStateFlow()
+
+    private val _selectShopInMap = MutableStateFlow<Shop?>(null)
+    val selectShopInMap = _selectShopInMap.asStateFlow()
+
     private val _selectShop = MutableStateFlow<Shop?>(null)
     val selectShop = _selectShop.asStateFlow()
 
@@ -175,6 +186,9 @@ class MainViewModel @Inject constructor(
 
     private val _notices = MutableStateFlow<List<String>>(emptyList())
     val notice = _notices.asStateFlow()
+
+    private val _shopSearchKeyword = MutableStateFlow<String>("")
+    val shopSearchKeyword = _shopSearchKeyword
 
     /****** Ui State ******/
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState())
@@ -771,6 +785,10 @@ class MainViewModel @Inject constructor(
 
     override fun onClickTakeout() {
         viewModelScope.launch {
+            _searchedShops.value = _shops.value
+            _shopSearchKeyword.value = ""
+            _isMapMode.value = false
+            _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
             _shoppingUiEvent.emit(ShoppingListUiEvent.TakeOutOrder)
         }
     }
@@ -801,6 +819,13 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _selectShop.value = shop
             _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCHSELECT) }
+        }
+    }
+
+    override fun onClickShopSelectInMap(shop: Shop) {
+        viewModelScope.launch {
+            _selectShop.value = shop
+            _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.MAPSELECT) }
         }
     }
 
@@ -1017,17 +1042,6 @@ class MainViewModel @Inject constructor(
         )
         newShops.add(
             Shop(
-                id = "4",
-                name = "구미옥계",
-                image = "https://mblogthumb-phinf.pstatic.net/MjAyMTA3MTRfMTEg/MDAxNjI2MjYyNzE4NDI5.AMdA_uB_i8FJNyhVzFx4pkGRyKqgzTkRRPUwbTEqflcg.wAI4J4M6MfW0_k3LKPyTGRpcii_cw-Alju6rgTGu0gog.JPEG.kilrboy89/SE-01f7a5c6-9709-4736-8f30-9f3c6d81df8a.jpg?type=w800",
-                description = "경상북도 구미시 옥계북로20(양포동)",
-                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
-                latitude = 36.138290806168214,
-                longitude = 128.4195495105708
-            )
-        )
-        newShops.add(
-            Shop(
                 id = "5",
                 name = "구미광평DT",
                 image = "https://naverbooking-phinf.pstatic.net/20240611_257/1718104467893XeEyG_JPEG/image.jpg?type=f750_420_60_sharpen",
@@ -1035,6 +1049,17 @@ class MainViewModel @Inject constructor(
                 time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
                 latitude = 36.10361637149451,
                 longitude = 128.36360282794408
+            )
+        )
+        newShops.add(
+            Shop(
+                id = "4",
+                name = "구미옥계",
+                image = "https://mblogthumb-phinf.pstatic.net/MjAyMTA3MTRfMTEg/MDAxNjI2MjYyNzE4NDI5.AMdA_uB_i8FJNyhVzFx4pkGRyKqgzTkRRPUwbTEqflcg.wAI4J4M6MfW0_k3LKPyTGRpcii_cw-Alju6rgTGu0gog.JPEG.kilrboy89/SE-01f7a5c6-9709-4736-8f30-9f3c6d81df8a.jpg?type=w800",
+                description = "경상북도 구미시 옥계북로20(양포동)",
+                time = "평일 06:00 ~ 23:00\n주말 07:00 ~ 23:00",
+                latitude = 36.138290806168214,
+                longitude = 128.4195495105708
             )
         )
 
@@ -1202,6 +1227,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun sortSearchedShop(myPosition: Location) {
+        _searchedShops.value = _searchedShops.value.sortedBy { shop ->
+            val shopLocation = Location("").apply {
+                latitude = shop.latitude
+                longitude = shop.longitude
+            }
+
+            abs(shopLocation.distanceTo(myPosition))
+        }
+    }
+
     fun validateUserId(id: CharSequence) {
         when (id.isNotBlank()) {
             true -> _loginUiState.update { it.copy(userIdValidState = InputValidState.VALID) }
@@ -1359,5 +1395,22 @@ class MainViewModel @Inject constructor(
                 _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.NONE) }
             }
         }
+    }
+
+    fun validateShopSearchKeyword(shopSearchKeyword: CharSequence) {
+        if (shopSearchKeyword.isBlank()) {
+            _searchedShops.value = _shops.value
+            return
+        }
+
+        val newSearchedShops = mutableListOf<Shop>()
+
+        _shops.value.forEach { shop ->
+            if (shop.name.contains(shopSearchKeyword)) {
+                newSearchedShops.add(shop)
+            }
+        }
+
+        _searchedShops.value = newSearchedShops.toList()
     }
 }

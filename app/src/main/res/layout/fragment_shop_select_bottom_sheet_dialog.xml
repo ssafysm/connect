@@ -74,8 +74,16 @@
             android:id="@+id/et_shop_select"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/shape_comment"
+            android:enabled="@{vm.shopSelectUiState.isSearchMode}"
+            android:fontFamily="@font/pretendardsemibold"
             android:hint="매장을 입력하세요."
+            android:onTextChanged="@{(shopSearchKeyword, s, b, c) -> vm.validateShopSearchKeyword(shopSearchKeyword)}"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="@={vm.shopSearchKeyword}"
+            android:textColor="@color/neutral_70"
             app:layout_constraintBottom_toBottomOf="@id/sc_shop_select"
             app:layout_constraintEnd_toStartOf="@id/sc_shop_select"
             app:layout_constraintStart_toEndOf="@id/gl_start_shop_select"
@@ -85,10 +93,13 @@
             android:id="@+id/sc_shop_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:checked="@{vm.isMapMode}"
             android:onCheckedChanged="@{(_, isMapMode) -> vm.setMapMode(isMapMode)}"
             android:visibility="@{(vm.shopSelectUiState.isSearchSelectMode == true || vm.shopSelectUiState.isMapSelectMode == true) ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toStartOf="@id/gl_end_shop_select"
+            app:layout_constraintStart_toEndOf="@id/et_shop_select"
             app:layout_constraintTop_toBottomOf="@id/iv_shop_select"
             app:switchCustomTheme="@{vm.appThemeName}" />
 
@@ -107,7 +118,7 @@
             app:layout_constraintEnd_toStartOf="@id/gl_end_shop_select"
             app:layout_constraintStart_toEndOf="@id/gl_start_shop_select"
             app:layout_constraintTop_toBottomOf="@id/sc_shop_select"
-            app:submitData="@{vm.shops}"
+            app:submitData="@{vm.searchedShops}"
             tools:listitem="@layout/list_item_shop" />
 
         <androidx.fragment.app.FragmentContainerView
