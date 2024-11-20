@@ -479,12 +479,14 @@ class MainViewModel @Inject constructor(
 
     override fun onClickProduct(product: Product) {
         _selectedProduct.value = null
+        _selectedProductPrice.value = ""
         viewModelScope.launch {
             val response = getProductUseCase.getProductWithComment(product.id)
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let {
                         _selectedProduct.value = it
+                        _selectedProductPrice.value = it.price
                     }
                 }
 
@@ -557,12 +559,18 @@ class MainViewModel @Inject constructor(
     override fun onClickProductCountUp() {
         if (_selectProductCount.value.toInt() < 99) {
             _selectProductCount.value = (_selectProductCount.value.toInt() + 1).toString()
+            _selectedProduct.value?.let {
+                _selectedProductPrice.value = makeComma(_selectProductCount.value.toInt() * deleteComma(it.price))
+            }
         }
     }
 
     override fun onClickProductCountDown() {
         if (_selectProductCount.value.toInt() > 1) {
             _selectProductCount.value = (_selectProductCount.value.toInt() - 1).toString()
+            _selectedProduct.value?.let {
+                _selectedProductPrice.value = makeComma(_selectProductCount.value.toInt() * deleteComma(it.price))
+            }
         }
     }
 

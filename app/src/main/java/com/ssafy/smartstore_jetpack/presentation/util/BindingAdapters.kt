@@ -74,6 +74,21 @@ fun ConstraintLayout.bindSubBackgroundColor(appThemeName: String?) {
     }
 }
 
+@BindingAdapter("app:bottomSheetCustomTheme")
+fun ConstraintLayout.bindBottomSheetCustomTheme(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> setBackgroundResource(R.drawable.shape_bottom_sheet_spring)
+
+        "여름" -> setBackgroundResource(R.drawable.shape_bottom_sheet_summer)
+
+        "가을" -> setBackgroundResource(R.drawable.shape_bottom_sheet_autumn)
+
+        "겨울" -> setBackgroundResource(R.drawable.shape_bottom_sheet_winter)
+
+        else -> setBackgroundResource(R.drawable.shape_bottom_sheet_main)
+    }
+}
+
 @BindingAdapter("app:noticeCustomTheme")
 fun ImageView.bindNoticeBackground(appThemeName: String) {
     when (appThemeName) {
