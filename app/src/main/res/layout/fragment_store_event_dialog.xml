@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundCustomSubTheme="@{vm.appThemeName}">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start_store_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_top_store_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <TextView
+                android:id="@+id/tv_title_store_event"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardblack"
+                android:text="@string/text_store_event"
+                android:textColor="@color/neutral_100"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_store_event"
+                app:layout_constraintStart_toEndOf="@id/gl_start_store_event"
+                app:layout_constraintTop_toBottomOf="@id/gl_top_store_event" />
+
+            <TextView
+                android:id="@+id/tv_description_store_event"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendardregular"
+                android:text="@string/text_store_event_description"
+                android:textColor="@color/neutral_70"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_confirm_store_event"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_store_event"
+                app:layout_constraintStart_toEndOf="@id/gl_start_store_event"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_store_event" />
+
+            <TextView
+                android:id="@+id/tv_confirm_store_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/pretendardregular"
+                android:text="@string/text_confirm"
+                android:textColor="@color/neutral_70"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/gl_bottom_store_event"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_store_event"
+                app:layout_constraintTop_toBottomOf="@id/tv_description_store_event" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end_store_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_store_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

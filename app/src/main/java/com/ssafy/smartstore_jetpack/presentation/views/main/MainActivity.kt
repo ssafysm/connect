@@ -258,8 +258,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun shouldShowNotification(): Boolean {
         val lastShownTime = preferencesUtil.getLastPopupShownTime()
         val currentTime = System.currentTimeMillis()
-        return (currentTime - lastShownTime) >= 24 * 60 * 60 * 1000 // 24시간
-        // return (currentTime - lastShownTime) >= 30 * 1000 // 30초 (테스트용)
+        // return (currentTime - lastShownTime) >= 24 * 60 * 60 * 1000 // 24시간
+        return (currentTime - lastShownTime) >= 30 * 1000 // 30초 (테스트용)
     }
 
     private fun updateLastNotificationTime() {
