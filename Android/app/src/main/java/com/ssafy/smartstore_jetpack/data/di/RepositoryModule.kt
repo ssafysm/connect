@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRepositoryImpl
+import com.ssafy.smartstore_jetpack.data.repository.coupon.CouponRemoteDataSource
+import com.ssafy.smartstore_jetpack.data.repository.coupon.CouponRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.datastore.DataStoreRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.event.EventRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.event.EventRepositoryImpl
@@ -16,6 +18,7 @@ import com.ssafy.smartstore_jetpack.data.repository.shop.ShopRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRepositoryImpl
 import com.ssafy.smartstore_jetpack.domain.repository.CommentRepository
+import com.ssafy.smartstore_jetpack.domain.repository.CouponRepository
 import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
 import com.ssafy.smartstore_jetpack.domain.repository.EventRepository
 import com.ssafy.smartstore_jetpack.domain.repository.OrderRepository
@@ -66,6 +69,12 @@ object RepositoryModule {
     @Singleton
     fun provideEventRepository(eventRemoteDataSource: EventRemoteDataSource): EventRepository {
         return EventRepositoryImpl(eventRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCouponRepository(couponRemoteDataSource: CouponRemoteDataSource): CouponRepository {
+        return CouponRepositoryImpl(couponRemoteDataSource)
     }
 
     @Provides

@@ -1,6 +1,6 @@
 package com.ssafy.cafe.model.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Coupon {
 	
@@ -8,17 +8,17 @@ public class Coupon {
 	private String userId;
 	private String name;
 	private String image;
+	private LocalDateTime time;
 	private Integer price;
-	private Date couponTime;
 	
-	public Coupon(Integer id, String userId, String name, String image, Integer price, Date couponTime) {
+	public Coupon(Integer id, String userId, String name, String image, Integer price, LocalDateTime time) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.name = name;
 		this.image = image;
+		this.time = time;
 		this.price = price;
-		this.couponTime = couponTime;
 	}
 
 	public Coupon(String userId, String name, String image, Integer price) {
@@ -69,12 +69,12 @@ public class Coupon {
 		this.price = price;
 	}
 
-	public Date getCouponTime() {
-		return couponTime;
+	public LocalDateTime getTime() {
+		return time;
 	}
 
-	public void setCouponTime(Date couponTime) {
-		this.couponTime = couponTime;
+	public void setTime(LocalDateTime time) {
+		this.time = time;
 	}
 
 }
