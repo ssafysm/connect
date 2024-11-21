@@ -14,4 +14,6 @@ interface UserRemoteDataSource {
     suspend fun getIsUsedId(id: String): Response<Boolean>
 
     suspend fun postUserForLogin(user: User): Response<UserEntity>
+
+    suspend fun putPassword(user: User): Response<Boolean>
 }

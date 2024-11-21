@@ -30,4 +30,6 @@ public interface UserDao {
      * @return
      */
     User selectByUser(User user);
+    
+    int updatePassword(User user);
 }

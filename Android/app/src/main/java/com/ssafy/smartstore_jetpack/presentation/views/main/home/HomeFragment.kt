@@ -16,6 +16,7 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -76,14 +77,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             page.scaleY = scaleFactor
             page.alpha = 0.8F + (1 - abs(position)) * 0.2F
         }
-        pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
+        lifecycleScope.launch {
+            viewModel.events.collectLatest {
+                pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageScrollStateChanged(state: Int) {
+                        super.onPageScrollStateChanged(state)
 
-                if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
-                    stopAutoScroll()
-                } else if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                    startAutoScroll(binding.vpTodayEventHome)
+                        if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                            stopAutoScroll()
+                        } else if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                            startAutoScroll(binding.vpTodayEventHome)
+                        }
+                    }
                 }
             }
         }

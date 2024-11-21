@@ -13,4 +13,6 @@ interface UserRepository {
     suspend fun getIsUsedId(id: String): Result<Boolean>
 
     suspend fun postUserForLogin(user: User): Result<User>
+
+    suspend fun putPassword(user: User): Result<Boolean>
 }

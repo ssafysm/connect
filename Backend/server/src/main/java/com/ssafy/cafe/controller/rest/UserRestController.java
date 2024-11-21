@@ -65,6 +65,24 @@ public class UserRestController {
         }
     }
 
+    @Operation(summary = "사용자의 비밀번호를 변경한다.")
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestBody User user) {
+    	try {
+            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0);
+            int result = userService.updatePassword(newUser);
+
+            if (result == 1) {
+                return ResponseEntity.ok(true);
+            } else {
+                return ResponseEntity.ok(false);
+            }
+        } catch (Exception e) {
+            log.error("사용자 등록 오류: ", e);
+            return ResponseEntity.ok(false);
+        }
+    }
+
     @Operation(summary = "로그인 처리. 로그인 성공 시 쿠키(ssafy_id)를 내려보낸다.")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) {

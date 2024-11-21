@@ -64,6 +64,8 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.OrderUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.ProductClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingUiEvent
@@ -102,7 +104,7 @@ class MainViewModel @Inject constructor(
 
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
-    InformationClickListener {
+    InformationClickListener, PasswordClickListener {
 
     /****** Data ******/
     private val _userId = MutableStateFlow<String>("")
@@ -268,6 +270,9 @@ class MainViewModel @Inject constructor(
 
     private val _settingUiEvent = MutableSharedFlow<SettingUiEvent>()
     val settingUiEvent = _settingUiEvent.asSharedFlow()
+
+    private val _passwordUiEvent = MutableSharedFlow<PasswordUiEvent>()
+    val passwordUiEvent = _passwordUiEvent.asSharedFlow()
 
     private val _historyUiEvent = MutableSharedFlow<HistoryUiEvent>()
     val historyUiEvent = _historyUiEvent.asSharedFlow()
@@ -506,6 +511,7 @@ class MainViewModel @Inject constructor(
             _user.value = null
             setUserIdUseCase.setUserId("")
             setCookieUseCase.deleteLoginCookie()
+            initStates()
             _settingUiEvent.emit(SettingUiEvent.DoLogout)
         }
     }
@@ -995,6 +1001,45 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    override fun onClickPasswordUpdate() {
+        viewModelScope.launch {
+            _user.value?.let { user ->
+                val newUser = User(
+                    id = user.user.id,
+                    name = "",
+                    pass = _newPassword.value,
+                    stamps = "",
+                    stampList = emptyList()
+                )
+                val response = getUserUseCase.updatePassword(newUser)
+
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        response.data?.let { it ->
+                            when (it) {
+                                true -> {
+                                    Timber.d("비번 변경 성공")
+                                    _passwordUiEvent.emit(PasswordUiEvent.PasswordUpdateSuccess)
+                                    onClickLogout()
+                                }
+
+                                else -> {
+                                    Timber.d("비번 변경 실패인데 통신은 됨")
+                                    _passwordUiEvent.emit(PasswordUiEvent.PasswordUpdateFailed)
+                                }
+                            }
+                        }
+                    }
+
+                    else -> {
+                        Timber.d("비번 변경하는 통신도 안 됨 ㅅㅂ")
+                        _passwordUiEvent.emit(PasswordUiEvent.PasswordUpdateFailed)
+                    }
+                }
+            }
+        }
+    }
+
     private fun setTheme() {
         viewModelScope.launch {
             val appTheme = getAppTheme().first()
@@ -1010,6 +1055,7 @@ class MainViewModel @Inject constructor(
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let { events ->
+                        Timber.d("Events: $events")
                         _events.value = listOf(events.last()) + events + listOf(events.first())
                     }
                 }

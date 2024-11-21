@@ -19,4 +19,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun postUserForLogin(user: User): Response<UserEntity> =
         userApi.postUserForLogin(user)
+
+    override suspend fun putPassword(user: User): Response<Boolean> =
+        userApi.putPassword(user)
 }

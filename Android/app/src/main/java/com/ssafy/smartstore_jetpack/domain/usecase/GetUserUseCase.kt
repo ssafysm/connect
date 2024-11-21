@@ -25,4 +25,8 @@ class GetUserUseCase @Inject constructor(
     suspend fun postUserForLogin(user: User): Result<User> {
         return userRepository.postUserForLogin(user)
     }
+
+    suspend fun updatePassword(user: User): Result<Boolean> {
+        return userRepository.putPassword(user)
+    }
 }

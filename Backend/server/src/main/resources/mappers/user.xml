@@ -34,4 +34,11 @@
         FROM t_user
         WHERE id = #{id} AND pass = #{pass}
     </select>
+    
+    <update id="updatePassword" parameterType="User">
+    	update t_user 
+        set 
+        	pass = #{pass}
+        where id = #{id}
+    </update>
 </mapper>

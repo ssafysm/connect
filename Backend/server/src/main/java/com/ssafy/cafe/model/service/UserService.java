@@ -38,5 +38,5 @@ public interface UserService {
      */
     public User selectUser(String id);
 
-
+    public int updatePassword(User user);
 }

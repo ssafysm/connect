@@ -37,4 +37,9 @@ public class UserServiceImpl implements UserService {
     public User selectUser(String id) {
         return userDao.selectById(id);
     }
+    
+    @Override
+    public int updatePassword(User user) {
+    	return userDao.updatePassword(user);
+    }
 }

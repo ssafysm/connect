@@ -96,6 +96,17 @@ CREATE TABLE t_event(
     url VARCHAR(1000) NOT NULL
 );
 
+-- t_coupon 테이블 생성(쿠폰 정보)
+CREATE TABLE t_coupon(
+	id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    image VARCHAR(1000) NOT NULL,
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   
+    price INTEGER NOT NULL,
+    CONSTRAINT fk_coupon_user FOREIGN KEY(user_id) REFERENCES t_user(id) ON DELETE CASCADE
+);
+
 -- t_user 데이터 삽입
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id01', 'name01', 'pass01', 4);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id02', 'name02', 'pass02', 1);
@@ -198,6 +209,19 @@ INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES 
 주말 09:00 ~ 21:00', 36.08225546213961, 128.35640083138827);
 INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미금오산DT', 'https://blog.kakaocdn.net/dn/Kd17x/btrTRedi8j3/mxrTFcMeK8OGbz9ZE5arAk/img.jpg', '경상북도 구미시 남통동 금오산로 205', '평일 09:00 ~ 21:00
 주말 09:00 ~ 21:00', 36.12225927143425, 128.32358396526578);
+
+-- t_event 데이터 삽입(Mock-Up 이벤트 데이터)
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 01', 'https://img.freepik.com/free-psd/coffee-concept-banner-template_23-2148448356.jpg', 'https://www.starbucks.co.kr/index.do');
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 02', 'https://img.freepik.com/free-psd/coffee-shop-template-design_23-2150855323.jpg', 'https://www.starbucks.co.kr/index.do');
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 03', 'https://img.freepik.com/free-psd/coffee-cup-banner-template_23-2148818258.jpg?semt=ais_hybrid', 'https://www.starbucks.co.kr/index.do');
+
+INSERT INTO t_coupon (user_id, name, image, price) VALUES('id01', '기본', '', 1000);
+INSERT INTO t_coupon (user_id, name, image, price) VALUES('id01', '기본1', '', 1000);
+INSERT INTO t_coupon (user_id, name, image, price) VALUES('id02', '기본1', '', 1000);
+
+SELECT * FROM t_coupon WHERE user_id = 'id01';
+
+UPDATE t_user SET pass = 'bb' WHERE id = 'id01';
 
 -- 트랜잭션 커밋
 COMMIT;

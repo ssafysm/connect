@@ -9,6 +9,7 @@
 	    <result column="name" property="name"/>
 	    <result column="image" property="image"/>
 	    <result column="price" property="price"/>
+	    <result column="id" property="id"/>
 	</resultMap>
 	
 	<select id="getCoupons" parameterType="string" resultMap="CouponResultMap">
@@ -16,7 +17,6 @@
 		    user_id,
 		    name,
 		    image,
-		    time,
 		    price
 		FROM t_coupon
 		WHERE user_id = #{userId}
