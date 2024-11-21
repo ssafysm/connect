@@ -5,6 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.smartstore_jetpack.data.base.AddCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.base.ReceivedCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
+import com.ssafy.smartstore_jetpack.data.api.FcmApi
 import com.ssafy.smartstore_jetpack.data.api.CouponApi
 import com.ssafy.smartstore_jetpack.data.api.EventApi
 import com.ssafy.smartstore_jetpack.data.api.OrderApi
@@ -28,7 +29,12 @@ import javax.inject.Singleton
 object NetworkModule {
 
 //    private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
-    private const val BASE_URL = "http://192.168.33.129:9987/"
+
+    // JW 서버 주소
+//    private const val BASE_URL = "http://192.168.33.129:9987/"
+
+    // SM 서버 주소
+    private const val BASE_URL = "http://192.168.33.130:9987/"
 
 
     @Provides
@@ -106,5 +112,12 @@ object NetworkModule {
     @Singleton
     fun provideCouponApiService(@Named("SSAFY") retrofit: Retrofit): CouponApi {
         return retrofit.create(CouponApi::class.java)
+    }
+
+    // FcmApi 추가
+    @Provides
+    @Singleton
+    fun provideFcmApiService(@Named("SSAFY") retrofit: Retrofit): FcmApi {
+        return retrofit.create(FcmApi::class.java)
     }
 }

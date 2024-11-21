@@ -14,6 +14,7 @@ import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
 import com.ssafy.smartstore_jetpack.domain.model.Status
 import com.ssafy.smartstore_jetpack.domain.model.User
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
+import com.ssafy.smartstore_jetpack.domain.usecase.AddFcmTokenUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
@@ -95,7 +96,10 @@ class MainViewModel @Inject constructor(
     private val getCookieUseCase: GetCookieUseCase,
     private val setCookieUseCase: SetCookieUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
-    private val setAppThemeUseCase: SetAppThemeUseCase
+    private val setAppThemeUseCase: SetAppThemeUseCase,
+    // 추가된 UseCase
+    private val addFcmTokenUseCase: AddFcmTokenUseCase
+
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
     InformationClickListener {
@@ -1416,5 +1420,29 @@ class MainViewModel @Inject constructor(
         }
 
         _searchedShops.value = newSearchedShops.toList()
+    }
+
+    // FCM 토큰 업로드 메서드 추가
+    fun uploadFcmToken(token: String) {
+        viewModelScope.launch {
+            val userId = getUserIdUseCase.getUserId().first()
+            if (userId.isNotEmpty()) {
+                val result = addFcmTokenUseCase.addFcmToken(userId, token)
+                when (result.status) {
+                    Status.SUCCESS -> {
+                        if (result.data == true) {
+                            Timber.d("FCM 토큰 업로드 성공")
+                        } else {
+                            Timber.e("FCM 토큰 업로드 실패: 서버 응답이 false입니다.")
+                        }
+                    }
+                    else -> {
+                        Timber.e("FCM 토큰 업로드 실패: ${result.message}")
+                    }
+                }
+            } else {
+                Timber.w("사용자 ID가 비어있습니다. FCM 토큰을 업로드할 수 없습니다.")
+            }
+        }
     }
 }

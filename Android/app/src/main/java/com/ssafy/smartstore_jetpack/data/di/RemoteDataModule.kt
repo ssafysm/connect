@@ -1,6 +1,7 @@
 package com.ssafy.smartstore_jetpack.data.di
 
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
+import com.ssafy.smartstore_jetpack.data.api.CouponApi
 import com.ssafy.smartstore_jetpack.data.api.EventApi
 import com.ssafy.smartstore_jetpack.data.api.OrderApi
 import com.ssafy.smartstore_jetpack.data.api.ProductApi
@@ -8,6 +9,8 @@ import com.ssafy.smartstore_jetpack.data.api.ShopApi
 import com.ssafy.smartstore_jetpack.data.api.UserApi
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSourceImpl
+import com.ssafy.smartstore_jetpack.data.repository.coupon.CouponRemoteDataSource
+import com.ssafy.smartstore_jetpack.data.repository.coupon.CouponRemoteDataSourceImpl
 import com.ssafy.smartstore_jetpack.data.repository.event.EventRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.event.EventRemoteDataSourceImpl
 import com.ssafy.smartstore_jetpack.data.repository.order.OrderRemoteDataSource
@@ -62,5 +65,11 @@ object RemoteDataModule {
     @Singleton
     fun provideEventRemoteDataSource(eventApi: EventApi): EventRemoteDataSource {
         return EventRemoteDataSourceImpl(eventApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCouponRemoteDataSource(couponApi: CouponApi): CouponRemoteDataSource {
+        return CouponRemoteDataSourceImpl(couponApi)
     }
 }
