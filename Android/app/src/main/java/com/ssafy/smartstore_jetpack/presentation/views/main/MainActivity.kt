@@ -356,6 +356,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (token != null) {
                 // 서버로 토큰을 업로드하는 로직을 여기에 추가하세요.
                 // 예: uploadTokenToServer(token)
+                viewModel.uploadFcmToken(token)
             }
         }
         // 알림 채널 생성
