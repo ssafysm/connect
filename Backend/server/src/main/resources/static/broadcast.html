@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FCM 메시지 전송</title>
+</head>
+<body>
+
+    <h1>FCM 메시지 전송 - Notification</h1>
+    <form action="/rest/fcm/sendMessage" method="post">
+        <input type="text" name="token" size=100 placeholder="토큰을 입력하세요"><br>
+        <input type="text" name="title" placeholder="제목을 입력하세요"><br>
+        <textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
+        <input type="submit"><input type="reset">
+    </form>
+
+    <h1>특정 사용자에게 메시지 전송</h1>
+    <form action="/rest/fcm/sendMessageToUser" method="post">
+        <input type="text" name="userId" placeholder="사용자 ID를 입력하세요"><br>
+        <input type="text" name="title" placeholder="제목을 입력하세요"><br>
+        <textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
+        <input type="submit"><input type="reset">
+    </form>
+
+    <h1>전체 사용자에게 메시지 전송</h1>
+    <form action="/rest/fcm/broadcast" method="post">
+        <input type="text" name="title" placeholder="제목을 입력하세요"><br>
+        <textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
+        <input type="submit"><input type="reset">
+    </form>
+
+</body>
+</html>
