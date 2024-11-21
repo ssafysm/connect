@@ -29,6 +29,8 @@ object ProductMapper {
             type = productEntity.type,
             price = makeComma(productEntity.price),
             img = productEntity.img,
+            description = productEntity.description ?: productEntity.name,
+            mode = productEntity.mode ?: "ICED",
             comments = newComments,
             productCommentTotalCnt = productEntity.productCommentTotalCnt,
             productRatingAvg = productEntity.productRatingAvg.toString(),

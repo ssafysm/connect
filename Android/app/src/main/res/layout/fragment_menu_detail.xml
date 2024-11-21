@@ -144,7 +144,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardregular"
-                    android:text="진한 에스프레소에 시원한 정수물과 얼음 더하여 스타벅스의 깔끔하고 강렬한 에스프레소를 가장 부드럽고 시원하게 즐길 수 있는 커피"
+                    android:text="@{vm.selectedProduct.description}"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_menu_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_menu_detail"

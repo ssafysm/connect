@@ -135,6 +135,12 @@ data class ProductEntity(
     @Json(name = "img")
     val img: String,
 
+    @Json(name = "description")
+    val description: String?,
+
+    @Json(name = "mode")
+    val mode: String?,
+
     @Json(name = "commentCount")
     val productCommentTotalCnt: Int?,
 
@@ -167,4 +173,28 @@ data class CommentEntity(
 
     @Json(name = "userName")
     val userName: String = ""
+)
+
+@JsonClass(generateAdapter = true)
+data class ShopEntity(
+    @Json(name = "id")
+    val id: Int,
+
+    @Json(name = "name")
+    val name: String?,
+
+    @Json(name = "image")
+    val image: String?,
+
+    @Json(name = "description")
+    val description: String?,
+
+    @Json(name = "time")
+    val time: String?,
+
+    @Json(name = "latitude")
+    val latitude: Double?,
+
+    @Json(name = "longitude")
+    val longitude: Double?
 )

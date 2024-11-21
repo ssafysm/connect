@@ -8,6 +8,8 @@ public class ProductWithComment {
     private String type;
     private Integer price;
     private String img;
+    private String description;
+    private String mode;
 
     private int commentCount;
     private int totalSells;
@@ -21,6 +23,8 @@ public class ProductWithComment {
         this.type = product.getType();
         this.price = product.getPrice();
         this.img = product.getImg();
+        this.description = product.getDescription();
+        this.mode = product.getMode();
     }
 
     public ProductWithComment() {
@@ -66,7 +70,23 @@ public class ProductWithComment {
         this.img = img;
     }
 
-    public int getCommentCount() {
+    public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	public int getCommentCount() {
         return commentCount;
     }
 

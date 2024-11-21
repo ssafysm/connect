@@ -32,6 +32,8 @@ object ProductsMapper {
                     type = productEntity.type,
                     price = productEntity.price.toString(),
                     img = productEntity.img,
+                    description = productEntity.description ?: productEntity.name,
+                    mode = productEntity.mode ?: "ICED",
                     comments = newComments,
                     productCommentTotalCnt = productEntity.productCommentTotalCnt,
                     productRatingAvg = productEntity.productRatingAvg.toString(),

@@ -6,6 +6,8 @@ data class Product(
     val type: String,
     val price: String,
     val img: String,
+    val description: String,
+    val mode: String,
     val comments: List<Comment>,
     val productCommentTotalCnt: Int?,
     val productRatingAvg: String?,

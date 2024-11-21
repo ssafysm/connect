@@ -9,12 +9,15 @@ import com.ssafy.smartstore_jetpack.data.repository.order.OrderRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.order.OrderRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.product.ProductRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.product.ProductRepositoryImpl
+import com.ssafy.smartstore_jetpack.data.repository.shop.ShopRemoteDataSource
+import com.ssafy.smartstore_jetpack.data.repository.shop.ShopRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRepositoryImpl
 import com.ssafy.smartstore_jetpack.domain.repository.CommentRepository
 import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
 import com.ssafy.smartstore_jetpack.domain.repository.OrderRepository
 import com.ssafy.smartstore_jetpack.domain.repository.ProductRepository
+import com.ssafy.smartstore_jetpack.domain.repository.ShopRepository
 import com.ssafy.smartstore_jetpack.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -48,6 +51,12 @@ object RepositoryModule {
     @Singleton
     fun provideUserRepository(userRemoteDataSource: UserRemoteDataSource): UserRepository {
         return UserRepositoryImpl(userRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShopRepository(shopRemoteDataSource: ShopRemoteDataSource): ShopRepository {
+        return ShopRepositoryImpl(shopRemoteDataSource)
     }
 
     @Provides

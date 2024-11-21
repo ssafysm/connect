@@ -25,7 +25,7 @@
         join t_order_detail d on o.o_id = d.order_id
         join t_product p on d.product_id = p.id
         where p.id = #{productId}
-        order by d.d_id asc;
+        order by d.d_id ASC;
     </select>
 	
 </mapper>

@@ -109,6 +109,7 @@
 
     <!-- Shopping List -->
     <string name="text_cart">장바구니</string>
+    <string name="text_no_product">장바구니에 담은 품목이 없어요.</string>
     <string name="text_take_out">T-out</string>
     <string name="text_shop">매장</string>
     <string name="text_total_start">총</string>

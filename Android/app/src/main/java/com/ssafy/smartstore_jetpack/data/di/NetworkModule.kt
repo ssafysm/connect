@@ -7,6 +7,7 @@ import com.ssafy.smartstore_jetpack.data.base.ReceivedCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
 import com.ssafy.smartstore_jetpack.data.api.OrderApi
 import com.ssafy.smartstore_jetpack.data.api.ProductApi
+import com.ssafy.smartstore_jetpack.data.api.ShopApi
 import com.ssafy.smartstore_jetpack.data.api.UserApi
 import dagger.Module
 import dagger.Provides
@@ -25,7 +26,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
 //    private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
-    private const val BASE_URL = "http://192.168.33.130:9987/"
+    private const val BASE_URL = "http://192.168.33.129:9987/"
 
 
     @Provides
@@ -85,5 +86,11 @@ object NetworkModule {
     @Singleton
     fun provideUserApiService(@Named("SSAFY") retrofit: Retrofit): UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShopApiService(@Named("SSAFY") retrofit: Retrofit): ShopApi {
+        return retrofit.create(ShopApi::class.java)
     }
 }
