@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.R
@@ -20,6 +21,8 @@ import com.ssafy.smartstore_jetpack.presentation.util.BlurHelper.applyBlur
 import com.ssafy.smartstore_jetpack.presentation.util.BlurHelper.clearBlur
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -57,17 +60,25 @@ class ShoppingListFragment :
                 }
                 false
             }
-            binding.rvCart.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
 
-                    if (dy > 0) {
-                        hideBottomLayout(binding.clBottomCart)
-                    } else if (dy < 0) {
+            lifecycleScope.launch {
+                viewModel.shoppingList.collectLatest {
+                    if (it.size > 2) {
+                        binding.rvCart.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                                super.onScrolled(recyclerView, dx, dy)
+                                if (dy > 0) {
+                                    hideBottomLayout(binding.clBottomCart)
+                                } else if (dy < 0) {
+                                    showBottomLayout(binding.clBottomCart)
+                                }
+                            }
+                        })
+                    } else {
                         showBottomLayout(binding.clBottomCart)
                     }
                 }
-            })
+            }
         }
 
         // NFC 초기화

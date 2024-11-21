@@ -880,7 +880,7 @@ class MainViewModel @Inject constructor(
                     validateShoppingList()
                     _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder)
                     _totalOrder.value = "0"
-                    _totalPrice.value = "0원"
+                    _totalPrice.value = "￦0"
                     getUser()
                     getLastMonthOrders()
                     getLast6MonthsOrders()

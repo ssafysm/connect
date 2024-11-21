@@ -113,6 +113,9 @@
     <string name="text_shop">매장</string>
     <string name="text_total_start">총</string>
     <string name="text_total_end">개</string>
+    <string name="text_cart_information"> · 장바구니에 담은 품목은 수량을 조절하거나 삭제할 수 있어요.\n
+ · 매장 주문을 하기 위해서는 NFC 태깅이 필요해요.\n
+ · Take Out 주문은 거리가 200m 이하에 있는 매장에서만 가능해요.</string>
 
     <!-- Shop Select -->
     <string name="text_shop_select">매장 선택</string>
