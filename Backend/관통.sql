@@ -101,9 +101,12 @@ CREATE TABLE t_coupon(
 	id INTEGER AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(100) NOT NULL,
     name VARCHAR(200) NOT NULL,
+    description VARCHAR(500) NOT NULL,
     image VARCHAR(1000) NOT NULL,
-    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   
-    price INTEGER NOT NULL,
+    iat_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    exp_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    menu_id INTEGER(100) NOT NULL,
+    menu_count INTEGER(100) NOT NULL,
     CONSTRAINT fk_coupon_user FOREIGN KEY(user_id) REFERENCES t_user(id) ON DELETE CASCADE
 );
 
@@ -215,13 +218,11 @@ INSERT INTO t_event (name, image, url) VALUES ('이벤트 01', 'https://img.free
 INSERT INTO t_event (name, image, url) VALUES ('이벤트 02', 'https://img.freepik.com/free-psd/coffee-shop-template-design_23-2150855323.jpg', 'https://www.starbucks.co.kr/index.do');
 INSERT INTO t_event (name, image, url) VALUES ('이벤트 03', 'https://img.freepik.com/free-psd/coffee-cup-banner-template_23-2148818258.jpg?semt=ais_hybrid', 'https://www.starbucks.co.kr/index.do');
 
-INSERT INTO t_coupon (user_id, name, image, price) VALUES('id01', '기본', '', 1000);
-INSERT INTO t_coupon (user_id, name, image, price) VALUES('id01', '기본1', '', 1000);
-INSERT INTO t_coupon (user_id, name, image, price) VALUES('id02', '기본1', '', 1000);
+INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VALUES('id01', '테스트용 쿠폰', '테스트용 쿠폰입니다.', 'americano_coupon.png', 1, 1);
+INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VALUES('id01', '테스트용 쿠폰', '테스트용 쿠폰입니다.', 'americano_coupon.png', 1, 1);
+INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VALUES('id02', '테스트용 쿠폰', '테스트용 쿠폰입니다.', 'americano_coupon.png', 1, 1);
 
 SELECT * FROM t_coupon WHERE user_id = 'id01';
-
-UPDATE t_user SET pass = 'bb' WHERE id = 'id01';
 
 -- 트랜잭션 커밋
 COMMIT;

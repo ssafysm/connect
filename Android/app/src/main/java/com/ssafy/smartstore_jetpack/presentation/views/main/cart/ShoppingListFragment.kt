@@ -55,8 +55,13 @@ class ShoppingListFragment :
 
             binding.rvCart.setOnTouchListener { _, motionEvent ->
                 when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> binding.rvCart.parent.requestDisallowInterceptTouchEvent(true)
-                    MotionEvent.ACTION_UP -> binding.rvCart.parent.requestDisallowInterceptTouchEvent(false)
+                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> binding.rvCart.parent.requestDisallowInterceptTouchEvent(
+                        true
+                    )
+
+                    MotionEvent.ACTION_UP -> binding.rvCart.parent.requestDisallowInterceptTouchEvent(
+                        false
+                    )
                 }
                 false
             }
@@ -64,7 +69,8 @@ class ShoppingListFragment :
             lifecycleScope.launch {
                 viewModel.shoppingList.collectLatest {
                     if (it.size > 2) {
-                        binding.rvCart.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        binding.rvCart.addOnScrollListener(object :
+                            RecyclerView.OnScrollListener() {
                             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                                 super.onScrolled(recyclerView, dx, dy)
                                 if (dy > 0) {
@@ -85,17 +91,6 @@ class ShoppingListFragment :
         nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
 
         collectLatestFlow(viewModel.shoppingUiEvent) { handleUiEvent(it) }
-    }
-
-    private fun showBottomLayout(layout: ConstraintLayout) {
-        layout.visibility = View.VISIBLE
-        layout.animate().translationY(0f).setDuration(300).start()
-    }
-
-    private fun hideBottomLayout(layout: ConstraintLayout) {
-        layout.animate().translationY(layout.height.toFloat()).setDuration(300).withEndAction {
-            layout.visibility = View.GONE
-        }.start()
     }
 
     override fun onStart() {
@@ -167,6 +162,11 @@ class ShoppingListFragment :
         }
 
         is ShoppingListUiEvent.FinishOrder -> {
+            Toast.makeText(
+                requireContext(),
+                "주문에 성공했어요! 주문 번호는 ${event.orderId}번이에요.",
+                Toast.LENGTH_SHORT
+            ).show()
             requireActivity().supportFragmentManager.popBackStack()
             clearBlur(binding.fragmentShoppingList)
         }

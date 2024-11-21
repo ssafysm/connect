@@ -30,10 +30,16 @@ class ApplicationClass : Application() {
 //        const val SERVER_URL = "http://mobile-pjt.sample.ssafy.io/"
 
         // JW 서버 주소
-        const val SERVER_URL = "http://192.168.33.129:9987/"
+        // const val SERVER_URL = "http://192.168.33.129:9987/"
 
         // SM 서버 주소
         // const val SERVER_URL = "http://192.168.33.130:9987/"
+
+        // JW 핫스팟 서버 주소
+        // const val SERVER_URL = "http://192.168.43.161:9987/"
+
+        // JW 자취방 와이파이 주소
+        const val SERVER_URL = "http://192.168.0.200:9987/"
 
         const val MENU_IMGS_URL = "${SERVER_URL}imgs/menu/"
         const val IMGS_URL = "${SERVER_URL}imgs/"

@@ -54,7 +54,7 @@ public class UserRestController {
 
             if (result == 1) {
             	// 회원 가입 시 천원짜리 쿠폰 1장 주기
-            	couponService.setInitCoupon(new Coupon(user.getId(), "기본 쿠폰", "primary_coupon.png", 1000));
+            	couponService.setInitCoupon(new Coupon(user.getId(), "아이스 아메리카노 1잔", "회원 가입 성공 기념 쿠폰", "americano_coupon.png", 1, 1));
                 return ResponseEntity.ok(true);
             } else {
                 return ResponseEntity.ok(false);

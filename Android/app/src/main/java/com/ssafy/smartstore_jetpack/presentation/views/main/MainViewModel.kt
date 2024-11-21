@@ -11,6 +11,7 @@ import com.ssafy.smartstore_jetpack.domain.model.OrderDetail
 import com.ssafy.smartstore_jetpack.domain.model.Product
 import com.ssafy.smartstore_jetpack.domain.model.Shop
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
+import com.ssafy.smartstore_jetpack.domain.model.Stamp
 import com.ssafy.smartstore_jetpack.domain.model.Status
 import com.ssafy.smartstore_jetpack.domain.model.User
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
@@ -46,6 +47,8 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiS
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupondetail.CouponDetailClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupondetail.CouponDetailUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeUiEvent
@@ -106,15 +109,18 @@ class MainViewModel @Inject constructor(
 
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
-    InformationClickListener, PasswordClickListener, CouponClickListener {
+    InformationClickListener, PasswordClickListener, CouponClickListener,
+    CouponDetailClickListener {
 
-    /****** Data ******/
+    /****** Edit Text ******/
+    /*** Login ***/
     private val _userId = MutableStateFlow<String>("")
     val userId = _userId
 
     private val _userPass = MutableStateFlow<String>("")
     val userPass = _userPass
 
+    /*** Join ***/
     private val _joinId = MutableStateFlow<String>("")
     val joinId = _joinId
 
@@ -127,17 +133,28 @@ class MainViewModel @Inject constructor(
     private val _joinName = MutableStateFlow<String>("")
     val joinName = _joinName
 
-    private val _events = MutableStateFlow<List<Event>>(emptyList())
-    val events = _events.asStateFlow()
+    /*** Comment ***/
+    private val _nowComment = MutableStateFlow<String>("")
+    val nowComment = _nowComment
 
+    /*** Password Update ***/
+    private val _newPassword = MutableStateFlow<String>("")
+    val newPassword = _newPassword
+
+    private val _newPasswordConfirm = MutableStateFlow<String>("")
+    val newPasswordConfirm = _newPasswordConfirm
+
+    /*** Shop Search ***/
+    private val _shopSearchKeyword = MutableStateFlow<String>("")
+    val shopSearchKeyword = _shopSearchKeyword
+
+    /****** Data ******/
+    /*** Init ***/
     private val _user = MutableStateFlow<UserInfo?>(null)
     val user = _user.asStateFlow()
 
-    private val _coupons = MutableStateFlow<List<Coupon>>(emptyList())
-    val coupons = _coupons.asStateFlow()
-
-    private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
-    val selectedCoupon = _selectedCoupon.asStateFlow()
+    private val _products = MutableStateFlow<List<List<Product>>>(emptyList())
+    val products = _products.asStateFlow()
 
     private val _ordersMonth = MutableStateFlow<List<Order>>(emptyList())
     val ordersMonth = _ordersMonth.asStateFlow()
@@ -145,8 +162,34 @@ class MainViewModel @Inject constructor(
     private val _orders6Months = MutableStateFlow<List<Order>>(emptyList())
     val orders6Months = _orders6Months.asStateFlow()
 
+    private val _shops = MutableStateFlow<List<Shop>>(emptyList())
+    val shops = _shops.asStateFlow()
+
+    private val _events = MutableStateFlow<List<Event>>(emptyList())
+    val events = _events.asStateFlow()
+
+    private val _coupons = MutableStateFlow<List<Coupon>>(emptyList())
+    val coupons = _coupons.asStateFlow()
+
+    private val _notices = MutableStateFlow<List<String>>(emptyList())
+    val notice = _notices.asStateFlow()
+
+    /*** Coupon ***/
+    private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
+    val selectedCoupon = _selectedCoupon.asStateFlow()
+
+    private val _selectedCouponMenu = MutableStateFlow<ShoppingCart?>(null)
+    val selectedCouponMenu = _selectedCouponMenu.asStateFlow()
+
+    /*** Cart ***/
     private val _shoppingList = MutableStateFlow<List<ShoppingCart>>(emptyList())
     val shoppingList = _shoppingList.asStateFlow()
+
+    private val _totalOrder = MutableStateFlow<String>("0")
+    val totalOrder = _totalOrder.asStateFlow()
+
+    private val _totalPrice = MutableStateFlow<String>("0원")
+    val totalPrice = _totalPrice.asStateFlow()
 
     private val _selectedOrder = MutableStateFlow<Order?>(null)
     val selectedOrder = _selectedOrder.asStateFlow()
@@ -154,9 +197,7 @@ class MainViewModel @Inject constructor(
     private val _selectedOrderDetails = MutableStateFlow<List<OrderDetail>>(emptyList())
     val selectedOrderDetails = _selectedOrderDetails.asStateFlow()
 
-    private val _products = MutableStateFlow<List<List<Product>>>(emptyList())
-    val products = _products.asStateFlow()
-
+    /*** Product Detail ***/
     private val _selectedProduct = MutableStateFlow<Product?>(null)
     val selectedProduct = _selectedProduct.asStateFlow()
 
@@ -169,44 +210,12 @@ class MainViewModel @Inject constructor(
     private val _selectProductRating = MutableStateFlow<Float>(5F)
     val selectProductRating = _selectProductRating.asStateFlow()
 
-    private val _nowComment = MutableStateFlow<String>("")
-    val nowComment = _nowComment
-
-    private val _nfcMode = MutableStateFlow<Boolean>(true)
-    val nfcMode = _nfcMode.asStateFlow()
-
-    private val _tableNumber = MutableStateFlow<Int>(0)
-    val tableNumber = _tableNumber.asStateFlow()
-
-    private val _totalOrder = MutableStateFlow<String>("0")
-    val totalOrder = _totalOrder.asStateFlow()
-
-    private val _totalPrice = MutableStateFlow<String>("0원")
-    val totalPrice = _totalPrice.asStateFlow()
-
-    private val _shops = MutableStateFlow<List<Shop>>(emptyList())
-    val shops = _shops.asStateFlow()
-
+    /*** Shop ***/
     private val _searchedShops = MutableStateFlow<List<Shop>>(emptyList())
     val searchedShops = _searchedShops.asStateFlow()
 
-    private val _selectShopInMap = MutableStateFlow<Shop?>(null)
-    val selectShopInMap = _selectShopInMap.asStateFlow()
-
     private val _selectShop = MutableStateFlow<Shop?>(null)
     val selectShop = _selectShop.asStateFlow()
-
-    private val _newPassword = MutableStateFlow<String>("")
-    val newPassword = _newPassword
-
-    private val _newPasswordConfirm = MutableStateFlow<String>("")
-    val newPasswordConfirm = _newPasswordConfirm
-
-    private val _notices = MutableStateFlow<List<String>>(emptyList())
-    val notice = _notices.asStateFlow()
-
-    private val _shopSearchKeyword = MutableStateFlow<String>("")
-    val shopSearchKeyword = _shopSearchKeyword
 
     /****** Ui State ******/
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState())
@@ -214,21 +223,6 @@ class MainViewModel @Inject constructor(
 
     private val _joinUiState = MutableStateFlow<JoinUiState>(JoinUiState())
     val joinUiState = _joinUiState.asStateFlow()
-
-    private val _bnvState = MutableStateFlow<Boolean>(true)
-    val bnvState = _bnvState.asStateFlow()
-
-    private val _fabState = MutableStateFlow<Boolean>(false)
-    val fabState = _fabState.asStateFlow()
-
-    private val _appThemeName = MutableStateFlow<String>("기본")
-    val appThemeName = _appThemeName.asStateFlow()
-
-    private val _nowEventIndex = MutableStateFlow<Int>(1)
-    val nowEventIndex = _nowEventIndex.asStateFlow()
-
-    private val _isPushReceiving = MutableStateFlow<Boolean>(false)
-    val isPushReceiving = _isPushReceiving.asStateFlow()
 
     private val _shoppingListUiState = MutableStateFlow<ShoppingListUiState>(ShoppingListUiState())
     val shoppingListUiState = _shoppingListUiState.asStateFlow()
@@ -248,8 +242,29 @@ class MainViewModel @Inject constructor(
     private val _shopSelectUiState = MutableStateFlow<ShopSelectUiState>(ShopSelectUiState())
     val shopSelectUiState = _shopSelectUiState.asStateFlow()
 
+    private val _bnvState = MutableStateFlow<Boolean>(true)
+    val bnvState = _bnvState.asStateFlow()
+
+    private val _fabState = MutableStateFlow<Boolean>(false)
+    val fabState = _fabState.asStateFlow()
+
+    private val _appThemeName = MutableStateFlow<String>("기본")
+    val appThemeName = _appThemeName.asStateFlow()
+
+    private val _nowEventIndex = MutableStateFlow<Int>(1)
+    val nowEventIndex = _nowEventIndex.asStateFlow()
+
+    private val _isPushReceiving = MutableStateFlow<Boolean>(false)
+    val isPushReceiving = _isPushReceiving.asStateFlow()
+
     private val _isMapMode = MutableStateFlow<Boolean>(false)
     val isMapMode = _isMapMode.asStateFlow()
+
+    private val _nfcMode = MutableStateFlow<Boolean>(true)
+    val nfcMode = _nfcMode.asStateFlow()
+
+    private val _tableNumber = MutableStateFlow<Int>(0)
+    val tableNumber = _tableNumber.asStateFlow()
 
     /****** Ui Event ******/
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
@@ -261,9 +276,6 @@ class MainViewModel @Inject constructor(
     private val _joinUiEvent = MutableSharedFlow<JoinUiEvent>()
     val joinUiEvent = _joinUiEvent.asSharedFlow()
 
-    private val _myPageUiEvent = MutableSharedFlow<MyPageUiEvent>()
-    val myPageUiEvent = _myPageUiEvent.asSharedFlow()
-
     private val _orderUiEvent = MutableSharedFlow<OrderUiEvent>()
     val orderUiEvent = _orderUiEvent.asSharedFlow()
 
@@ -272,6 +284,9 @@ class MainViewModel @Inject constructor(
 
     private val _shoppingUiEvent = MutableSharedFlow<ShoppingListUiEvent>()
     val shoppingUiEvent = _shoppingUiEvent.asSharedFlow()
+
+    private val _myPageUiEvent = MutableSharedFlow<MyPageUiEvent>()
+    val myPageUiEvent = _myPageUiEvent.asSharedFlow()
 
     private val _settingUiEvent = MutableSharedFlow<SettingUiEvent>()
     val settingUiEvent = _settingUiEvent.asSharedFlow()
@@ -288,10 +303,14 @@ class MainViewModel @Inject constructor(
     private val _couponUiEvent = MutableSharedFlow<CouponUiEvent>()
     val couponUiEvent = _couponUiEvent.asSharedFlow()
 
+    private val _couponDetailUiEvent = MutableSharedFlow<CouponDetailUiEvent>()
+    val couponDetailUiEvent = _couponDetailUiEvent.asSharedFlow()
+
     init {
         setEvents()
     }
 
+    /*** Home Click ***/
     override fun onClickHomeSignUp() {
         viewModelScope.launch {
             _homeUiEvent.emit(HomeUiEvent.GoToJoin)
@@ -304,143 +323,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onClickMyPageSignUp() {
+    override fun onClickNotice() {
         viewModelScope.launch {
-            _myPageUiEvent.emit(MyPageUiEvent.GoToJoin)
-        }
-    }
-
-    override fun onClickMyPageLogin() {
-        viewModelScope.launch {
-            _myPageUiEvent.emit(MyPageUiEvent.GoToLogin)
-        }
-    }
-
-    override fun onClickLogin() {
-        viewModelScope.launch {
-            val response = getUserUseCase.postUserForLogin(
-                User(
-                    id = _userId.value,
-                    name = "",
-                    pass = _userPass.value,
-                    stamps = "0",
-                    stampList = emptyList()
-                )
-            )
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    val cookies = getCookies().first()
-                    cookies.let {
-                        if (it.isNotEmpty()) {
-                            Timber.d("Cookie: $cookies")
-                            setUserIdUseCase.setUserId(_userId.value)
-                            initStatesWithLogin()
-                            setCookieUseCase.setLoginCookie(it.toHashSet())
-                            _userId.value = ""
-                            _userPass.value = ""
-                            _loginUiState.update { uiState ->
-                                uiState.copy(
-                                    userIdValidState = InputValidState.NONE,
-                                    userPassValidState = InputValidState.NONE
-                                )
-                            }
-                            _loginUiEvent.emit(LoginUiEvent.GoToLogin)
-                            _joinUiEvent.emit(JoinUiEvent.GoToLogin)
-                        }
-                    }
-                }
-
-                else -> {
-                    _loginUiEvent.emit(LoginUiEvent.LoginFail)
-                }
-            }
-        }
-    }
-
-    override fun onClickJoin() {
-        viewModelScope.launch {
-            _loginUiEvent.emit(LoginUiEvent.GoToJoin)
-        }
-    }
-
-    override fun onClickCheckId() {
-        viewModelScope.launch {
-            when (_joinId.value.isBlank()) {
-                true -> {
-                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
-                    _joinUiEvent.emit(JoinUiEvent.CheckId(true))
-                }
-
-                else -> {
-                    val response = getUserUseCase.getIsUsedId(_joinId.value)
-                    when (response.status) {
-                        Status.SUCCESS -> {
-                            when (response.data) {
-                                false -> {
-                                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.NONE) }
-                                    _joinUiEvent.emit(JoinUiEvent.CheckId(response.data))
-                                }
-
-                                else -> {
-                                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
-                                    _joinUiEvent.emit(JoinUiEvent.CheckId(true))
-                                }
-                            }
-                        }
-
-                        else -> {
-                            _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
-                            _joinUiEvent.emit(JoinUiEvent.CheckId(true))
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onClickGoToJoin() {
-        viewModelScope.launch {
-            val response = getUserUseCase.postUser(
-                User(
-                    id = _joinId.value,
-                    name = _joinName.value,
-                    pass = _joinPass.value,
-                    stamps = "0",
-                    stampList = emptyList()
-                )
-            )
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    when (response.data) {
-                        true -> {
-                            _userId.value = _joinId.value
-                            _joinId.value = ""
-                            _joinPass.value = ""
-                            _joinName.value = ""
-                            _joinUiState.update {
-                                it.copy(
-                                    joinIdValidState = InputValidState.NONE,
-                                    joinPassValidState = PasswordState.INIT,
-                                    joinPassConfirmValidState = PasswordState.INIT,
-                                    joinNameValidState = InputValidState.NONE,
-                                    joinIdDuplicateState = DuplicateState.DUPLICATE
-                                )
-                            }
-                            _joinUiEvent.emit(JoinUiEvent.GoToLogin)
-                        }
-
-                        else -> {
-                            _joinUiEvent.emit(JoinUiEvent.JoinFail)
-                        }
-                    }
-                }
-
-                else -> {
-                    _joinUiEvent.emit(JoinUiEvent.JoinFail)
-                }
-            }
+            _homeUiEvent.emit(HomeUiEvent.GoToNotice)
         }
     }
 
@@ -504,30 +389,27 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onClickOrder(order: Order) {
+    /*** Login Click ***/
+    override fun onClickLogin() {
+        login()
+    }
+
+    override fun onClickJoin() {
         viewModelScope.launch {
-            _selectedOrder.value = order
-            _selectedOrderDetails.value = order.details
-            _historyUiEvent.emit(HistoryUiEvent.GoToOrderDetail)
+            _loginUiEvent.emit(LoginUiEvent.GoToJoin)
         }
     }
 
-    override fun onClickNotice() {
-        viewModelScope.launch {
-            _homeUiEvent.emit(HomeUiEvent.GoToNotice)
-        }
+    /*** Join Click ***/
+    override fun onClickCheckId() {
+        validateJoinIdDuplicate()
     }
 
-    override fun onClickLogout() {
-        viewModelScope.launch {
-            _user.value = null
-            setUserIdUseCase.setUserId("")
-            setCookieUseCase.deleteLoginCookie()
-            initStates()
-            _settingUiEvent.emit(SettingUiEvent.DoLogout)
-        }
+    override fun onClickGoToJoin() {
+        join()
     }
 
+    /*** Order Click ***/
     override fun onClickProduct(product: Product) {
         _selectedProduct.value = null
         _selectedProductPrice.value = ""
@@ -546,67 +428,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onClickProductToCart() {
+    override fun onClickToCart() {
         viewModelScope.launch {
-            _shoppingList.value = _shoppingList.value.toMutableList().apply {
-                _selectedProduct.value?.let {
-                    var index = -1
-                    _shoppingList.value.forEachIndexed { i, cart ->
-                        if (cart.menuId == it.id) {
-                            index = i
-                        }
-                    }
-                    when (index) {
-                        -1 -> {
-                            _totalOrder.value =
-                                (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
-                            _totalPrice.value = makeCommaWon(
-                                (deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(
-                                    it.price
-                                )))
-                            )
-                            add(
-                                ShoppingCart(
-                                    menuId = it.id,
-                                    menuImg = it.img,
-                                    menuName = it.name,
-                                    menuCnt = _selectProductCount.value,
-                                    menuPrice = it.price,
-                                    totalPrice = (_selectProductCount.value.toInt() * deleteComma(it.price)).toString(),
-                                    type = it.type
-                                )
-                            )
-                        }
-
-                        else -> {
-                            val newCount =
-                                this[index].menuCnt.toInt() + _selectProductCount.value.toInt()
-                            _totalOrder.value =
-                                (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
-                            _totalPrice.value = makeComma(
-                                (deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(
-                                    it.price
-                                )))
-                            )
-                            this[index] = ShoppingCart(
-                                menuId = it.id,
-                                menuImg = it.img,
-                                menuName = it.name,
-                                menuCnt = newCount.toString(),
-                                menuPrice = it.price,
-                                totalPrice = (newCount * deleteComma(it.price)).toString(),
-                                type = it.type
-                            )
-                        }
-                    }
-                }
-            }.toList()
-            validateShoppingList()
-            _selectProductCount.value = "1"
-            _menuDetailUiEvent.emit(MenuDetailUiEvent.SelectProduct)
+            _orderUiEvent.emit(OrderUiEvent.GoToCart)
         }
     }
 
+    /*** Menu Detail Click ***/
     override fun onClickProductCountUp() {
         if (_selectProductCount.value.toInt() < 99) {
             _selectProductCount.value = (_selectProductCount.value.toInt() + 1).toString()
@@ -721,12 +549,68 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onClickToCart() {
+    override fun onClickProductToCart() {
         viewModelScope.launch {
-            _orderUiEvent.emit(OrderUiEvent.GoToCart)
+            _shoppingList.value = _shoppingList.value.toMutableList().apply {
+                _selectedProduct.value?.let {
+                    var index = -1
+                    _shoppingList.value.forEachIndexed { i, cart ->
+                        if (cart.menuId == it.id) {
+                            index = i
+                        }
+                    }
+                    when (index) {
+                        -1 -> {
+                            _totalOrder.value =
+                                (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
+                            _totalPrice.value = makeCommaWon(
+                                (deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(
+                                    it.price
+                                )))
+                            )
+                            add(
+                                ShoppingCart(
+                                    menuId = it.id,
+                                    menuImg = it.img,
+                                    menuName = it.name,
+                                    menuCnt = _selectProductCount.value,
+                                    menuPrice = it.price,
+                                    totalPrice = (_selectProductCount.value.toInt() * deleteComma(it.price)).toString(),
+                                    type = it.type
+                                )
+                            )
+                        }
+
+                        else -> {
+                            val newCount =
+                                this[index].menuCnt.toInt() + _selectProductCount.value.toInt()
+                            _totalOrder.value =
+                                (_totalOrder.value.toInt() + _selectProductCount.value.toInt()).toString()
+                            _totalPrice.value = makeComma(
+                                (deleteComma(_totalPrice.value) + (deleteComma(_selectProductCount.value) * deleteComma(
+                                    it.price
+                                )))
+                            )
+                            this[index] = ShoppingCart(
+                                menuId = it.id,
+                                menuImg = it.img,
+                                menuName = it.name,
+                                menuCnt = newCount.toString(),
+                                menuPrice = it.price,
+                                totalPrice = (newCount * deleteComma(it.price)).toString(),
+                                type = it.type
+                            )
+                        }
+                    }
+                }
+            }.toList()
+            validateShoppingList()
+            _selectProductCount.value = "1"
+            _menuDetailUiEvent.emit(MenuDetailUiEvent.SelectProduct)
         }
     }
 
+    /*** Cart Click ***/
     override fun onClickProductAdd(position: Int) {
         val newShoppingList = mutableListOf<ShoppingCart>()
 
@@ -818,6 +702,7 @@ class MainViewModel @Inject constructor(
             _isMapMode.value = false
             _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
             _shoppingUiEvent.emit(ShoppingListUiEvent.TakeOutOrder)
+            _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponTakeOut)
         }
     }
 
@@ -906,7 +791,9 @@ class MainViewModel @Inject constructor(
                 Status.SUCCESS -> {
                     _shoppingList.value = emptyList()
                     validateShoppingList()
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder)
+                    val orderId = response.data ?: 0
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
                     _totalOrder.value = "0"
                     _totalPrice.value = "￦0"
                     getUser()
@@ -914,6 +801,7 @@ class MainViewModel @Inject constructor(
                     getLast6MonthsOrders()
                     getProducts()
                     validateShoppingList()
+                    deleteCoupon()
                 }
 
                 else -> {
@@ -923,9 +811,49 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun deleteCoupon() {
+        viewModelScope.launch {
+            _selectedCoupon.value?.let { coupon ->
+                val response = getCouponUseCase.deleteCoupon(coupon.id)
+
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        when (response.data) {
+                            true -> {
+                                getCouponUseCase.getCoupons(getUserId().first())
+                                // Coupon List 검증 로직 추가
+                            }
+
+                            else -> {
+
+                            }
+                        }
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    /*** My Page Click ***/
     override fun onClickSettings() {
         viewModelScope.launch {
             _myPageUiEvent.emit(MyPageUiEvent.GoToSettings)
+        }
+    }
+
+    override fun onClickMyPageSignUp() {
+        viewModelScope.launch {
+            _myPageUiEvent.emit(MyPageUiEvent.GoToJoin)
+        }
+    }
+
+    override fun onClickMyPageLogin() {
+        viewModelScope.launch {
+            _myPageUiEvent.emit(MyPageUiEvent.GoToLogin)
         }
     }
 
@@ -953,11 +881,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onClickPassword() {
+    /*** Setting Click ***/
+    override fun onClickLogout() {
         viewModelScope.launch {
-            _newPassword.value = ""
-            _newPasswordConfirm.value = ""
-            _informationUiEvent.emit(InformationUiEvent.GoToPassword)
+            _user.value = null
+            setUserIdUseCase.setUserId("")
+            setCookieUseCase.deleteLoginCookie()
+            initStates()
+            _settingUiEvent.emit(SettingUiEvent.DoLogout)
         }
     }
 
@@ -1013,6 +944,24 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /*** History Click ***/
+    override fun onClickOrder(order: Order) {
+        viewModelScope.launch {
+            _selectedOrder.value = order
+            _selectedOrderDetails.value = order.details
+            _historyUiEvent.emit(HistoryUiEvent.GoToOrderDetail)
+        }
+    }
+
+    /*** Information Click ***/
+    override fun onClickPassword() {
+        viewModelScope.launch {
+            _newPassword.value = ""
+            _newPasswordConfirm.value = ""
+            _informationUiEvent.emit(InformationUiEvent.GoToPassword)
+        }
+    }
+
     override fun onClickPasswordUpdate() {
         viewModelScope.launch {
             _user.value?.let { user ->
@@ -1052,14 +1001,50 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /*** Coupon Click ***/
     override fun onClickCoupon(coupon: Coupon) {
         viewModelScope.launch {
             _selectedCoupon.value = null
             _selectedCoupon.value = coupon
+            _selectedCouponMenu.value = null
+            val response = getProductUseCase.getProductWithComment(coupon.menuCount.toInt())
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { product ->
+                        _selectedCouponMenu.value = ShoppingCart(
+                            menuId = product.id,
+                            menuImg = product.img,
+                            menuName = product.name,
+                            menuCnt = coupon.menuCount,
+                            menuPrice = product.price,
+                            totalPrice = (deleteComma(coupon.menuCount) * deleteComma(product.price)).toString(),
+                            type = ""
+                        )
+                    }
+                }
+
+                else -> {
+                    Timber.d("뭐해?")
+                }
+            }
+
             _couponUiEvent.emit(CouponUiEvent.GoToCouponDetail)
         }
     }
 
+    /*** Coupon Detail Click ***/
+    override fun onClickTakeoutCoupon() {
+        viewModelScope.launch {
+            val selectedCouponMenu = _selectedCouponMenu.value
+            if (selectedCouponMenu != null) {
+                _shoppingList.value = listOf(selectedCouponMenu)
+            }
+            onClickTakeout()
+        }
+    }
+
+    /*** Init Function ***/
     private fun setTheme() {
         viewModelScope.launch {
             val appTheme = getAppTheme().first()
@@ -1121,40 +1106,6 @@ class MainViewModel @Inject constructor(
                 else -> {
                     Timber.d("${response.data}")
                 }
-            }
-        }
-    }
-
-    private fun getCoupons(userId: String) {
-        viewModelScope.launch {
-            val response =
-                getCouponUseCase.getCoupons(userId)
-            when (response.status) {
-                Status.SUCCESS -> {
-                    response.data?.let { coupons ->
-                        _coupons.value = coupons
-                        if (_coupons.value.isNotEmpty()) {
-                            _couponUiState.update { it.copy(couponsValidState = EmptyState.NONE) }
-                        }
-                        Timber.d("Coupons: ${_coupons.value}")
-                    }
-                }
-
-                else -> {
-                    Timber.d("${response.data}")
-                }
-            }
-        }
-    }
-
-    private fun validateGrade() {
-        when (_user.value?.grade?.title) {
-            "PLATINUM" -> {
-                _myPageUiState.update { it.copy(gradeState = GradeState.TREE) }
-            }
-
-            else -> {
-                _myPageUiState.update { it.copy(gradeState = GradeState.NONE) }
             }
         }
     }
@@ -1229,6 +1180,178 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun getCoupons(userId: String) {
+        viewModelScope.launch {
+            val response =
+                getCouponUseCase.getCoupons(userId)
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { coupons ->
+                        _coupons.value = coupons
+                        validateCouponState()
+                    }
+                }
+
+                else -> {
+                    Timber.d("${response.data}")
+                }
+            }
+        }
+    }
+
+    /*** Get Dto ***/
+    private fun getUserBody(
+        id: String,
+        name: String,
+        password: String,
+        stamps: String,
+        stampList: List<Stamp>
+    ): User = User(id, name, password, stamps, stampList)
+
+    /*** Use Case ***/
+    private fun login() {
+        viewModelScope.launch {
+            val response = getUserUseCase.postUserForLogin(
+                getUserBody(
+                    _userId.value,
+                    "",
+                    _userPass.value,
+                    "0",
+                    emptyList()
+                )
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    val cookies = getCookies().first()
+                    cookies.let {
+                        if (it.isNotEmpty()) {
+                            setUserIdUseCase.setUserId(_userId.value)
+                            setCookieUseCase.setLoginCookie(it.toHashSet())
+                            _userId.value = ""
+                            _userPass.value = ""
+                            initStatesWithLogin()
+                            validateLoginUiState()
+                            _loginUiEvent.emit(LoginUiEvent.GoToLogin)
+                            _joinUiEvent.emit(JoinUiEvent.GoToLogin)
+                        }
+                    }
+                }
+
+                else -> {
+                    _loginUiEvent.emit(LoginUiEvent.LoginFail)
+                }
+            }
+        }
+    }
+
+    private fun join() {
+        viewModelScope.launch {
+            val response = getUserUseCase.postUser(
+                getUserBody(
+                    _joinId.value,
+                    _joinName.value,
+                    _joinPass.value,
+                    "0",
+                    emptyList()
+                )
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    when (response.data) {
+                        true -> {
+                            _userId.value = _joinId.value
+                            _joinId.value = ""
+                            _joinPass.value = ""
+                            _joinPassConfirm.value = ""
+                            _joinName.value = ""
+                            _joinUiState.update {
+                                it.copy(
+                                    joinIdValidState = InputValidState.NONE,
+                                    joinPassValidState = PasswordState.INIT,
+                                    joinPassConfirmValidState = PasswordState.INIT,
+                                    joinNameValidState = InputValidState.NONE,
+                                    joinIdDuplicateState = DuplicateState.DUPLICATE
+                                )
+                            }
+                            _joinUiEvent.emit(JoinUiEvent.GoToLogin)
+                        }
+
+                        else -> {
+                            _joinUiEvent.emit(JoinUiEvent.JoinFail)
+                        }
+                    }
+                }
+
+                else -> {
+                    _joinUiEvent.emit(JoinUiEvent.JoinFail)
+                }
+            }
+        }
+    }
+
+    /*** Validate Ui State ***/
+    private fun validateLoginUiState() {
+        when (_userId.value.isBlank()) {
+            true -> _loginUiState.update { it.copy(userIdValidState = InputValidState.NONE) }
+
+            else -> _loginUiState.update { it.copy(userIdValidState = InputValidState.VALID) }
+        }
+        when (_userPass.value.isBlank()) {
+            true -> _loginUiState.update { it.copy(userPassValidState = InputValidState.NONE) }
+
+            else -> _loginUiState.update { it.copy(userPassValidState = InputValidState.VALID) }
+        }
+    }
+
+    private fun validateJoinIdDuplicate() {
+        viewModelScope.launch {
+            when (_joinId.value.isBlank()) {
+                true -> {
+                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
+                    _joinUiEvent.emit(JoinUiEvent.CheckId(true))
+                }
+
+                else -> {
+                    val response = getUserUseCase.getIsUsedId(_joinId.value)
+                    when (response.status) {
+                        Status.SUCCESS -> {
+                            when (response.data) {
+                                false -> {
+                                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.NONE) }
+                                    _joinUiEvent.emit(JoinUiEvent.CheckId(response.data))
+                                }
+
+                                else -> {
+                                    _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
+                                    _joinUiEvent.emit(JoinUiEvent.CheckId(true))
+                                }
+                            }
+                        }
+
+                        else -> {
+                            _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
+                            _joinUiEvent.emit(JoinUiEvent.CheckId(true))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun validateGrade() {
+        when (_user.value?.grade?.title) {
+            "PLATINUM" -> {
+                _myPageUiState.update { it.copy(gradeState = GradeState.TREE) }
+            }
+
+            else -> {
+                _myPageUiState.update { it.copy(gradeState = GradeState.NONE) }
+            }
+        }
+    }
+
     private fun validateShoppingList() {
         when (_shoppingList.value.isEmpty()) {
             true -> {
@@ -1241,6 +1364,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun validateCouponState() {
+        when (_coupons.value.isNotEmpty()) {
+            true -> _couponUiState.update { it.copy(couponsValidState = EmptyState.NONE) }
+
+            else -> _couponUiState.update { it.copy(couponsValidState = EmptyState.EMPTY) }
+        }
+    }
+
+    /*** Data Store ***/
     private suspend fun getUserId(): Flow<String> = flow {
         val userId = getUserIdUseCase.getUserId().first()
         emit(userId)
@@ -1256,6 +1388,7 @@ class MainViewModel @Inject constructor(
         emit(cookies)
     }
 
+    /*** Public Methods ***/
     fun initStatesWithLogin() {
         setTheme()
         getShop()
@@ -1312,6 +1445,57 @@ class MainViewModel @Inject constructor(
             }
 
             abs(shopLocation.distanceTo(myPosition))
+        }
+    }
+
+    fun setTableNumber(number: Int) {
+        viewModelScope.launch {
+            _tableNumber.value = number
+            _shoppingUiEvent.emit(ShoppingListUiEvent.Tagged)
+            val newDetails = mutableListOf<OrderDetail>()
+            _shoppingList.value.forEach { product ->
+                newDetails.add(
+                    OrderDetail(
+                        id = 0,
+                        orderId = 0,
+                        productId = product.menuId,
+                        quantity = product.menuCnt.toInt(),
+                        unitPrice = "",
+                        img = "",
+                        productName = ""
+                    )
+                )
+            }
+
+            val newOrder = Order(
+                id = 0,
+                userId = getUserId().first(),
+                orderTable = _tableNumber.value.toString(),
+                orderTime = "",
+                completed = "N",
+                details = newDetails.toList()
+            )
+
+            val response = getOrderUseCase.makeOrder(newOrder)
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    _shoppingList.value = emptyList()
+                    validateShoppingList()
+                    val orderId = response.data ?: 0
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
+                    _totalOrder.value = "0"
+                    _totalPrice.value = "0원"
+                    getUser()
+                    getLastMonthOrders()
+                    getLast6MonthsOrders()
+                    getProducts()
+                }
+
+                else -> {
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
+                }
+            }
         }
     }
 
@@ -1390,56 +1574,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun setTableNumber(number: Int) {
-        viewModelScope.launch {
-            _tableNumber.value = number
-            _shoppingUiEvent.emit(ShoppingListUiEvent.Tagged)
-            val newDetails = mutableListOf<OrderDetail>()
-            _shoppingList.value.forEach { product ->
-                newDetails.add(
-                    OrderDetail(
-                        id = 0,
-                        orderId = 0,
-                        productId = product.menuId,
-                        quantity = product.menuCnt.toInt(),
-                        unitPrice = "",
-                        img = "",
-                        productName = ""
-                    )
-                )
-            }
-
-            val newOrder = Order(
-                id = 0,
-                userId = getUserId().first(),
-                orderTable = _tableNumber.value.toString(),
-                orderTime = "",
-                completed = "N",
-                details = newDetails.toList()
-            )
-
-            val response = getOrderUseCase.makeOrder(newOrder)
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    _shoppingList.value = emptyList()
-                    validateShoppingList()
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder)
-                    _totalOrder.value = "0"
-                    _totalPrice.value = "0원"
-                    getUser()
-                    getLastMonthOrders()
-                    getLast6MonthsOrders()
-                    getProducts()
-                }
-
-                else -> {
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
-                }
-            }
-        }
-    }
-
     fun validateNewPassword(password: CharSequence) {
         if (password.isBlank()) {
             _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.INIT) }
@@ -1505,6 +1639,7 @@ class MainViewModel @Inject constructor(
                             Timber.e("FCM 토큰 업로드 실패: 서버 응답이 false입니다.")
                         }
                     }
+
                     else -> {
                         Timber.e("FCM 토큰 업로드 실패: ${result.message}")
                     }

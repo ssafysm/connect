@@ -219,18 +219,27 @@ data class CouponEntity(
     @Json(name = "id")
     val id: Int,
 
-    @Json(name = "user_id")
+    @Json(name = "userId")
     val userId: String?,
 
     @Json(name = "name")
     val name: String?,
 
+    @Json(name = "description")
+    val description: String?,
+
     @Json(name = "image")
     val image: String?,
 
-    @Json(name = "time")
-    val couponTime: String?,
+    @Json(name = "iat")
+    val iat: String?,
 
-    @Json(name = "price")
-    val price: Int?
+    @Json(name = "exp")
+    val exp: String?,
+
+    @Json(name = "menuId")
+    val menuId: Int?,
+
+    @Json(name = "menuCount")
+    val menuCount: Int?
 )

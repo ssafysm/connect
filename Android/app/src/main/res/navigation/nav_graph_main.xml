@@ -163,7 +163,13 @@
         android:id="@+id/fragment_coupon_detail"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.coupondetail.CouponDetailFragment"
         android:label="Coupon Detail"
-        tools:layout="@layout/fragment_coupon" />
+        tools:layout="@layout/fragment_coupon">
+
+        <action
+            android:id="@+id/action_coupon_detail_to_shop_select"
+            app:destination="@id/fragment_shop_select_bottom_sheet_dialog" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_pay"

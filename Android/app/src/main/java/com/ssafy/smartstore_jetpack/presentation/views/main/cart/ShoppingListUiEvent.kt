@@ -8,7 +8,7 @@ sealed class ShoppingListUiEvent {
 
     data object TakeOutOrder : ShoppingListUiEvent()
 
-    data object FinishOrder : ShoppingListUiEvent()
+    data class FinishOrder(val orderId: Int) : ShoppingListUiEvent()
 
     data object OrderFail : ShoppingListUiEvent()
 }

@@ -11,4 +11,7 @@ class GetCouponUseCase @Inject constructor(
 
     suspend fun getCoupons(userId: String): Result<List<Coupon>> =
         couponRepository.getCoupons(userId)
+
+    suspend fun deleteCoupon(couponId: String): Result<Boolean> =
+        couponRepository.deleteCoupon(couponId)
 }

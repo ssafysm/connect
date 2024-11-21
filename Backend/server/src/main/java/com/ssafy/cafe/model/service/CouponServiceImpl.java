@@ -24,4 +24,9 @@ public class CouponServiceImpl implements CouponService {
 		return cDao.setInitCoupon(coupon);
 	}
 
+	@Override
+	public int deleteCoupon(int couponId) {
+		return cDao.deleteCoupon(couponId);
+	}
+
 }

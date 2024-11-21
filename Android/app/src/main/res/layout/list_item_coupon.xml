@@ -74,14 +74,22 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_price_item_coupon"
+                            android:id="@+id/tv_description_item_coupon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tv_time_item_coupon"
+                            android:id="@+id/tv_iat_item_coupon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_exp_item_coupon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"

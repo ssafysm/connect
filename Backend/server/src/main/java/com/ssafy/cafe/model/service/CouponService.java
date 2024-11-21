@@ -9,5 +9,7 @@ public interface CouponService {
 	List<Coupon> getCoupons(String userId);
 	
 	int setInitCoupon(Coupon coupon);
+	
+	int deleteCoupon(int couponId);
 
 }

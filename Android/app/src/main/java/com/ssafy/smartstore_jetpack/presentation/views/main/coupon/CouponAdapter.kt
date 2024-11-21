@@ -18,8 +18,9 @@ class CouponAdapter(private val viewModel: MainViewModel) : ListAdapter<Coupon, 
         fun bind(coupon: Coupon, viewModel: MainViewModel) {
             binding.coupon = coupon
             binding.vm = viewModel
-            binding.tvPriceItemCoupon.text = "${coupon.price} 할인"
-            binding.tvTimeItemCoupon.text = "만료일 : ${coupon.couponTime}"
+            binding.tvDescriptionItemCoupon.text = coupon.description
+            binding.tvIatItemCoupon.text = "${coupon.iat}부터"
+            binding.tvExpItemCoupon.text = "${coupon.exp}까지"
         }
     }
 

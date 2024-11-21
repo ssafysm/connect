@@ -7,28 +7,36 @@ public class Coupon {
 	private Integer id;
 	private String userId;
 	private String name;
+	private String description;
 	private String image;
-	private LocalDateTime time;
-	private Integer price;
+	private LocalDateTime iat;
+	private LocalDateTime exp;
+	private Integer menuId;
+	private Integer menuCount;
 	
 	public Coupon() {}
 	
-	public Coupon(Integer id, String userId, String name, String image, Integer price, LocalDateTime time) {
+	public Coupon(Integer id, String userId, String name, String description, String image, Integer menuId, LocalDateTime iat, LocalDateTime exp, Integer menuCount) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.name = name;
+		this.description = description;
 		this.image = image;
-		this.time = time;
-		this.price = price;
+		this.iat = iat;
+		this.exp = exp;
+		this.menuId = menuId;
+		this.menuCount = menuCount;
 	}
 
-	public Coupon(String userId, String name, String image, Integer price) {
+	public Coupon(String userId, String name, String description, String image, Integer menuId, Integer menuCount) {
 		super();
 		this.userId = userId;
 		this.name = name;
+		this.description = description;
 		this.image = image;
-		this.price = price;
+		this.menuId = menuId;
+		this.menuCount = menuCount;
 	}
 
 	public Integer getId() {
@@ -55,6 +63,14 @@ public class Coupon {
 		this.name = name;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	public String getImage() {
 		return image;
 	}
@@ -63,20 +79,36 @@ public class Coupon {
 		this.image = image;
 	}
 	
-	public Integer getPrice() {
-		return price;
+	public LocalDateTime getIat() {
+		return iat;
 	}
 	
-	public void setPrice(Integer price) {
-		this.price = price;
+	public void setIat(LocalDateTime iat) {
+		this.iat = iat;
 	}
-
-	public LocalDateTime getTime() {
-		return time;
+	
+	public LocalDateTime getExp() {
+		return exp;
 	}
-
-	public void setTime(LocalDateTime time) {
-		this.time = time;
+	
+	public void setExp(LocalDateTime exp) {
+		this.exp = exp;
+	}
+	
+	public Integer getMenuId() {
+		return menuId;
+	}
+	
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
+	
+	public Integer getMenuCount() {
+		return menuCount;
+	}
+	
+	public void setMenuCount(Integer menuCount) {
+		this.menuCount = menuCount;
 	}
 
 }

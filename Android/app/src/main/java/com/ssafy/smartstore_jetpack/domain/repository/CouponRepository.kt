@@ -6,4 +6,6 @@ import com.ssafy.smartstore_jetpack.domain.model.Result
 interface CouponRepository {
 
     suspend fun getCoupons(userId: String): Result<List<Coupon>>
+
+    suspend fun deleteCoupon(couponId: String): Result<Boolean>
 }

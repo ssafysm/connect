@@ -4,7 +4,10 @@ data class Coupon(
     val id: String,
     val userId: String,
     val name: String,
+    val description: String,
     val image: String,
-    val couponTime: String,
-    val price: String
+    val iat: String,
+    val exp: String,
+    val menuId: String,
+    val menuCount: String
 )

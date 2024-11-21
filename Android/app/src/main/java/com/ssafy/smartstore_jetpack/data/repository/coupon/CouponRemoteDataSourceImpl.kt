@@ -11,4 +11,7 @@ class CouponRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getCoupons(userId: String): Response<List<CouponEntity>> =
         couponApi.getCoupons(userId)
+
+    override suspend fun deleteCoupon(couponId: String): Response<Boolean> =
+        couponApi.deleteCoupon(couponId)
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -67,6 +68,17 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    protected fun showBottomLayout(layout: ConstraintLayout) {
+        layout.visibility = View.VISIBLE
+        layout.animate().translationY(0f).setDuration(300).start()
+    }
+
+    protected fun hideBottomLayout(layout: ConstraintLayout) {
+        layout.animate().translationY(layout.height.toFloat()).setDuration(300).withEndAction {
+            layout.visibility = View.GONE
+        }.start()
     }
 
     fun NavController.navigateSafely(

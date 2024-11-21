@@ -102,7 +102,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 delay(interval)
                 val currentItem = viewPager.currentItem
 
-                val itemCount = viewPager.adapter?.itemCount ?: 0
+                val itemCount = when (viewPager.adapter) {
+                    null -> 1
+
+                    else -> viewPager.adapter!!.itemCount
+                }
 
                 when (currentItem) {
                     itemCount - 2 -> viewPager.setCurrentItem(1, true)

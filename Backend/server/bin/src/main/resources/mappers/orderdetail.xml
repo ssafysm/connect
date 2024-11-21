@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.cafe.model.dao.OrderDetailDao">
+
+
+    <resultMap id="OrderResult" type="OrderWithInfo">
+        <collection property="details" javaType="ArrayList" column="order_id" ofType="OrderDetailWithInfo" 
+         select="selectOrderDetailWithInfo"/>
+    </resultMap>
+    
+  
+   
+    
+<insert id="insert" parameterType="OrderDetail">
+    insert into t_order_detail (order_id, product_id, quantity)
+    values (#{orderId}, #{productId}, #{quantity})
+</insert>
+
+    
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.ssafy.cafe.model.dao.CommentDao">
+
+    <select id="selectByProduct" parameterType="int" resultType="CommentWithInfo">
+       select 
+           c.id as id
+           ,c.user_id as user_id
+           ,c.product_id as product_id
+           ,c.rating as rating
+           ,c.comment as comment
+           ,u.name as userName
+        from t_comment c join t_user u on c.user_id = u.id
+        where product_id = #{productId}
+        order by c.id asc;
+    </select>
+
+    <insert id="insert" parameterType="Comment" >
+        insert into t_comment (user_id, product_id, rating, comment)
+        values (#{userId}, #{productId}, #{rating}, #{comment})
+    </insert>
+   
+   
+   <update id="update" parameterType="Comment">
+        update t_comment 
+        set 
+            user_id = #{userId}, 
+            product_id = #{productId}, 
+            rating = #{rating}, 
+            comment = #{comment}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from t_comment 
+        where id = #{commentId}
+    </delete>
+
+
+	<select id="select" parameterType="int" resultType="Comment">
+       select 
+           *
+        from t_comment
+        where id = #{commentId}
+        order by id asc;
+    </select>
+    
+</mapper>

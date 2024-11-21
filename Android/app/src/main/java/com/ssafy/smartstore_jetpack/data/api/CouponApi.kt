@@ -2,7 +2,9 @@ package com.ssafy.smartstore_jetpack.data.api
 
 import com.ssafy.smartstore_jetpack.data.entity.CouponEntity
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CouponApi {
@@ -11,4 +13,9 @@ interface CouponApi {
     suspend fun getCoupons(
         @Query("userId") userId: String
     ): Response<List<CouponEntity>>
+
+    @DELETE("rest/coupon/{couponId}")
+    suspend fun deleteCoupon(
+        @Path("couponId") couponId: String
+    ): Response<Boolean>
 }
