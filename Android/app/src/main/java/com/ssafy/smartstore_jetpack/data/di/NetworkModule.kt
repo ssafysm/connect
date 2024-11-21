@@ -24,7 +24,9 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
-    private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
+//    private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
+    private const val BASE_URL = "http://192.168.33.130:9987/"
+
 
     @Provides
     @Singleton

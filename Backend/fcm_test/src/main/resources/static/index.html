@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1>FCM 메시지 전송 - Notification</h1>
+	<form action="/sendMessageTo" method="post">
+		<input type="text" name="token" size=100 placeholder="token을 붙혀 주세요"><br>
+		<input type="text" name="title" placeholder="제목을 입력하세요"><br>
+		<textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
+		<input type="submit"><input type="reset">
+	</form>
+    
+    <h1>FCM Data 메시지 전송 - Data</h1>
+    <form action="/sendDataMessageTo" method="post">
+		<input type="text" name="token" size=100 placeholder="token을 붙혀 주세요"><br>
+        <input type="text" name="title" placeholder="제목을 입력하세요"><br>
+        <textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
+        <input type="submit"><input type="reset">
+    </form>
+</body>
+</html>

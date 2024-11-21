@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.cafe.model.dao.OrderDao">
+
+    <insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_order (user_id, order_table)
+        VALUES (#{userId}, #{orderTable})
+    </insert>
+    
+    <resultMap id="OrderResultMap" type="com.ssafy.cafe.model.dto.Order">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="orderTable" column="order_table" />
+        <result property="orderTime" column="order_time" />
+        <result property="completed" column="completed" />
+        <collection property="details" ofType="com.ssafy.cafe.model.dto.OrderDetailWithInfo" column="id" select="selectOrderDetailWithInfo" />
+    </resultMap>
+
+    <select id="selectOrderDetailWithInfo" parameterType="int" resultType="com.ssafy.cafe.model.dto.OrderDetailWithInfo">
+        SELECT 
+            d.d_id AS id,
+            d.order_id AS orderId,
+            d.product_id AS productId,
+            d.quantity,
+            p.name,
+            p.price AS unitPrice,
+            d.quantity * p.price AS sumPrice,
+            p.type,
+            p.img
+        FROM t_order_detail d
+        JOIN t_product p ON d.product_id = p.id
+        WHERE d.order_id = #{id}
+        ORDER BY d.d_id ASC
+    </select>
+    
+    <select id="select" parameterType="int" resultType="com.ssafy.cafe.model.dto.Order">
+        SELECT 
+            o_id AS id,
+            user_id AS userId,
+            order_table AS orderTable,
+            order_time AS orderTime,
+            completed
+        FROM t_order
+        WHERE o_id = #{orderId}
+    </select>
+
+    <select id="selectByUser" parameterType="string" resultType="com.ssafy.cafe.model.dto.Order">
+        SELECT 
+            o_id AS id,
+            user_id AS userId,
+            order_table AS orderTable,
+            order_time AS orderTime,
+            completed
+        FROM t_order
+        WHERE user_id = #{userId}
+        ORDER BY order_time DESC
+    </select>
+
+    <select id="getLastMonthOrder" parameterType="string" resultMap="OrderResultMap">
+        SELECT 
+            o.o_id AS id,
+            o.user_id,
+            o.order_table,
+            o.order_time,
+            o.completed
+        FROM t_order o
+        WHERE o.user_id = #{userId} AND o.order_time > DATE_ADD(NOW(), INTERVAL -1 MONTH)
+        ORDER BY o.o_id DESC
+    </select>
+
+    <select id="getLast6MonthOrder" parameterType="string" resultMap="OrderResultMap">
+        SELECT 
+            o.o_id AS id,
+            o.user_id,
+            o.order_table,
+            o.order_time,
+            o.completed
+        FROM t_order o
+        WHERE o.user_id = #{userId} AND o.order_time > DATE_ADD(NOW(), INTERVAL -6 MONTH)
+        ORDER BY o.o_id DESC
+    </select>
+    
+    <resultMap id="OrderWithInfoResult" type="com.ssafy.cafe.model.dto.OrderWithInfo">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="orderTable" property="orderTable"/>
+        <result column="orderTime" property="orderTime"/>
+        <result column="completed" property="completed"/>
+        <collection property="details" ofType="com.ssafy.cafe.model.dto.OrderDetailWithInfo">
+            <result column="detailId" property="id"/>
+            <result column="productId" property="productId"/>
+            <result column="quantity" property="quantity"/>
+            <result column="name" property="name"/>
+            <result column="unitPrice" property="unitPrice"/>
+            <result column="sumPrice" property="sumPrice"/>
+            <result column="type" property="type"/>
+            <result column="img" property="img"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectOrderWithInfo" parameterType="int" resultMap="OrderWithInfoResult">
+        SELECT 
+            o.o_id AS id,
+            o.user_id AS userId,
+            o.order_table AS orderTable,
+            o.order_time AS orderTime,
+            o.completed,
+            d.d_id AS detailId,
+            d.product_id AS productId,
+            d.quantity,
+            p.name,
+            p.price AS unitPrice,
+            d.quantity * p.price AS sumPrice,
+            p.type,
+            p.img
+        FROM t_order o
+        JOIN t_order_detail d ON o.o_id = d.order_id
+        JOIN t_product p ON d.product_id = p.id
+        WHERE o.o_id = #{orderId}
+        ORDER BY d.d_id ASC
+    </select>
+
+</mapper>

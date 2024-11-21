@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.cafe.model.dao.ProductDao">
+
+	<select id="selectAll" resultType="Product">
+       select 
+            *
+        from t_product;
+    </select>
+  
+  	<select id="selectWithInfo" parameterType="int" resultType="productWithComment">
+       
+       select 
+            *
+       from t_product
+        where id = #{productId}
+    </select>
+    
+    <select id="getQuantity" parameterType="int">
+    	select 
+            sum(d.quantity)
+        from t_order o 
+        join t_order_detail d on o.o_id = d.order_id
+        join t_product p on d.product_id = p.id
+        where p.id = #{productId}
+        order by d.d_id asc;
+    </select>
+	
+</mapper>

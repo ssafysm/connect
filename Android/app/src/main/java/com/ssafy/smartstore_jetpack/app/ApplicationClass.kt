@@ -27,7 +27,9 @@ class ApplicationClass : Application() {
 
     companion object {
 
-        const val SERVER_URL = "http://mobile-pjt.sample.ssafy.io/"
+//        const val SERVER_URL = "http://mobile-pjt.sample.ssafy.io/"
+        const val SERVER_URL = "http://192.168.33.130:9987/"
+
         const val MENU_IMGS_URL = "${SERVER_URL}imgs/menu/"
         const val IMGS_URL = "${SERVER_URL}imgs/"
         const val GRADE_URL = "${SERVER_URL}imgs/grade/"
