@@ -7,6 +7,8 @@ public class Event {
 	private String image;
 	private String url;
 	
+	public Event() {}
+	
 	public Event(Integer id, String name, String image, String url) {
 		super();
 		this.id = id;

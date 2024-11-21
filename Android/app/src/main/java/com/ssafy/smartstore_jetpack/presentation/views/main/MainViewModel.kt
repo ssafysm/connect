@@ -280,6 +280,10 @@ class MainViewModel @Inject constructor(
     private val _informationUiEvent = MutableSharedFlow<InformationUiEvent>()
     val informationUiEvent = _informationUiEvent.asSharedFlow()
 
+    init {
+        setEvents()
+    }
+
     override fun onClickHomeSignUp() {
         viewModelScope.launch {
             _homeUiEvent.emit(HomeUiEvent.GoToJoin)
@@ -1060,7 +1064,9 @@ class MainViewModel @Inject constructor(
                     }
                 }
 
-                else -> {}
+                else -> {
+                    Timber.d("뭐해?")
+                }
             }
         }
     }
@@ -1232,7 +1238,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun initStatesWithLogin() {
-        setEvents()
         setTheme()
         getShop()
         getUser()
@@ -1242,7 +1247,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun initStates() {
-        setEvents()
         setTheme()
         getProducts()
     }

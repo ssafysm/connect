@@ -7,6 +7,7 @@ import com.ssafy.smartstore_jetpack.domain.repository.EventRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class EventRepositoryImpl @Inject constructor(
@@ -23,9 +24,11 @@ class EventRepositoryImpl @Inject constructor(
             if (response.isSuccessful && (body != null)) {
                 Result.success(EventsMapper(body))
             } else {
+                Timber.d("예외는 발생 안 했는데 에러가 있음")
                 Result.error(response.errorBody().toString(), null)
             }
         } catch (e: Exception) {
+            Timber.d("예외 발생")
             Result.fail()
         }
 }

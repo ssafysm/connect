@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.cafe.model.dao.CouponDao">
 
-	<resultMap id="CouponResultMap" type="Coupon">
-	    <result column="time" property="time" javaType="java.time.LocalDateTime"/>
-	    <result column="user_id" property="userId"/>
-	    <result column="name" property="name"/>
-	    <result column="image" property="image"/>
-	    <result column="price" property="price"/>
-	    <result column="id" property="id"/>
-	</resultMap>
-	
-	<select id="getCoupons" parameterType="string" resultMap="CouponResultMap">
-	    SELECT 
-		    user_id,
-		    name,
-		    image,
-		    price
-		FROM t_coupon
-		WHERE user_id = #{userId}
-		ORDER BY time DESC
-	</select>
-	
-	<insert id="setInitCoupon" parameterType="Coupon" >
-        insert into t_coupon (user_id, name, image, price)
-        values (#{userId}, #{name}, #{image}, #{price})
+    <resultMap id="CouponResultMap" type="Coupon">
+        <result column="time" property="time" javaType="java.time.LocalDateTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="image" property="image"/>
+        <result column="price" property="price"/>
+        <result column="id" property="id"/>
+    </resultMap>
+    
+    <select id="getCoupons" parameterType="string" resultMap="CouponResultMap">
+        SELECT 
+            id,
+            user_id,
+            name,
+            image,
+            time,
+            price
+        FROM t_coupon
+        WHERE user_id = #{userId}
+        ORDER BY time DESC
+    </select>
+
+    <insert id="setInitCoupon" parameterType="Coupon">
+        INSERT INTO t_coupon (user_id, name, image, price)
+        VALUES (#{userId}, #{name}, #{image}, #{price})
     </insert>
-	
+    
 </mapper>

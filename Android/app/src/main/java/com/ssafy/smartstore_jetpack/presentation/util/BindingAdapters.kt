@@ -237,10 +237,12 @@ fun ImageView.bindImage(src: String?) {
 @BindingAdapter("app:eventImage")
 fun ImageView.bindEventImage(src: String?) {
     if (!src.isNullOrEmpty()) {
+        Timber.d("이미지 로딩")
         load(src) {
             transformations(RoundedCornersTransformation(20F))
         }
     } else {
+        Timber.d("이미지 로딩 실패")
         this.setImageResource(R.drawable.logo)
     }
     scaleType = ImageView.ScaleType.MATRIX

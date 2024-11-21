@@ -26,7 +26,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>(R.layout.fragment
 
     private fun handleUiEvent(event: PasswordUiEvent) = when (event) {
         is PasswordUiEvent.PasswordUpdateSuccess -> {
-            findNavController().popBackStack(R.id.fragment_home, false)
+            findNavController().popBackStack(R.id.fragment_my_page, false)
             Toast.makeText(requireContext(), "비밀번호를 성공적으로 변경했어요.", Toast.LENGTH_SHORT).show()
         }
 

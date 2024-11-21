@@ -11,6 +11,8 @@ public class Coupon {
 	private LocalDateTime time;
 	private Integer price;
 	
+	public Coupon() {}
+	
 	public Coupon(Integer id, String userId, String name, String image, Integer price, LocalDateTime time) {
 		super();
 		this.id = id;

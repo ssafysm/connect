@@ -10,6 +10,8 @@ public class Shop {
 	private double latitude;
 	private double longitude;
 	
+	public Shop() {}
+	
 	public Shop(Integer id, String name, String image, String description, String time, double latitude,
 			double longitude) {
 		super();
