@@ -14,6 +14,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShopSelectBottomSheetDialogBinding
+import com.ssafy.smartstore_jetpack.domain.model.Shop
 import com.ssafy.smartstore_jetpack.presentation.config.BaseBottomSheetDialogFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -154,7 +157,7 @@ class ShopSelectBottomSheetDialogFragment :
                 shops.forEach { shop ->
                     val position = LatLng(shop.latitude, shop.longitude)
                     mMap.addMarker(
-                        MarkerOptions().position(position).title(shop.id).icon(createCustomMarkerIcon(shop.name))
+                        MarkerOptions().position(position).title(shop.id).icon(createCustomMarkerIcon(shop))
                     )?.showInfoWindow()
                 }
             }
@@ -162,11 +165,11 @@ class ShopSelectBottomSheetDialogFragment :
     }
 
     @SuppressLint("MissingInflatedId", "InflateParams")
-    private fun createCustomMarkerIcon(name: String): BitmapDescriptor {
+    private fun createCustomMarkerIcon(shop: Shop): BitmapDescriptor {
         val markerView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_marker, null)
         val textView = markerView.findViewById<TextView>(R.id.tv_marker)
         val imageView = markerView.findViewById<ImageView>(R.id.iv_marker)
-        textView.text = name
+        textView.text = shop.name
 
         when (viewModel.appThemeName.value) {
             "봄" -> {
@@ -189,7 +192,9 @@ class ShopSelectBottomSheetDialogFragment :
                 imageView.setBackgroundResource(R.drawable.ic_shop)
             }
         }
-
+        imageView.load(shop.image) {
+            transformations(CircleCropTransformation())
+        }
 
         markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)

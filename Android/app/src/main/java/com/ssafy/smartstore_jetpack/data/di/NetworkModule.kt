@@ -5,6 +5,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.smartstore_jetpack.data.base.AddCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.base.ReceivedCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
+import com.ssafy.smartstore_jetpack.data.api.CouponApi
+import com.ssafy.smartstore_jetpack.data.api.EventApi
 import com.ssafy.smartstore_jetpack.data.api.OrderApi
 import com.ssafy.smartstore_jetpack.data.api.ProductApi
 import com.ssafy.smartstore_jetpack.data.api.ShopApi
@@ -92,5 +94,17 @@ object NetworkModule {
     @Singleton
     fun provideShopApiService(@Named("SSAFY") retrofit: Retrofit): ShopApi {
         return retrofit.create(ShopApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEventApiService(@Named("SSAFY") retrofit: Retrofit): EventApi {
+        return retrofit.create(EventApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCouponApiService(@Named("SSAFY") retrofit: Retrofit): CouponApi {
+        return retrofit.create(CouponApi::class.java)
     }
 }

@@ -4,6 +4,8 @@ import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.smartstore_jetpack.domain.model.Comment
+import com.ssafy.smartstore_jetpack.domain.model.Coupon
+import com.ssafy.smartstore_jetpack.domain.model.Event
 import com.ssafy.smartstore_jetpack.domain.model.Order
 import com.ssafy.smartstore_jetpack.domain.model.OrderDetail
 import com.ssafy.smartstore_jetpack.domain.model.Product
@@ -15,6 +17,8 @@ import com.ssafy.smartstore_jetpack.domain.model.UserInfo
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetCouponUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetEventUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetOrderUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetProductUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetShopUseCase
@@ -40,7 +44,6 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiE
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
-import com.ssafy.smartstore_jetpack.presentation.views.main.home.EventUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.information.InformationClickListener
@@ -85,6 +88,8 @@ class MainViewModel @Inject constructor(
     private val getOrderUseCase: GetOrderUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val getShopUseCase: GetShopUseCase,
+    private val getEventUseCase: GetEventUseCase,
+    private val getCouponUseCase: GetCouponUseCase,
     private val getUserIdUseCase: GetUserIdUseCase,
     private val setUserIdUseCase: SetUserIdUseCase,
     private val getCookieUseCase: GetCookieUseCase,
@@ -114,11 +119,14 @@ class MainViewModel @Inject constructor(
     private val _joinName = MutableStateFlow<String>("")
     val joinName = _joinName
 
-    private val _events = MutableStateFlow<List<EventUiState>>(emptyList())
+    private val _events = MutableStateFlow<List<Event>>(emptyList())
     val events = _events.asStateFlow()
 
     private val _user = MutableStateFlow<UserInfo?>(null)
     val user = _user.asStateFlow()
+
+    private val _coupons = MutableStateFlow<List<Coupon>>(emptyList())
+    val coupons = _coupons.asStateFlow()
 
     private val _ordersMonth = MutableStateFlow<List<Order>>(emptyList())
     val ordersMonth = _ordersMonth.asStateFlow()
@@ -992,15 +1000,19 @@ class MainViewModel @Inject constructor(
     }
 
     private fun setEvents() {
-        val newEvents = mutableListOf<EventUiState>()
+        viewModelScope.launch {
+            val response = getEventUseCase.getEvents()
 
-        newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/0zdpAngaKBFnlCcCqpCU4A/ko/list/image?1621844405"))
-        newEvents.add(EventUiState.EventItem("https://dcenter-img.cafe24.com/d/product/2022/03/10/306c857f338c411e1bdbd90728d4fce5.png"))
-        newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/jsISJfide0GLiUyXsznbgP/ko/list/image"))
-        newEvents.add(EventUiState.EventItem("https://appservice-img.s3.amazonaws.com/apps/0zdpAngaKBFnlCcCqpCU4A/ko/list/image?1621844405"))
-        newEvents.add(EventUiState.EventItem("https://dcenter-img.cafe24.com/d/product/2022/03/10/306c857f338c411e1bdbd90728d4fce5.png"))
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { events ->
+                        _events.value = listOf(events.last()) + events + listOf(events.first())
+                    }
+                }
 
-        _events.value = newEvents.toList()
+                else -> {}
+            }
+        }
     }
 
     private fun getShop() {
@@ -1027,6 +1039,29 @@ class MainViewModel @Inject constructor(
                 Status.SUCCESS -> {
                     _user.value = response.data
                     validateGrade()
+                    val newUser = _user.value
+                    if (newUser != null) {
+                        getCoupons(newUser.user.id)
+                    }
+                    Timber.d("User: ${_user.value}")
+                }
+
+                else -> {
+                    Timber.d("${response.data}")
+                }
+            }
+        }
+    }
+
+    private fun getCoupons(userId: String) {
+        viewModelScope.launch {
+            val response =
+                getCouponUseCase.getCoupons(userId)
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { coupons ->
+                        _coupons.value = coupons
+                    }
                     Timber.d("User: ${_user.value}")
                 }
 

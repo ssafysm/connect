@@ -9,10 +9,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ssafy.cafe.model.dto.Coupon;
 import com.ssafy.cafe.model.dto.Grade;
 import com.ssafy.cafe.model.dto.Order;
 import com.ssafy.cafe.model.dto.User;
 import com.ssafy.cafe.model.dto.UserInfo;
+import com.ssafy.cafe.model.service.CouponService;
 import com.ssafy.cafe.model.service.OrderService;
 import com.ssafy.cafe.model.service.StampService;
 import com.ssafy.cafe.model.service.UserService;
@@ -39,6 +41,9 @@ public class UserRestController {
 
     @Autowired
     OrderService orderService;
+    
+    @Autowired
+    CouponService couponService;
 
     @Operation(summary = "사용자 정보를 추가한다.")
     @PostMapping("")
@@ -48,6 +53,8 @@ public class UserRestController {
             int result = userService.join(newUser);
 
             if (result == 1) {
+            	// 회원 가입 시 천원짜리 쿠폰 1장 주기
+            	couponService.setInitCoupon(new Coupon(user.getId(), "기본 쿠폰", "primary_coupon.png", 1000));
                 return ResponseEntity.ok(true);
             } else {
                 return ResponseEntity.ok(false);

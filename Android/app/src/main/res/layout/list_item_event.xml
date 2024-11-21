@@ -6,7 +6,7 @@
 
         <variable
             name="event"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.home.EventUiState.EventItem" />
+            type="com.ssafy.smartstore_jetpack.domain.model.Event" />
 
     </data>
 
@@ -18,7 +18,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:eventImage="@{event.eventImage}"
+            app:eventImage="@{event.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

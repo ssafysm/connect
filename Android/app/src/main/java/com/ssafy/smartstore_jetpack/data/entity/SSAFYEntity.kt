@@ -198,3 +198,39 @@ data class ShopEntity(
     @Json(name = "longitude")
     val longitude: Double?
 )
+
+@JsonClass(generateAdapter = true)
+data class EventEntity(
+    @Json(name = "id")
+    val id: Int,
+
+    @Json(name = "name")
+    val name: String?,
+
+    @Json(name = "image")
+    val image: String?,
+
+    @Json(name = "url")
+    val url: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class CouponEntity(
+    @Json(name = "id")
+    val id: Int,
+
+    @Json(name = "user_id")
+    val userId: String?,
+
+    @Json(name = "name")
+    val name: String?,
+
+    @Json(name = "image")
+    val image: String?,
+
+    @Json(name = "coupon_time")
+    val couponTime: String?,
+
+    @Json(name = "price")
+    val price: Int?
+)

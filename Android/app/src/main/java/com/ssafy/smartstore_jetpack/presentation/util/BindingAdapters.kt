@@ -243,7 +243,7 @@ fun ImageView.bindEventImage(src: String?) {
     } else {
         this.setImageResource(R.drawable.logo)
     }
-    scaleType = ImageView.ScaleType.CENTER_CROP
+    scaleType = ImageView.ScaleType.MATRIX
 }
 
 @BindingAdapter("app:homeBanner")

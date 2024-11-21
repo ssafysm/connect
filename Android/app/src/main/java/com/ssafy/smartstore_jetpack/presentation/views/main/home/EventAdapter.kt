@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemEventBinding
+import com.ssafy.smartstore_jetpack.domain.model.Event
 
-class EventAdapter : ListAdapter<EventUiState, RecyclerView.ViewHolder>(diffUtil) {
+class EventAdapter : ListAdapter<Event, RecyclerView.ViewHolder>(diffUtil) {
 
     class EventViewHolder(private val binding: ListItemEventBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(event: EventUiState.EventItem) {
+        fun bind(event: Event) {
             binding.event = event
         }
     }
@@ -25,17 +26,17 @@ class EventAdapter : ListAdapter<EventUiState, RecyclerView.ViewHolder>(diffUtil
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as EventViewHolder).bind(currentList[position] as EventUiState.EventItem)
+        (holder as EventViewHolder).bind(currentList[position])
     }
 
     companion object {
 
-        val diffUtil = object : DiffUtil.ItemCallback<EventUiState>() {
+        val diffUtil = object : DiffUtil.ItemCallback<Event>() {
 
-            override fun areContentsTheSame(oldItem: EventUiState, newItem: EventUiState): Boolean =
+            override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean =
                 (oldItem == newItem)
 
-            override fun areItemsTheSame(oldItem: EventUiState, newItem: EventUiState): Boolean =
+            override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean =
                 (oldItem.id == newItem.id)
         }
     }

@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.datastore.DataStoreRepositoryImpl
+import com.ssafy.smartstore_jetpack.data.repository.event.EventRemoteDataSource
+import com.ssafy.smartstore_jetpack.data.repository.event.EventRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.order.OrderRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.order.OrderRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.product.ProductRemoteDataSource
@@ -15,6 +17,7 @@ import com.ssafy.smartstore_jetpack.data.repository.user.UserRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRepositoryImpl
 import com.ssafy.smartstore_jetpack.domain.repository.CommentRepository
 import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
+import com.ssafy.smartstore_jetpack.domain.repository.EventRepository
 import com.ssafy.smartstore_jetpack.domain.repository.OrderRepository
 import com.ssafy.smartstore_jetpack.domain.repository.ProductRepository
 import com.ssafy.smartstore_jetpack.domain.repository.ShopRepository
@@ -57,6 +60,12 @@ object RepositoryModule {
     @Singleton
     fun provideShopRepository(shopRemoteDataSource: ShopRemoteDataSource): ShopRepository {
         return ShopRepositoryImpl(shopRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEventRepository(eventRemoteDataSource: EventRemoteDataSource): EventRepository {
+        return EventRepositoryImpl(eventRemoteDataSource)
     }
 
     @Provides
