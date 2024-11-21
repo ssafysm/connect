@@ -726,7 +726,6 @@ class MainViewModel @Inject constructor(
         _shoppingList.value = newShoppingList.toList()
         _totalOrder.value = (_shoppingList.value.sumOf { it.menuCnt.toInt() }).toString()
         _totalPrice.value = makeComma((_shoppingList.value.sumOf { deleteComma(it.totalPrice) }))
-        Timber.d("Total Price: ${_totalPrice.value}")
     }
 
     override fun onClickProductRemove(position: Int) {
@@ -885,6 +884,7 @@ class MainViewModel @Inject constructor(
                     getLastMonthOrders()
                     getLast6MonthsOrders()
                     getProducts()
+                    validateShoppingList()
                 }
 
                 else -> {

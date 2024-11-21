@@ -74,7 +74,7 @@ class ShoppingListFragment :
                                 }
                             }
                         })
-                    } else {
+                    } else if (it.isNotEmpty()) {
                         showBottomLayout(binding.clBottomCart)
                     }
                 }
