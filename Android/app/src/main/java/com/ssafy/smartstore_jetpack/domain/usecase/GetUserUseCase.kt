@@ -18,6 +18,10 @@ class GetUserUseCase @Inject constructor(
         return userRepository.getUserInfo(id)
     }
 
+    suspend fun postUserInfo(user: User): Result<UserInfo> {
+        return userRepository.postUserInfo(user)
+    }
+
     suspend fun getIsUsedId(id: String): Result<Boolean> {
         return userRepository.getIsUsedId(id)
     }

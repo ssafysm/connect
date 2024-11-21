@@ -2,8 +2,10 @@ package com.ssafy.smartstore_jetpack.presentation.util
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
@@ -23,6 +25,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.ApplicationClass
+import com.ssafy.smartstore_jetpack.domain.model.Grade
 import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
@@ -116,6 +119,42 @@ fun ImageView.bindSettingsBackground(appThemeName: String) {
         "가을" -> load(R.drawable.ic_settings_autumn)
 
         "겨울" -> load(R.drawable.ic_settings_winter)
+    }
+}
+
+@BindingAdapter("app:gradeAsTitle")
+fun ImageView.bindGradeAsTitle(title: String?) {
+    when (title) {
+        "SILVER" -> setBackgroundResource(R.drawable.ic_grade_silver)
+
+        "GOLD" -> setBackgroundResource(R.drawable.ic_grade_gold)
+
+        "PLATINUM" -> setBackgroundResource(R.drawable.ic_grade_platinum)
+
+        else -> setBackgroundResource(R.drawable.ic_grade_beginner)
+    }
+}
+
+@SuppressLint("UseCompatLoadingForDrawables")
+@BindingAdapter("app:progressAsTitle")
+fun ProgressBar.bindProgressAsTitle(grade: Grade?) {
+    when (grade == null) {
+        true -> visibility = View.GONE
+
+        else -> {
+            visibility = View.VISIBLE
+            max = grade.stepMax.toInt()
+            progress = grade.step.toInt()
+            progressDrawable = when (grade.title) {
+                "SILVER" -> resources.getDrawable(R.drawable.layer_list_silver, context.theme)
+
+                "GOLD" -> resources.getDrawable(R.drawable.layer_list_gold, context.theme)
+
+                "PLATINUM" -> resources.getDrawable(R.drawable.layer_list_platinum, context.theme)
+
+                else -> resources.getDrawable(R.drawable.layer_list_beginner, context.theme)
+            }
+        }
     }
 }
 
@@ -245,7 +284,7 @@ fun ImageView.bindEventImage(src: String?) {
         Timber.d("이미지 로딩 실패")
         this.setImageResource(R.drawable.logo)
     }
-    scaleType = ImageView.ScaleType.MATRIX
+    scaleType = ImageView.ScaleType.CENTER_CROP
 }
 
 @BindingAdapter("app:homeBanner")

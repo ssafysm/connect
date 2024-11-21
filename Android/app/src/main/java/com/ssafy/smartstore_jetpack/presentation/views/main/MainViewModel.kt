@@ -43,6 +43,8 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectUiSta
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.history.HistoryUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.HomeClickListener
@@ -104,7 +106,7 @@ class MainViewModel @Inject constructor(
 
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
-    InformationClickListener, PasswordClickListener {
+    InformationClickListener, PasswordClickListener, CouponClickListener {
 
     /****** Data ******/
     private val _userId = MutableStateFlow<String>("")
@@ -133,6 +135,9 @@ class MainViewModel @Inject constructor(
 
     private val _coupons = MutableStateFlow<List<Coupon>>(emptyList())
     val coupons = _coupons.asStateFlow()
+
+    private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
+    val selectedCoupon = _selectedCoupon.asStateFlow()
 
     private val _ordersMonth = MutableStateFlow<List<Order>>(emptyList())
     val ordersMonth = _ordersMonth.asStateFlow()
@@ -279,6 +284,9 @@ class MainViewModel @Inject constructor(
 
     private val _informationUiEvent = MutableSharedFlow<InformationUiEvent>()
     val informationUiEvent = _informationUiEvent.asSharedFlow()
+
+    private val _couponUiEvent = MutableSharedFlow<CouponUiEvent>()
+    val couponUiEvent = _couponUiEvent.asSharedFlow()
 
     init {
         setEvents()
@@ -1044,6 +1052,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    override fun onClickCoupon(coupon: Coupon) {
+        viewModelScope.launch {
+            _selectedCoupon.value = null
+            _selectedCoupon.value = coupon
+            _couponUiEvent.emit(CouponUiEvent.GoToCouponDetail)
+        }
+    }
+
     private fun setTheme() {
         viewModelScope.launch {
             val appTheme = getAppTheme().first()
@@ -1117,8 +1133,11 @@ class MainViewModel @Inject constructor(
                 Status.SUCCESS -> {
                     response.data?.let { coupons ->
                         _coupons.value = coupons
+                        if (_coupons.value.isNotEmpty()) {
+                            _couponUiState.update { it.copy(couponsValidState = EmptyState.NONE) }
+                        }
+                        Timber.d("Coupons: ${_coupons.value}")
                     }
-                    Timber.d("User: ${_user.value}")
                 }
 
                 else -> {
@@ -1130,7 +1149,7 @@ class MainViewModel @Inject constructor(
 
     private fun validateGrade() {
         when (_user.value?.grade?.title) {
-            "커피나무" -> {
+            "PLATINUM" -> {
                 _myPageUiState.update { it.copy(gradeState = GradeState.TREE) }
             }
 

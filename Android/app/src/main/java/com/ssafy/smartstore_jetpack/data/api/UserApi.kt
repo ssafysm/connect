@@ -27,6 +27,11 @@ interface UserApi {
         @Query("id") id: String
     ): Response<UserInfoEntity>
 
+    @POST("rest/user/info")
+    suspend fun postUserInfo(
+        @Body body: User
+    ): Response<UserInfoEntity>
+
     @GET("rest/user/isUsed")
     suspend fun getIsUserId(
         @Query("id") id: String

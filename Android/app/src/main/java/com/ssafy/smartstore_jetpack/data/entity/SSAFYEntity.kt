@@ -22,7 +22,7 @@ data class GradeEntity(
     val title: String,
 
     @Json(name = "img")
-    val img: String,
+    val img: String?,
 
     @Json(name = "step")
     val step: Int?,
@@ -228,7 +228,7 @@ data class CouponEntity(
     @Json(name = "image")
     val image: String?,
 
-    @Json(name = "coupon_time")
+    @Json(name = "time")
     val couponTime: String?,
 
     @Json(name = "price")

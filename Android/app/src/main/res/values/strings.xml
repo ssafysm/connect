@@ -52,7 +52,7 @@
     <string name="text_information_eng">Information</string>
     <string name="text_coupon_eng">Coupon</string>
     <string name="text_pay_eng">Pay</string>
-    
+
     <!-- Notice -->
     <string name="text_notices">알림함</string>
     <string name="text_notice_nothing">미확인된 알림이 없어요.</string>
@@ -152,5 +152,7 @@
     <string name="text_need_login">원활한 이용을 위해서는 로그인이 필요해요.</string>
     <string name="text_need_join">회원가입을 해주세요.</string>
     <string name="text_confirm_join"> · 아이디는 영문, 숫자 혼합하여 2~12자리 이내로 입력하세요. \n· 비밀번호는 영문, 숫자 혼합하여 8~16자리 이내로 입력하세요. 특수문자는 꼭 1자 이상 포함하세요.\n· 아이디와 같은 비밀번호, 생일, 학번, 전화번호 등 개인정보와 관련된 숫자, 연속된 숫자, 동일하게 반복된 숫자 등 다른 사람이 쉽게 알아낼 수 있는 비밀번호는 유출 위험이 높아요.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

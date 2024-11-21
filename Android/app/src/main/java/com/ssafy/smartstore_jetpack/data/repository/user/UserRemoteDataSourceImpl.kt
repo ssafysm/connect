@@ -15,6 +15,9 @@ class UserRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getUserInfo(id: String): Response<UserInfoEntity> = userApi.getUserInfo(id)
 
+    override suspend fun postUserInfo(user: User): Response<UserInfoEntity> =
+        userApi.postUserInfo(user)
+
     override suspend fun getIsUsedId(id: String): Response<Boolean> = userApi.getIsUserId(id)
 
     override suspend fun postUserForLogin(user: User): Response<UserEntity> =

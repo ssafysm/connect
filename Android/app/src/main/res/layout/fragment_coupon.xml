@@ -11,6 +11,10 @@
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
+        <variable
+            name="adapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponAdapter" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,6 +74,21 @@
             app:layout_constraintEnd_toStartOf="@id/gl_end_coupon"
             app:layout_constraintStart_toEndOf="@id/gl_start_coupon"
             app:layout_constraintTop_toBottomOf="@id/iv_coupon" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_coupon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:adapter="@{adapter}"
+            android:orientation="vertical"
+            android:visibility="@{(vm.couponUiState.isEmptyCoupons == true) ? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_coupon"
+            app:layout_constraintStart_toEndOf="@id/gl_start_coupon"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_coupon"
+            app:submitData="@{vm.coupons}"
+            tools:listitem="@layout/list_item_coupon" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_end_coupon"

@@ -427,7 +427,7 @@
                             android:id="@+id/iv_grade_my_page"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_grade_gold"
+                            app:gradeAsTitle="@{vm.user.grade.title}"
                             app:layout_constraintBottom_toBottomOf="@id/tv_grade_my_page"
                             app:layout_constraintDimensionRatio="1:1"
                             app:layout_constraintEnd_toStartOf="@id/tv_grade_my_page"
@@ -440,7 +440,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:fontFamily="@font/pretendardsemibold"
-                            android:text="GOLD"
+                            android:text="@{vm.user.grade.title}"
                             android:textColor="@color/neutral_100"
                             android:textSize="24sp"
                             app:layout_constraintStart_toEndOf="@id/iv_grade_my_page"
@@ -465,20 +465,44 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:max="25"
-                            android:progress="4"
-                            android:progressDrawable="@drawable/layer_list_gold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@id/tv_grade_my_page"
-                            app:layout_constraintTop_toBottomOf="@id/tv_grade_my_page" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_grade_my_page"
+                            app:progressAsTitle="@{vm.user.grade}" />
 
                         <TextView
+                            android:layout_marginEnd="4dp"
                             android:id="@+id/tv_remain_message_my_page"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:fontFamily="@font/pretendardregular"
-                            android:text="다음 등급까지 21잔 남았습니다."
+                            android:text="다음 등급까지"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_remain_end_message_my_page"
+                            app:layout_constraintEnd_toStartOf="@id/tv_remain_value_message_my_page"
+                            app:layout_constraintTop_toTopOf="@id/tv_remain_end_message_my_page" />
+
+                        <TextView
+                            android:id="@+id/tv_remain_value_message_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:fontFamily="@font/pretendardregular"
+                            android:text="@{vm.user.grade.to}"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_remain_end_message_my_page"
+                            app:layout_constraintEnd_toStartOf="@id/tv_remain_end_message_my_page"
+                            app:layout_constraintTop_toTopOf="@id/tv_remain_end_message_my_page" />
+
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:id="@+id/tv_remain_end_message_my_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardregular"
+                            android:text="잔 남았습니다."
                             android:textColor="@color/neutral_100"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"

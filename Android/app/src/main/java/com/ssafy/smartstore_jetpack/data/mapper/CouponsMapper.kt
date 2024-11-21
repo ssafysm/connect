@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.data.mapper
 
 import com.ssafy.smartstore_jetpack.data.entity.CouponEntity
 import com.ssafy.smartstore_jetpack.domain.model.Coupon
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 
 object CouponsMapper {
 
@@ -17,9 +18,9 @@ object CouponsMapper {
                     image = couponEntity.image ?: "",
                     couponTime = couponEntity.couponTime ?: "",
                     price = when (couponEntity.price) {
-                        null -> "0"
+                        null -> "￦0"
 
-                        else -> couponEntity.price.toString()
+                        else -> makeComma(couponEntity.price)
                     }
                 )
             )

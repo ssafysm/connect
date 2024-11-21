@@ -10,6 +10,8 @@ interface UserRepository {
 
     suspend fun getUserInfo(id: String): Result<UserInfo>
 
+    suspend fun postUserInfo(user: User): Result<UserInfo>
+
     suspend fun getIsUsedId(id: String): Result<Boolean>
 
     suspend fun postUserForLogin(user: User): Result<User>

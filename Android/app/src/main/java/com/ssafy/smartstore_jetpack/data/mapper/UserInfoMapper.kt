@@ -56,7 +56,7 @@ object UserInfoMapper {
 
         return UserInfo(
             grade = Grade(
-                img = userInfoEntity.grade.img,
+                img = userInfoEntity.grade.img ?: "",
                 step = if (userInfoEntity.grade.step == null) "0" else userInfoEntity.grade.step.toString(),
                 stepMax = userInfoEntity.grade.stepMax.toString(),
                 to = if (userInfoEntity.grade.to == null) "0" else userInfoEntity.grade.to.toString(),

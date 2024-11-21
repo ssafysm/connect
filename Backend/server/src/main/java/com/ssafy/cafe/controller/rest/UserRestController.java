@@ -162,44 +162,23 @@ public class UserRestController {
 
     private Grade calculateGrade(int stamps) {
         Grade nowGrade = new Grade();
-        if (stamps < 50) {
-            int step = stamps / 10;
-            int to = 10 - (stamps % 10);
+        if (stamps < 10) {
             nowGrade.setStepMax(10);
-            nowGrade.setStep(step);
-            nowGrade.setTo(to);
-            nowGrade.setImg("seeds.png");
-            nowGrade.setTitle("씨앗");
-        } else if (stamps < 125) {
-            stamps -= 50;
-            int step = stamps / 15;
-            int to = 15 - (stamps % 15);
-            nowGrade.setStepMax(15);
-            nowGrade.setStep(step);
-            nowGrade.setTo(to);
-            nowGrade.setImg("flower.png");
-            nowGrade.setTitle("꽃");
-        } else if (stamps < 225) {
-            stamps -= 125;
-            int step = stamps / 20;
-            int to = 20 - (stamps % 20);
-            nowGrade.setStepMax(20);
-            nowGrade.setStep(step);
-            nowGrade.setTo(to);
-            nowGrade.setImg("coffee_fruit.png");
-            nowGrade.setTitle("열매");
+            nowGrade.setStep(stamps);
+            nowGrade.setTo(10 - stamps);
+            nowGrade.setTitle("BEGINNER");
+        } else if (stamps < 150) {
+            nowGrade.setStepMax(150);
+            nowGrade.setStep(stamps - 10);
+            nowGrade.setTo(150 - stamps);
+            nowGrade.setTitle("SILVER");
         } else if (stamps < 350) {
-            stamps -= 225;
-            int step = stamps / 25;
-            int to = 25 - (stamps % 25);
-            nowGrade.setStepMax(25);
-            nowGrade.setStep(step);
-            nowGrade.setTo(to);
-            nowGrade.setImg("coffee_beans.png");
-            nowGrade.setTitle("커피콩");
+            nowGrade.setStepMax(350);
+            nowGrade.setStep(stamps - 150);
+            nowGrade.setTo(350 - stamps);
+            nowGrade.setTitle("GOLD");
         } else {
-            nowGrade.setImg("coffee_tree.png");
-            nowGrade.setTitle("나무");
+            nowGrade.setTitle("PLATINUM");
             nowGrade.setStep(1);
             nowGrade.setStepMax(1);
             nowGrade.setTo(0);

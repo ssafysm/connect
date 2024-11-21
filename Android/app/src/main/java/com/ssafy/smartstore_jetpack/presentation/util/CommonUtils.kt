@@ -41,7 +41,7 @@ object CommonUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     fun dateFormat(time: String): String {
         val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-        val outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
         val dateTime =
             OffsetDateTime.parse(time, inputFormatter).withOffsetSameInstant(ZoneOffset.ofHours(9))

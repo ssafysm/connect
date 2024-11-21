@@ -51,6 +51,25 @@ class UserRepositoryImpl @Inject constructor(
             Result.fail()
         }
 
+    override suspend fun postUserInfo(user: User): Result<UserInfo> =
+        try {
+            val response = withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                userRemoteDataSource.postUserInfo(user)
+            }
+
+            val body = response.body()
+            if (response.isSuccessful && (body != null)) {
+                Timber.d("Exception: ${response.body()}")
+                Result.success(UserInfoMapper(body))
+            } else {
+                Timber.d("Exception: ${response.errorBody().toString()}")
+                Result.error(response.errorBody().toString(), null)
+            }
+        } catch (e: Exception) {
+            Timber.d("Exception: $e")
+            Result.fail()
+        }
+
     override suspend fun getIsUsedId(id: String): Result<Boolean> =
         try {
             val response = withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
