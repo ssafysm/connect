@@ -31,7 +31,7 @@ object NetworkModule {
 //    private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
 
     // JW 서버 주소
-    // private const val BASE_URL = "http://192.168.33.129:9987/"
+    private const val BASE_URL = "http://192.168.33.129:9987/"
 
     // SM 서버 주소
     // private const val BASE_URL = "http://192.168.33.130:9987/"
@@ -40,7 +40,7 @@ object NetworkModule {
     // private const val BASE_URL = "http://192.168.43.161:9987/"
 
     // JW 자취방 와이파이 주소
-    private const val BASE_URL = "http://192.168.0.200:9987/"
+    // private const val BASE_URL = "http://192.168.0.200:9987/"
 
     @Provides
     @Singleton

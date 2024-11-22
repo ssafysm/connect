@@ -725,6 +725,7 @@ class MainViewModel @Inject constructor(
             _selectShop.value = null
             _shoppingListUiState.update { it.copy(shopSelectState = SelectState.NONE) }
             _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
+            _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponOrderFail)
         }
     }
 
@@ -806,6 +807,7 @@ class MainViewModel @Inject constructor(
 
                 else -> {
                     _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponOrderFail)
                 }
             }
         }
