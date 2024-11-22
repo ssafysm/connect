@@ -20,6 +20,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding>(private val la
     private var _binding: T? = null
     protected val binding
         get() = requireNotNull(_binding)
+    open lateinit var behavior: BottomSheetBehavior<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,18 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding>(private val la
         isCancelable = false
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        dialog?.let { dialog ->
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            behavior = BottomSheetBehavior.from(bottomSheet!!)
+            behavior.isDraggable = true
+
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        }
     }
 
     override fun onDestroyView() {

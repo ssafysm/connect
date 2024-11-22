@@ -8,6 +8,10 @@ sealed class ShoppingListUiEvent {
 
     data object Tagged : ShoppingListUiEvent()
 
+    data object MapMode : ShoppingListUiEvent()
+
+    data object NotMapMode : ShoppingListUiEvent()
+
     data object TakeOutOrder : ShoppingListUiEvent()
 
     data class FinishOrder(val orderId: Int) : ShoppingListUiEvent()

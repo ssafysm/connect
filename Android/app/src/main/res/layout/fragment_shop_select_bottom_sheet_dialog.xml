@@ -132,9 +132,8 @@
                 app:submitData="@{vm.searchedShops}"
                 tools:listitem="@layout/list_item_shop" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fcv_map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <com.ssafy.smartstore_jetpack.presentation.views.main.cart.TouchableWrapper
+                android:id="@+id/touchable_wrapper"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
@@ -143,7 +142,15 @@
                 app:layout_constraintDimensionRatio="1:1.5"
                 app:layout_constraintEnd_toStartOf="@id/gl_end_shop_select"
                 app:layout_constraintStart_toEndOf="@id/gl_start_shop_select"
-                app:layout_constraintTop_toBottomOf="@id/sc_shop_select" />
+                app:layout_constraintTop_toBottomOf="@id/sc_shop_select">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fcv_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.ssafy.smartstore_jetpack.presentation.views.main.cart.TouchableWrapper>
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nsv_in_shop_select"

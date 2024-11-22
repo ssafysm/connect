@@ -1509,10 +1509,12 @@ class MainViewModel @Inject constructor(
             when (_isMapMode.value) {
                 true -> {
                     _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.MAP) }
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.MapMode)
                 }
 
                 else -> {
                     _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.MapMode)
                 }
             }
         }

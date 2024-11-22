@@ -7,9 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
@@ -52,7 +50,7 @@ class ShopSelectBottomSheetDialogFragment :
     private lateinit var shopItemAdapter: ShopItemAdapter
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var behavior: BottomSheetBehavior<*>
+    override lateinit var behavior: BottomSheetBehavior<*>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -148,13 +146,6 @@ class ShopSelectBottomSheetDialogFragment :
     private fun setMapFragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.fcv_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        binding.fcvMap.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> behavior.isDraggable = false
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> behavior.isDraggable = true
-            }
-            false
-        }
     }
 
     private fun hasLocationPermission(): Boolean {
