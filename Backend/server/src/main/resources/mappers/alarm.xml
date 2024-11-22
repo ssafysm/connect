@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.cafe.model.dao.AlarmDao">
+
+    <insert id="insert" parameterType="com.ssafy.cafe.model.dto.Alarm">
+        INSERT INTO t_alarm (user_id, title, content)
+        VALUES (#{userId}, #{title}, #{content});
+    </insert>
+
+    <select id="selectByUserId" parameterType="String" resultType="com.ssafy.cafe.model.dto.Alarm">
+        SELECT id, user_id, title, content, sent_time
+        FROM t_alarm
+        WHERE user_id = #{userId}
+        ORDER BY sent_time DESC;
+    </select>
+
+</mapper>

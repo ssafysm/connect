@@ -117,6 +117,16 @@ CREATE TABLE t_ready (
     CONSTRAINT fk_ready_order FOREIGN KEY (o_id) REFERENCES t_order(o_id) ON DELETE CASCADE
 );
 
+-- t_alarm 테이블 생성
+CREATE TABLE t_alarm (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content VARCHAR(1000) NOT NULL,
+    sent_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_alarm_user FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE
+);
+
 -- t_user 데이터 삽입
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id01', 'name01', 'pass01', 4);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id02', 'name02', 'pass02', 1);

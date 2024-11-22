@@ -8,4 +8,5 @@ public interface FcmDao {
     int delete(Fcm fcm);
     List<String> selectTokensByUserId(String userId);
     List<String> selectAllTokens(); // 추가된 메서드
+    List<String> selectAllUserIds(); // 추가된 메서드
 }

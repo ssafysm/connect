@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.ssafy.cafe.model.service.AlarmService;
 import com.ssafy.cafe.model.service.FcmService;
 import com.ssafy.cafe.model.service.FirebaseCloudMessageService;
+import com.ssafy.cafe.model.dto.Alarm;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +24,9 @@ public class FcmRestController {
 
     @Autowired
     private FirebaseCloudMessageService firebaseCloudMessageService;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @Operation(summary = "FCM 토큰을 추가한다.")
     @PostMapping("/add")
@@ -64,10 +69,11 @@ public class FcmRestController {
         }
     }
 
-    @Operation(summary = "특정 유저의 모든 토큰으로 FCM 메시지를 전송한다.")
+    @Operation(summary = "특정 유저의 모든 토큰으로 FCM 메시지를 전송하고, 알람을 저장한다.")
     @PostMapping("/sendMessageToUser")
     public ResponseEntity<?> sendMessageToUser(@RequestParam String userId, @RequestParam String title, @RequestParam String body) {
         List<String> tokens = fcmService.getTokensByUserId(userId);
+        alarmService.addAlarm(new Alarm(userId, title, body));
         int successCount = 0;
         for (String token : tokens) {
             try {
@@ -84,11 +90,16 @@ public class FcmRestController {
         }
     }
 
-    @Operation(summary = "모든 토큰으로 FCM 메시지를 전송한다.")
+    @Operation(summary = "모든 토큰으로 FCM 메시지를 전송하고, 각 사용자에게 알람을 저장한다.")
     @PostMapping("/broadcast")
     public ResponseEntity<?> broadcast(@RequestParam String title, @RequestParam String body) {
         List<String> tokens = fcmService.getAllTokens();
         int successCount = 0;
+        // 모든 사용자에게 알람 저장
+        List<String> userIds = fcmService.getAllUserIds();
+        for (String userId : userIds) {
+            alarmService.addAlarm(new Alarm(userId, title, body));
+        }
         for (String token : tokens) {
             try {
                 firebaseCloudMessageService.sendMessageTo(token, title, body);
@@ -98,10 +109,17 @@ public class FcmRestController {
             }
         }
         if (successCount > 0) {
+            
             return ResponseEntity.ok("메시지 전송 성공: " + successCount + "건");
         } else {
             return ResponseEntity.status(500).body("메시지 전송 실패");
         }
     }
 
+    @Operation(summary = "특정 사용자 ID로 알람 목록을 조회한다.")
+    @GetMapping("/alarms")
+    public ResponseEntity<?> getAlarms(@RequestParam String userId) {
+        List<Alarm> alarms = alarmService.getAlarmsByUserId(userId);
+        return ResponseEntity.ok(alarms);
+    }
 }

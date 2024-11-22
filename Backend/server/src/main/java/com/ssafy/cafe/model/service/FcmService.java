@@ -6,5 +6,6 @@ public interface FcmService {
     int addToken(String userId, String fcmToken);
     int removeToken(String userId, String fcmToken);
     List<String> getTokensByUserId(String userId);
-    List<String> getAllTokens(); // 추가된 메서드
+    List<String> getAllTokens();
+    List<String> getAllUserIds(); // 추가된 메서드
 }
