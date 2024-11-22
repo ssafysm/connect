@@ -18,6 +18,10 @@ class NoticeAdapter(private val viewModel: MainViewModel) :
         fun bind(notice: String, viewModel: MainViewModel) {
             binding.tvTitleNotify.text = notice
             Timber.d("Notice: $notice")
+            val noticeContent = notice.split("\n")
+            binding.tvTitleNotify.text = noticeContent[1]
+            binding.tvMessageNotify.text = noticeContent[2]
+            binding.tvTimeNotify.text = noticeContent[0]
             binding.ivNotify.setOnClickListener {
                 viewModel.onClickNoticeDelete(layoutPosition)
             }

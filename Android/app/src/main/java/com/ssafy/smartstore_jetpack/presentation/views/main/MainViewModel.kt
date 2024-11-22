@@ -336,6 +336,7 @@ class MainViewModel @Inject constructor(
     override fun onClickNotice() {
         viewModelScope.launch {
             _notices.value = getNotices().first()
+            validateNoticeState()
             Timber.d("Notices: ${_notices.value}")
             _homeUiEvent.emit(HomeUiEvent.GoToNotice)
         }
