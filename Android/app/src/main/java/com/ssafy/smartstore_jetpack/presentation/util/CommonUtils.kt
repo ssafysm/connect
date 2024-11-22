@@ -38,15 +38,24 @@ object CommonUtils {
         return num.replace("원", "").replace("￦", "").replace(" ", "").replace(",", "").toInt()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun dateFormat(time: String): String {
-        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-        val outputFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+    fun dateFormat(time: String?): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
-        val dateTime =
-            OffsetDateTime.parse(time, inputFormatter).withOffsetSameInstant(ZoneOffset.ofHours(9))
+        val dateTime = time?.let { inputFormat.parse(it) }
+        val result = dateTime?.let { outputFormat.format(it) }
 
-        return dateTime.format(outputFormatter)
+        return result ?: "날짜 미상"
+    }
+
+    fun dateFormatAnother(time: String?): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+        val dateTime = time?.let { inputFormat.parse(it) }
+        val result = dateTime?.let { outputFormat.format(it) }
+
+        return result ?: "날짜 미상"
     }
 
     //날짜 포맷 출력

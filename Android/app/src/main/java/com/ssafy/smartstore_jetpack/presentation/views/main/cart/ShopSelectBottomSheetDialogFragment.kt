@@ -8,7 +8,6 @@ import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,7 +29,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShopSelectBottomSheetDialogBinding
 import com.ssafy.smartstore_jetpack.domain.model.Shop
@@ -39,9 +37,8 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
-@SuppressLint("ClickableViewAccessibility")
+@SuppressLint("InflateParams")
 @AndroidEntryPoint
 class ShopSelectBottomSheetDialogFragment :
     BaseBottomSheetDialogFragment<FragmentShopSelectBottomSheetDialogBinding>(R.layout.fragment_shop_select_bottom_sheet_dialog),
@@ -51,7 +48,6 @@ class ShopSelectBottomSheetDialogFragment :
     private lateinit var shopItemAdapter: ShopItemAdapter
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    override lateinit var behavior: BottomSheetBehavior<*>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,14 +58,6 @@ class ShopSelectBottomSheetDialogFragment :
         setFusedLocation()
         setMapFragment()
         setEditTextFocus()
-
-        dialog?.let { dialog ->
-            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            behavior = BottomSheetBehavior.from(bottomSheet!!)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            behavior.isDraggable = false
-            binding.nsvShopSelect.isNestedScrollingEnabled = false
-        }
 
         lifecycleScope.launch {
             viewModel.shoppingUiEvent.collectLatest { uiEvent ->
@@ -83,31 +71,6 @@ class ShopSelectBottomSheetDialogFragment :
                     else -> {}
                 }
             }
-        }
-    }
-
-    private fun expandBottomSheetAndDisableScroll() {
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        behavior.isDraggable = false
-        binding.nsvShopSelect.isNestedScrollingEnabled = false
-        Timber.d("맵 모드")
-    }
-
-    private fun enableScrollAndCollapseBottomSheet() {
-        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        behavior.isDraggable = true
-        binding.nsvShopSelect.isNestedScrollingEnabled = true
-        Timber.d("맵 모드 아님")
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        dialog?.let { dialog ->
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            behavior.isDraggable = true
-
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -164,7 +127,6 @@ class ShopSelectBottomSheetDialogFragment :
         )
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun enableMyLocation() {
         try {
             if (hasLocationPermission()) {
@@ -224,7 +186,7 @@ class ShopSelectBottomSheetDialogFragment :
 
         if (shops.size == 1) {
             val singlePosition = LatLng(shops[0].latitude, shops[0].longitude)
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(singlePosition, 15f)) // 15f는 줌 레벨
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(singlePosition, 15f))
         } else {
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
         }

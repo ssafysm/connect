@@ -3,6 +3,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main
 import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.smartstore_jetpack.domain.model.Alarm
 import com.ssafy.smartstore_jetpack.domain.model.Comment
 import com.ssafy.smartstore_jetpack.domain.model.Coupon
 import com.ssafy.smartstore_jetpack.domain.model.Event
@@ -16,6 +17,7 @@ import com.ssafy.smartstore_jetpack.domain.model.Status
 import com.ssafy.smartstore_jetpack.domain.model.User
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
 import com.ssafy.smartstore_jetpack.domain.usecase.AddFcmTokenUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetAlarmUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
@@ -68,7 +70,6 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.my.GradeState
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiState
-import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.OrderUiEvent
@@ -103,6 +104,7 @@ class MainViewModel @Inject constructor(
     private val getShopUseCase: GetShopUseCase,
     private val getEventUseCase: GetEventUseCase,
     private val getCouponUseCase: GetCouponUseCase,
+    private val getAlarmUseCase: GetAlarmUseCase,
     private val getUserIdUseCase: GetUserIdUseCase,
     private val setUserIdUseCase: SetUserIdUseCase,
     private val getCookieUseCase: GetCookieUseCase,
@@ -111,13 +113,12 @@ class MainViewModel @Inject constructor(
     private val setAppThemeUseCase: SetAppThemeUseCase,
     private val getNoticesUseCase: GetNoticesUseCase,
     private val setNoticesUseCase: SetNoticesUseCase,
-    // 추가된 UseCase
     private val addFcmTokenUseCase: AddFcmTokenUseCase
 
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
     InformationClickListener, PasswordClickListener, CouponClickListener,
-    CouponDetailClickListener, NoticeClickListener {
+    CouponDetailClickListener {
 
     /****** Edit Text ******/
     /*** Login ***/
@@ -181,8 +182,8 @@ class MainViewModel @Inject constructor(
     private val _coupons = MutableStateFlow<List<Coupon>>(emptyList())
     val coupons = _coupons.asStateFlow()
 
-    private val _notices = MutableStateFlow<List<String>>(emptyList())
-    val notices = _notices.asStateFlow()
+    private val _alarms = MutableStateFlow<List<Alarm>>(emptyList())
+    val alarms = _alarms.asStateFlow()
 
     /*** Coupon ***/
     private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
@@ -343,9 +344,6 @@ class MainViewModel @Inject constructor(
 
     override fun onClickNotice() {
         viewModelScope.launch {
-            _notices.value = getNotices().first().sortedDescending()
-            validateNoticeState()
-            Timber.d("Notices: ${_notices.value}")
             _homeUiEvent.emit(HomeUiEvent.GoToNotice)
         }
     }
@@ -434,18 +432,6 @@ class MainViewModel @Inject constructor(
 
     override fun onClickGoToJoin() {
         join()
-    }
-
-    /*** Notice Click ***/
-    override fun onClickNoticeDelete(position: Int) {
-        viewModelScope.launch {
-            val newNotices = _notices.value.toMutableList()
-            newNotices.removeAt(position)
-            _notices.value = newNotices.toList()
-            setNoticesUseCase.setNotices(_notices.value)
-            validateNoticeState()
-            _noticeUiEvent.emit(NoticeUiEvent.DeleteNotice)
-        }
     }
 
     /*** Order Click ***/
@@ -1051,14 +1037,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun setNotices() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val newNotices = getNotices().first()
-            _notices.value = newNotices.toList()
-            validateNoticeState()
-        }
-    }
-
     private fun setEvents() {
         viewModelScope.launch {
             val response = getEventUseCase.getEvents()
@@ -1102,6 +1080,7 @@ class MainViewModel @Inject constructor(
                     val newUser = _user.value
                     if (newUser != null) {
                         getCoupons(newUser.user.id)
+                        getAlarms(newUser.user.id)
                     }
                     _loginUiEvent.emit(LoginUiEvent.GetUserInfo)
                     _homeUiEvent.emit(HomeUiEvent.GetUserInfo)
@@ -1183,9 +1162,24 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun getAlarms(userId: String) {
+        viewModelScope.launch {
+            val response = getAlarmUseCase.getAlarms(userId)
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { alarms ->
+                        _alarms.value = alarms
+                    }
+                }
+
+                else -> {}
+            }
+            validateNoticeState()
+        }
+    }
+
     private fun initShop() {
         viewModelScope.launch {
-            _searchedShops.value = _shops.value
             _shopSearchKeyword.value = ""
             _isMapMode.value = false
             _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
@@ -1419,7 +1413,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun validateNoticeState() {
-        when (_notices.value.isNotEmpty()) {
+        when (_alarms.value.isNotEmpty()) {
             true -> {
                 _noticeUiState.update { it.copy(noticesState = EmptyState.NONE) }
             }
@@ -1452,7 +1446,6 @@ class MainViewModel @Inject constructor(
     /*** Public Methods ***/
     fun initStatesWithLogin() {
         setTheme()
-        setNotices()
         getShop()
         getUser()
         getLastMonthOrders()
@@ -1467,7 +1460,6 @@ class MainViewModel @Inject constructor(
 
     fun setFabState(flag: Boolean) {
         _fabState.value = flag
-        Timber.d("$flag")
     }
 
     fun setBnvState(flag: Boolean) {
@@ -1529,7 +1521,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun sortSearchedShop(myPosition: Location) {
-        _searchedShops.value = _searchedShops.value.sortedBy { shop ->
+        _searchedShops.value = _shops.value.sortedBy { shop ->
             val shopLocation = Location("").apply {
                 latitude = shop.latitude
                 longitude = shop.longitude

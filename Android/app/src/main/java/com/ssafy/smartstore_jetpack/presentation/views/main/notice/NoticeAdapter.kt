@@ -6,25 +6,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemNoticeBinding
+import com.ssafy.smartstore_jetpack.domain.model.Alarm
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
-import timber.log.Timber
 
 class NoticeAdapter(private val viewModel: MainViewModel) :
-    ListAdapter<String, RecyclerView.ViewHolder>(diffUtil) {
+    ListAdapter<Alarm, RecyclerView.ViewHolder>(diffUtil) {
 
     class NoticeViewHolder(private val binding: ListItemNoticeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(notice: String, viewModel: MainViewModel) {
-            binding.tvTitleNotify.text = notice
+        fun bind(alarm: Alarm, viewModel: MainViewModel) {
+            binding.alarm = alarm
             binding.vm = viewModel
-            val noticeContent = notice.split("\n")
-            binding.tvTitleNotify.text = noticeContent[1]
-            binding.tvMessageNotify.text = noticeContent[2]
-            binding.tvTimeNotify.text = noticeContent[0]
-            binding.btnNotify.setOnClickListener {
-                viewModel.onClickNoticeDelete(layoutPosition)
-            }
         }
     }
 
@@ -41,13 +34,13 @@ class NoticeAdapter(private val viewModel: MainViewModel) :
 
     companion object {
 
-        val diffUtil = object : DiffUtil.ItemCallback<String>() {
+        val diffUtil = object : DiffUtil.ItemCallback<Alarm>() {
 
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+            override fun areContentsTheSame(oldItem: Alarm, newItem: Alarm): Boolean =
                 (oldItem == newItem)
 
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
-                (oldItem.hashCode() == newItem.hashCode())
+            override fun areItemsTheSame(oldItem: Alarm, newItem: Alarm): Boolean =
+                (oldItem.id == newItem.id)
         }
     }
 }

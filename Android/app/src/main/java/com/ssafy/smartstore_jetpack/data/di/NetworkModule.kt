@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.data.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.ssafy.smartstore_jetpack.data.api.AlarmApi
 import com.ssafy.smartstore_jetpack.data.base.AddCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.base.ReceivedCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
@@ -37,10 +38,10 @@ object NetworkModule {
     // private const val BASE_URL = "http://192.168.33.130:9987/"
 
     // JW 핫스팟 서버 주소
-    private const val BASE_URL = "http://192.168.43.161:9987/"
+    // private const val BASE_URL = "http://192.168.43.161:9987/"
 
     // JW 자취방 와이파이 주소
-    // private const val BASE_URL = "http://192.168.0.200:9987/"
+    private const val BASE_URL = "http://192.168.0.200:9987/"
 
     @Provides
     @Singleton
@@ -117,6 +118,12 @@ object NetworkModule {
     @Singleton
     fun provideCouponApiService(@Named("SSAFY") retrofit: Retrofit): CouponApi {
         return retrofit.create(CouponApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmApiService(@Named("SSAFY") retrofit: Retrofit): AlarmApi {
+        return retrofit.create(AlarmApi::class.java)
     }
 
     // FcmApi 추가

@@ -243,3 +243,21 @@ data class CouponEntity(
     @Json(name = "menuCount")
     val menuCount: Int?
 )
+
+@JsonClass(generateAdapter = true)
+data class AlarmEntity(
+    @Json(name = "id")
+    val id: Int,
+
+    @Json(name = "userId")
+    val userId: String?,
+
+    @Json(name = "title")
+    val title: String?,
+
+    @Json(name = "content")
+    val content: String?,
+
+    @Json(name = "sentTime")
+    val sentTime: String?
+)

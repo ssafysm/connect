@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.data.mapper
 
 import com.ssafy.smartstore_jetpack.data.entity.CouponEntity
 import com.ssafy.smartstore_jetpack.domain.model.Coupon
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.dateFormatAnother
 
 object CouponsMapper {
 
@@ -16,8 +17,8 @@ object CouponsMapper {
                     name = couponEntity.name ?: "",
                     description = couponEntity.description ?: "",
                     image = couponEntity.image ?: "",
-                    iat = couponEntity.iat ?: "",
-                    exp = couponEntity.exp ?: "",
+                    iat = dateFormatAnother(couponEntity.iat),
+                    exp = dateFormatAnother(couponEntity.exp),
                     menuId = when (couponEntity.menuId) {
                         null -> "1"
 

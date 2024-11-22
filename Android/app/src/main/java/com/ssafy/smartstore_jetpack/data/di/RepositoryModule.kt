@@ -2,6 +2,8 @@ package com.ssafy.smartstore_jetpack.data.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.ssafy.smartstore_jetpack.data.repository.alarm.AlarmRemoteDataSource
+import com.ssafy.smartstore_jetpack.data.repository.alarm.AlarmRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.coupon.CouponRemoteDataSource
@@ -17,6 +19,7 @@ import com.ssafy.smartstore_jetpack.data.repository.shop.ShopRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.shop.ShopRepositoryImpl
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.user.UserRepositoryImpl
+import com.ssafy.smartstore_jetpack.domain.repository.AlarmRepository
 import com.ssafy.smartstore_jetpack.domain.repository.CommentRepository
 import com.ssafy.smartstore_jetpack.domain.repository.CouponRepository
 import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
@@ -75,6 +78,12 @@ object RepositoryModule {
     @Singleton
     fun provideCouponRepository(couponRemoteDataSource: CouponRemoteDataSource): CouponRepository {
         return CouponRepositoryImpl(couponRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmRepository(alarmRemoteDataSource: AlarmRemoteDataSource): AlarmRepository {
+        return AlarmRepositoryImpl(alarmRemoteDataSource)
     }
 
     @Provides

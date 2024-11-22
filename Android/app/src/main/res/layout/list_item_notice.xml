@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="alarm"
+            type="com.ssafy.smartstore_jetpack.domain.model.Alarm" />
+
+        <variable
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
@@ -47,9 +51,10 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/pretendardsemibold"
+                    android:text="@{alarm.title}"
                     android:textColor="@color/neutral_100"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toStartOf="@id/btn_notify"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_notify"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/pretendardregular"
+                    android:text="@{alarm.content}"
                     android:textColor="@color/neutral_70"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@id/tv_title_notify"
@@ -71,20 +77,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/pretendardregular"
+                    android:text="@{alarm.sendTime}"
                     android:textColor="@color/neutral_70"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@id/tv_title_notify"
                     app:layout_constraintStart_toStartOf="@id/tv_title_notify"
                     app:layout_constraintTop_toBottomOf="@id/tv_message_notify" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_notify"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/ic_delete"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_title_notify" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

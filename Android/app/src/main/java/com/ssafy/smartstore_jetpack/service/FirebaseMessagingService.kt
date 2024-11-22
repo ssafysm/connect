@@ -6,34 +6,23 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ssafy.smartstore_jetpack.R
-import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import javax.inject.Inject
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val TAG = "MyFirebaseMessagingService"
 
-    @Inject
-    lateinit var dataStoreRepository: DataStoreRepository
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d(TAG, "새 FCM 토큰: $token")
+        Timber.d("새 FCM 토큰: $token")
 
         // 필요 시 서버에 토큰 업로드
         uploadTokenToServer(token)
@@ -44,24 +33,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
         var messageTitle = ""
         var messageContent = ""
-        val nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        val id = dataStoreRepository.getUserId()
 
         // 알림 페이로드가 있는 경우
         if (remoteMessage.notification != null) {
-            Log.d(TAG, "FCM 메시지 수신: ${remoteMessage.data}")
+            Timber.d("FCM 메시지 수신: " + remoteMessage.data)
             val title = remoteMessage.notification?.title ?: "새 알림"
             val message = remoteMessage.notification?.body ?: "알림 내용이 없습니다."
             sendNotification(title, message)
-            setNotices("$nowTime\n$title\n$message\n$id")
 
         } else {
             // 데이터 페이로드 처리
             val title = remoteMessage.data["myTitle"] ?: "새 알림"
             val message = remoteMessage.data["myBody"] ?: "알림 내용이 없습니다."
-            Log.d(TAG, "FCM 메시지 수신: title=$title, body=$message")
+            Timber.d("FCM 메시지 수신: title=$title, body=$message")
             sendNotification(title, message)
-            setNotices("$nowTime\n$title\n$message\n$id")
         }
     }
 
@@ -100,15 +85,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun uploadTokenToServer(token: String) {
         // 서버로 FCM 토큰을 전송하는 로직을 여기에 구현하세요.
-        Log.d(TAG, "FCM 토큰 서버 전송: $token")
-    }
-
-    private fun setNotices(notice: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val notices = dataStoreRepository.getNotices().first().toMutableList().apply {
-                add(notice)
-            }.toList().toHashSet()
-            dataStoreRepository.setNotices(notices)
-        }
+        Timber.d("FCM 토큰 서버 전송: $token")
     }
 }
