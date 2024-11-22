@@ -79,7 +79,7 @@ CREATE TABLE t_fcm(
 
 -- t_shop 테이블 생성(매장 정보)
 CREATE TABLE t_shop(
-	id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     image VARCHAR(1000) NOT NULL,
     description VARCHAR(500) NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE t_shop(
 
 -- t_event 테이블 생성(이벤트 정보)
 CREATE TABLE t_event(
-	id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     image VARCHAR(1000) NOT NULL,
     url VARCHAR(1000) NOT NULL
@@ -98,7 +98,7 @@ CREATE TABLE t_event(
 
 -- t_coupon 테이블 생성(쿠폰 정보)
 CREATE TABLE t_coupon(
-	id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(100) NOT NULL,
     name VARCHAR(200) NOT NULL,
     description VARCHAR(500) NOT NULL,
