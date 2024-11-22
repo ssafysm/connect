@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.cafe.model.dao.ReadyDao">
+
+    <insert id="insert" parameterType="com.ssafy.cafe.model.dto.Ready">
+        INSERT INTO t_ready (o_id, pick_up)
+        VALUES (#{oId}, #{pickUp});
+    </insert>
+
+    <update id="update" parameterType="com.ssafy.cafe.model.dto.Ready">
+        UPDATE t_ready
+        SET pick_up = #{pickUp}
+        WHERE o_id = #{oId};
+    </update>
+
+    <select id="selectAll" resultType="com.ssafy.cafe.model.dto.Ready">
+        SELECT o_id AS oId, pick_up AS pickUp
+        FROM t_ready;
+    </select>
+
+    <select id="selectByOrderId" parameterType="int" resultType="com.ssafy.cafe.model.dto.Ready">
+        SELECT o_id AS oId, pick_up AS pickUp
+        FROM t_ready
+        WHERE o_id = #{orderId};
+    </select>
+
+    <!-- 추가된 메서드 -->
+    <select id="selectByPickUp" parameterType="boolean" resultType="com.ssafy.cafe.model.dto.Ready">
+        SELECT o_id AS oId, pick_up AS pickUp
+        FROM t_ready
+        WHERE pick_up = #{pickUp}
+        ORDER BY o_id ASC;
+    </select>
+
+</mapper>

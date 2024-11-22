@@ -110,6 +110,13 @@ CREATE TABLE t_coupon(
     CONSTRAINT fk_coupon_user FOREIGN KEY(user_id) REFERENCES t_user(id) ON DELETE CASCADE
 );
 
+-- t_ready 테이블 생성
+CREATE TABLE t_ready (
+    o_id INTEGER PRIMARY KEY,          -- t_order의 o_id와 동일 (Foreign Key)
+    pick_up BOOLEAN DEFAULT FALSE,    -- 픽업 상태 (default: FALSE)
+    CONSTRAINT fk_ready_order FOREIGN KEY (o_id) REFERENCES t_order(o_id) ON DELETE CASCADE
+);
+
 -- t_user 데이터 삽입
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id01', 'name01', 'pass01', 4);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id02', 'name02', 'pass02', 1);
