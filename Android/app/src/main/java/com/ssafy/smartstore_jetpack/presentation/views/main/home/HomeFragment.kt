@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentHomeBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -139,6 +140,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         is HomeUiEvent.GoToChatting -> {
             findNavController().navigateSafely(R.id.action_home_to_chatting)
+        }
+
+        is HomeUiEvent.GetUserInfo -> {
+            (requireActivity() as MainActivity).initFCM()
         }
     }
 }

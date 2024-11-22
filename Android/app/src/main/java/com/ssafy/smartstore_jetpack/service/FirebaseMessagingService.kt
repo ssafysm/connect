@@ -45,6 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var messageTitle = ""
         var messageContent = ""
         val nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        val id = dataStoreRepository.getUserId()
 
         // 알림 페이로드가 있는 경우
         if (remoteMessage.notification != null) {
@@ -52,7 +53,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val title = remoteMessage.notification?.title ?: "새 알림"
             val message = remoteMessage.notification?.body ?: "알림 내용이 없습니다."
             sendNotification(title, message)
-            setNotices("$nowTime\n$title\n$message")
+            setNotices("$nowTime\n$title\n$message\n$id")
 
         } else {
             // 데이터 페이로드 처리
@@ -60,7 +61,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val message = remoteMessage.data["myBody"] ?: "알림 내용이 없습니다."
             Log.d(TAG, "FCM 메시지 수신: title=$title, body=$message")
             sendNotification(title, message)
-            setNotices("$nowTime\n$title\n$message")
+            setNotices("$nowTime\n$title\n$message\n$id")
         }
     }
 

@@ -28,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ssafy.smartstore_jetpack.R
@@ -194,15 +195,38 @@ class ShopSelectBottomSheetDialogFragment :
 
     private fun addShopsMarkers() {
         lifecycleScope.launch {
-            viewModel.shops.collectLatest { shops ->
+            viewModel.searchedShops.collectLatest { shops ->
+                mMap.clear()
                 shops.forEach { shop ->
                     val position = LatLng(shop.latitude, shop.longitude)
                     mMap.addMarker(
                         MarkerOptions().position(position).title(shop.id)
                             .icon(createCustomMarkerIcon(shop))
-                    )?.showInfoWindow()
+                    )
                 }
+
+                updateCameraToShowAllMarkers(shops)
             }
+        }
+    }
+
+    private fun updateCameraToShowAllMarkers(shops: List<Shop>) {
+        if (shops.isEmpty()) return
+
+        val boundsBuilder = LatLngBounds.Builder()
+
+        shops.forEach { shop ->
+            val position = LatLng(shop.latitude, shop.longitude)
+            boundsBuilder.include(position)
+        }
+
+        val bounds = boundsBuilder.build()
+
+        if (shops.size == 1) {
+            val singlePosition = LatLng(shops[0].latitude, shops[0].longitude)
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(singlePosition, 15f)) // 15f는 줌 레벨
+        } else {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
         }
     }
 

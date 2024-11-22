@@ -1009,9 +1009,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
 
-                else -> {
-                    Timber.d("뭐해?")
-                }
+                else -> {}
             }
 
             _couponUiEvent.emit(CouponUiEvent.GoToCouponDetail)
@@ -1062,14 +1060,11 @@ class MainViewModel @Inject constructor(
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let { events ->
-                        Timber.d("Events: $events")
                         _events.value = listOf(events.last()) + events + listOf(events.first())
                     }
                 }
 
-                else -> {
-                    Timber.d("뭐해?")
-                }
+                else -> {}
             }
         }
     }
@@ -1103,12 +1098,10 @@ class MainViewModel @Inject constructor(
                         getCoupons(newUser.user.id)
                     }
                     _loginUiEvent.emit(LoginUiEvent.GetUserInfo)
-                    Timber.d("User: ${_user.value}")
+                    _homeUiEvent.emit(HomeUiEvent.GetUserInfo)
                 }
 
-                else -> {
-                    Timber.d("${response.data}")
-                }
+                else -> {}
             }
         }
     }

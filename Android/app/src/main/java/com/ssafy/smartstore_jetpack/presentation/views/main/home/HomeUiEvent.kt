@@ -11,4 +11,6 @@ sealed class HomeUiEvent {
     data object GoToOrderDetail : HomeUiEvent()
 
     data object GoToChatting : HomeUiEvent()
+
+    data object GetUserInfo : HomeUiEvent()
 }

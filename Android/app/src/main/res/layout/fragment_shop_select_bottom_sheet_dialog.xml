@@ -85,7 +85,6 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/shape_comment"
-                android:enabled="@{vm.shopSelectUiState.isSearchMode}"
                 android:fontFamily="@font/pretendardsemibold"
                 android:hint="매장을 입력하세요."
                 android:imeOptions="actionDone"
