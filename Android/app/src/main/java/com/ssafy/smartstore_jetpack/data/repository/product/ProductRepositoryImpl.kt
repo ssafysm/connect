@@ -14,7 +14,7 @@ class ProductRepositoryImpl @Inject constructor(
     private val productRemoteDataSource: ProductRemoteDataSource
 ) : ProductRepository {
 
-    override suspend fun getProducts(): Result<List<Product>> =
+    override suspend fun getProducts(): Result<List<List<Product>>> =
         try {
             val response = withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
                 productRemoteDataSource.getProducts()

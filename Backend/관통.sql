@@ -129,7 +129,7 @@ INSERT INTO t_user (id, name, pass, stamps) VALUES ('id08', 'name08', 'pass08', 
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id09', 'name09', 'pass09', 9);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id10', 'name10', 'pass10', 10);
 
--- t_product 데이터 삽입
+-- t_product 데이터 삽입(ICED 음료)
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('아메리카노', 'beverage', 5000, 'americano.png', '진한 에스프레소에 시원한 정수물과 얼음을 더하여 스타벅스의 깔끔하고 강렬한 에스프레소를 가장 부드럽고 시원하게 즐길 수 있는 커피', 'ICED');
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('카페라떼', 'beverage', 5500, 'cafelatte.png', '풍부하고 진한 에스프레소가 신선한 스팀 밀크를 만나 부드러워진 커피 위에 우유 거품을 살짝 얹은 대표적인 커피 라떼', 'ICED');
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('카라멜 마끼야또', 'beverage', 5500, 'caramelmacchiato.png', '향긋한 바닐라 시럽과 시원한 우유에 얼음을 넣고 점을 찍듯이 에스프레소를 부은 후 벌집 모양으로 카라멜 드리즐을 올린 달콤한 커피 음료', 'ICED');
@@ -141,6 +141,41 @@ INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('자�
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('레몬에이드', 'beverage', 8000, 'lemonade.png', '맛있는 레몬 에이드', 'ICED');
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('오렌지에이드', 'beverage', 8000, 'orandeade.png', '맛있는 오렌지 에이드', 'ICED');
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('망고에이드', 'beverage', 8000, 'mangoade.png', '맛있는 망고 에이드', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('콜드브루', 'beverage', 9000, 'coldbrew.png', '부드럽고 깔끔한 콜드브루 커피', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('콜드브루 라떼', 'beverage', 9000, 'coldbrewlatte.png', '우유를 섞어 부드럽게 즐기는 콜드브루', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('복숭아 아이스티', 'beverage', 9000, 'peachicetea.png', '달콤한 복숭아향의 아이스티', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('요거트 스무디', 'beverage', 9000, 'yogurtsmoothie.png', '신선한 과일과 요거트를 섞은 스무디', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('샤인 머스캣 에이드', 'beverage', 9000, 'shinemuscatade.png', '달콤한 샤인머스캣 맛이 나는 에이드', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('블루 레몬에이드', 'beverage', 9000, 'bluelemonade.png', '시각적으로도 아름다운 파란색 에이드', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('베리베리 스무디', 'beverage', 9000, 'berryberrysmoothie.png', '블루베리, 라즈베리, 딸기를 활용한 스무디', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('크림 스콘 라떼', 'beverage', 9000, 'creamsconelattehot.png', '스콘과 잘 어울리는 크림 라떼', 'ICED');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('토피넛 라떼', 'beverage', 9000, 'toffenutlatte.png', '달콤하고 고소한 토피넛 맛의 라떼', 'ICED');
+
+-- t_product 데이터 삽입(HOT 음료)
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('바닐라라떼', 'beverage', 9000, 'vanilalattehot.png', '부드럽고 달콤한 바닐라 시럽이 들어간 라떼', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('헤이즐넛라떼', 'beverage', 9000, 'hazzlenutlattehot.png', '고소한 헤이즐넛 향이 나는 라떼', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('아인슈페너', 'beverage', 9000, 'einspannerhot.png', '휘핑크림이 올라간 달콤한 비엔나 커피', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('티라미수 라떼', 'beverage', 9000, 'tiramisulattehot.png', '티라미수 맛이 나는 크리미한 음료', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('녹차라떼', 'beverage', 9000, 'greentealattehot.png', '진한 말차 맛의 녹차 라떼', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('고구마라떼', 'beverage', 9000, 'sweetpotatolatte.png', '부드럽고 달콤한 고구마 음료', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('초콜릿라떼', 'beverage', 9000, 'chocolatelattehot.png', '진한 초콜릿 베이스의 핫초코 음료', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('얼그레이 티', 'beverage', 9000, 'earlgreyteahot.png', '은은한 향의 클래식 티', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('유자차', 'beverage', 9000, 'yuzuteahot.png', '상큼한 유자향의 따뜻한 티', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('레몬 진저 티', 'beverage', 9000, 'lemongingerteahot.png', '상큼하고 따뜻한 레몬과 생강 베이스의 티', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('캐모마일 티', 'beverage', 9000, 'chamomileteahot.png', '은은한 허브 향이 나는 캐모마일', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('아포가또', 'beverage', 9000, 'affogatohot.png', '바닐라 아이스크림에 에스프레소를 부어 먹는 디저트', 'HOT');
+
+-- t_product 데이터 삽입(푸드)
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('크로와상', 'food', 9000, 'croissant.png', '버터 향이 풍부한 바삭하고 부드러운 크로와상', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('애플 파이', 'food', 9000, 'applepie.png', '따뜻한 사과와 시나몬이 어우러진 디저트 파이', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('베이글 & 크림치즈', 'food', 9000, 'bagelcreamcheese.png', '고소한 베이글에 크림치즈를 곁들인 메뉴', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('초콜릿 브라우니', 'food', 9000, 'chocolatebrownie.png', '진한 초콜릿 맛의 촉촉한 브라우니', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('바질 치킨 샌드위치', 'food', 9000, 'basilchickensandwich.png', '바질 향이 나는 닭가슴살 샌드위치', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('클래식 클럽 샌드위치', 'food', 9000, 'classicclubsandwich.png', '햄, 치즈, 토마토, 양상추로 채운 간단한 샌드위치', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('치즈 플레이트', 'food', 9000, 'cheeseplate.png', '다양한 치즈와 과일, 크래커를 함께 제공', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('포카치아', 'food', 9000, 'focaccia.png', '올리브 오일과 허브로 풍미를 더한 이탈리아 빵', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('프렌치 토스트', 'food', 9000, 'frenchtoast.png', '계란과 우유에 적셔 구운 달콤한 토스트', 'HOT');
+INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('스콘 & 잼', 'food', 9000, 'sconejam.png', '고소한 스콘에 잼과 버터를 곁들인 메뉴', 'HOT');
 
 -- t_comment 데이터 삽입
 INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id01', 1, 1, 'comment 01');
@@ -230,6 +265,14 @@ INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VA
 INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VALUES('id02', '테스트용 쿠폰', '테스트용 쿠폰입니다.', 'americano_coupon.png', 1, 1);
 
 SELECT * FROM t_coupon WHERE user_id = 'id01';
+
+select 
+            COALESCE(SUM(d.quantity), 0) AS total_quantity
+        from t_order o 
+        join t_order_detail d on o.o_id = d.order_id
+        join t_product p on d.product_id = p.id
+        where p.id = 11
+        order by d.d_id ASC;
 
 -- 트랜잭션 커밋
 COMMIT;

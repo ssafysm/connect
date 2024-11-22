@@ -19,8 +19,7 @@
     </select>
     
     <select id="getQuantity" parameterType="int">
-    	select 
-            sum(d.quantity)
+    	select COALESCE(SUM(d.quantity), 0) AS total_quantity
         from t_order o 
         join t_order_detail d on o.o_id = d.order_id
         join t_product p on d.product_id = p.id

@@ -9,7 +9,7 @@ class GetProductUseCase @Inject constructor(
     private val productRepository: ProductRepository
 ) {
 
-    suspend fun getProducts(): Result<List<Product>> {
+    suspend fun getProducts(): Result<List<List<Product>>> {
         return productRepository.getProducts()
     }
 

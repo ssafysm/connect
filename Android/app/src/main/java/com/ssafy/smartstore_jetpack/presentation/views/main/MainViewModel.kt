@@ -1148,26 +1148,7 @@ class MainViewModel @Inject constructor(
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let { products ->
-                        val newProducts = mutableListOf<List<Product>>()
-                        val newBeverageProducts = mutableListOf<Product>()
-                        val newFoodProducts = mutableListOf<Product>()
-
-                        products.forEach { product ->
-                            when (product.type) {
-                                "beverage" -> {
-                                    Timber.d("Product: $product")
-                                    newBeverageProducts.add(product)
-                                }
-
-                                else -> {
-                                    newFoodProducts.add(product)
-                                }
-                            }
-                        }
-
-                        newProducts.add(newBeverageProducts.toList())
-                        newProducts.add(newFoodProducts.toList())
-                        _products.value = newProducts.toList()
+                        _products.value = products.toList()
                     }
                 }
 

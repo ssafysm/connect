@@ -5,7 +5,7 @@ import com.ssafy.smartstore_jetpack.domain.model.Result
 
 interface ProductRepository {
 
-    suspend fun getProducts(): Result<List<Product>>
+    suspend fun getProducts(): Result<List<List<Product>>>
 
     suspend fun getProductWithComment(productId: Int): Result<Product>
 }

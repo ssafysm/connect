@@ -6,8 +6,10 @@ import com.ssafy.smartstore_jetpack.domain.model.Product
 
 object ProductsMapper {
 
-    operator fun invoke(productEntities: List<ProductEntity>): List<Product> {
-        val newProducts = mutableListOf<Product>()
+    operator fun invoke(productEntities: List<ProductEntity>): List<List<Product>> {
+        val newProducts = mutableListOf<List<Product>>()
+        val newBeverages = mutableListOf<Product>()
+        val newFoods = mutableListOf<Product>()
 
         productEntities.forEach { productEntity ->
             val newComments = mutableListOf<Comment>()
@@ -25,22 +27,46 @@ object ProductsMapper {
                 )
             }
 
-            newProducts.add(
-                Product(
-                    id = productEntity.id,
-                    name = productEntity.name,
-                    type = productEntity.type,
-                    price = productEntity.price.toString(),
-                    img = productEntity.img,
-                    description = productEntity.description ?: productEntity.name,
-                    mode = productEntity.mode ?: "ICED",
-                    comments = newComments,
-                    productCommentTotalCnt = productEntity.productCommentTotalCnt,
-                    productRatingAvg = productEntity.productRatingAvg.toString(),
-                    productTotalSellCnt = productEntity.productTotalSellCnt
-                )
-            )
+            when (productEntity.type) {
+                "beverage" -> {
+                    newBeverages.add(
+                        Product(
+                            id = productEntity.id,
+                            name = productEntity.name,
+                            type = productEntity.type,
+                            price = productEntity.price.toString(),
+                            img = productEntity.img,
+                            description = productEntity.description ?: productEntity.name,
+                            mode = productEntity.mode ?: "ICED",
+                            comments = newComments,
+                            productCommentTotalCnt = productEntity.productCommentTotalCnt,
+                            productRatingAvg = productEntity.productRatingAvg.toString(),
+                            productTotalSellCnt = productEntity.productTotalSellCnt
+                        )
+                    )
+                }
+
+                else -> {
+                    newFoods.add(
+                        Product(
+                            id = productEntity.id,
+                            name = productEntity.name,
+                            type = productEntity.type,
+                            price = productEntity.price.toString(),
+                            img = productEntity.img,
+                            description = productEntity.description ?: productEntity.name,
+                            mode = productEntity.mode ?: "ICED",
+                            comments = newComments,
+                            productCommentTotalCnt = productEntity.productCommentTotalCnt,
+                            productRatingAvg = productEntity.productRatingAvg.toString(),
+                            productTotalSellCnt = productEntity.productTotalSellCnt
+                        )
+                    )
+                }
+            }
         }
+        newProducts.add(newBeverages)
+        newProducts.add(newFoods)
 
         return newProducts.toList()
     }
