@@ -335,7 +335,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickNotice() {
         viewModelScope.launch {
-            _notices.value = getNotices().first()
+            _notices.value = getNotices().first().sortedDescending()
             validateNoticeState()
             Timber.d("Notices: ${_notices.value}")
             _homeUiEvent.emit(HomeUiEvent.GoToNotice)
@@ -1415,7 +1415,9 @@ class MainViewModel @Inject constructor(
 
     private fun validateNoticeState() {
         when (_notices.value.isNotEmpty()) {
-            true -> _noticeUiState.update { it.copy(noticesState = EmptyState.NONE) }
+            true -> {
+                _noticeUiState.update { it.copy(noticesState = EmptyState.NONE) }
+            }
 
             else -> _noticeUiState.update { it.copy(noticesState = EmptyState.EMPTY) }
         }

@@ -17,7 +17,7 @@ class NoticeAdapter(private val viewModel: MainViewModel) :
 
         fun bind(notice: String, viewModel: MainViewModel) {
             binding.tvTitleNotify.text = notice
-            Timber.d("Notice: $notice")
+            binding.vm = viewModel
             val noticeContent = notice.split("\n")
             binding.tvTitleNotify.text = noticeContent[1]
             binding.tvMessageNotify.text = noticeContent[2]
