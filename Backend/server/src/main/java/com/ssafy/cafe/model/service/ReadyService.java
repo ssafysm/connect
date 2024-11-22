@@ -10,4 +10,6 @@ public interface ReadyService {
     List<Ready> getReadyList();
     Ready getReadyByOrderId(Integer orderId);
     List<OrderWithInfo> getPendingOrders(); // 추가된 메서드
+    List<OrderWithInfo> getCompletedOrders(String userId); // 추가된 메서드
+
 }

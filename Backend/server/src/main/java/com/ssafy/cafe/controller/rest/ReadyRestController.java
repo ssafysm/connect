@@ -99,4 +99,11 @@ public class ReadyRestController {
         List<OrderWithInfo> pendingOrders = readyService.getPendingOrders();
         return ResponseEntity.ok(pendingOrders);
     }
+    
+    @Operation(summary = "특정 사용자의 픽업 완료된 주문 목록을 반환한다.")
+    @GetMapping("/completedOrders/{userId}")
+    public ResponseEntity<?> getCompletedOrders(@PathVariable String userId) {
+        List<OrderWithInfo> completedOrders = readyService.getCompletedOrders(userId);
+        return ResponseEntity.ok(completedOrders);
+    }
 }

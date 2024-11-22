@@ -49,4 +49,19 @@ public class ReadyServiceImpl implements ReadyService {
         }
         return pendingOrders;
     }
+    
+    @Override
+    public List<OrderWithInfo> getCompletedOrders(String userId) {
+        List<OrderWithInfo> userOrders = orderDao.selectByUserWithInfo(userId);
+        List<OrderWithInfo> completedOrders = new ArrayList<>();
+
+        for (OrderWithInfo order : userOrders) {
+            Ready ready = readyDao.selectByOrderId(order.getId());
+            if (ready != null && Boolean.TRUE.equals(ready.getPickUp())) {
+                completedOrders.add(order);
+            }
+        }
+
+        return completedOrders;
+    }
 }

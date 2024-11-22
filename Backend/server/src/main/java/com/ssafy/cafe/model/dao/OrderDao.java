@@ -17,4 +17,6 @@ public interface OrderDao {
 
     // 추가된 메서드
     OrderWithInfo selectOrderWithInfo(Integer orderId);
+    List<OrderWithInfo> selectByUserWithInfo(String userId); // 새 메서드 추가
+
 }
