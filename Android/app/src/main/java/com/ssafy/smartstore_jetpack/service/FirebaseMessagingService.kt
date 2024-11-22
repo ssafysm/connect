@@ -11,11 +11,22 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ssafy.smartstore_jetpack.R
+import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 	private val TAG = "MyFirebaseMessagingService"
+
+	@Inject
+	lateinit var dataStoreRepository: DataStoreRepository
 
 	override fun onNewToken(token: String) {
 		super.onNewToken(token)
@@ -23,6 +34,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 		// 필요 시 서버에 토큰 업로드
 		uploadTokenToServer(token)
+	}
+
+	private fun setNotices(notice: String) {
+		CoroutineScope(Dispatchers.IO).launch {
+			val notices = dataStoreRepository.getNotices().first().toMutableList().apply {
+				add(notice)
+			}.toList().toHashSet()
+			dataStoreRepository.setNotices(notices)
+		}
 	}
 
 	override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -36,6 +56,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 			val title = remoteMessage.notification?.title ?: "새 알림"
 			val message = remoteMessage.notification?.body ?: "알림 내용이 없습니다."
 			sendNotification(title, message)
+			setNotices("$title: $messageTitle")
 
 		} else {
 			// 데이터 페이로드 처리
@@ -43,6 +64,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 			val message = remoteMessage.data["myBody"] ?: "알림 내용이 없습니다."
 			Log.d(TAG, "FCM 메시지 수신: title=$title, body=$message")
 			sendNotification(title, message)
+			setNotices("$title: $messageTitle")
 		}
 	}
 

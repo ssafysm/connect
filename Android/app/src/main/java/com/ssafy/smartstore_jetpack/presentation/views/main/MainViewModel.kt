@@ -21,6 +21,7 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCouponUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetEventUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetNoticesUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetOrderUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetProductUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetShopUseCase
@@ -28,6 +29,7 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetUserIdUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetUserUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetCookieUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.SetNoticesUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetUserIdUseCase
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
@@ -66,6 +68,8 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.my.GradeState
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.OrderUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.order.ProductClickListener
@@ -75,6 +79,7 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiS
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.setting.SettingUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -104,13 +109,15 @@ class MainViewModel @Inject constructor(
     private val setCookieUseCase: SetCookieUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val setAppThemeUseCase: SetAppThemeUseCase,
+    private val getNoticesUseCase: GetNoticesUseCase,
+    private val setNoticesUseCase: SetNoticesUseCase,
     // 추가된 UseCase
     private val addFcmTokenUseCase: AddFcmTokenUseCase
 
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
     InformationClickListener, PasswordClickListener, CouponClickListener,
-    CouponDetailClickListener {
+    CouponDetailClickListener, NoticeClickListener {
 
     /****** Edit Text ******/
     /*** Login ***/
@@ -172,7 +179,7 @@ class MainViewModel @Inject constructor(
     val coupons = _coupons.asStateFlow()
 
     private val _notices = MutableStateFlow<List<String>>(emptyList())
-    val notice = _notices.asStateFlow()
+    val notices = _notices.asStateFlow()
 
     /*** Coupon ***/
     private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
@@ -224,6 +231,9 @@ class MainViewModel @Inject constructor(
     private val _joinUiState = MutableStateFlow<JoinUiState>(JoinUiState())
     val joinUiState = _joinUiState.asStateFlow()
 
+    private val _noticeUiState = MutableStateFlow<NoticeUiState>(NoticeUiState())
+    val noticeUiState = _noticeUiState.asStateFlow()
+
     private val _shoppingListUiState = MutableStateFlow<ShoppingListUiState>(ShoppingListUiState())
     val shoppingListUiState = _shoppingListUiState.asStateFlow()
 
@@ -235,9 +245,6 @@ class MainViewModel @Inject constructor(
 
     private val _passwordUiState = MutableStateFlow<PasswordUiState>(PasswordUiState())
     val passwordUiState = _passwordUiState.asStateFlow()
-
-    private val _noticeUiState = MutableStateFlow<NoticeUiState>(NoticeUiState())
-    val noticeUiState = _noticeUiState.asStateFlow()
 
     private val _shopSelectUiState = MutableStateFlow<ShopSelectUiState>(ShopSelectUiState())
     val shopSelectUiState = _shopSelectUiState.asStateFlow()
@@ -275,6 +282,9 @@ class MainViewModel @Inject constructor(
 
     private val _joinUiEvent = MutableSharedFlow<JoinUiEvent>()
     val joinUiEvent = _joinUiEvent.asSharedFlow()
+
+    private val _noticeUiEvent = MutableSharedFlow<NoticeUiEvent>()
+    val noticeUiEvent = _noticeUiEvent.asSharedFlow()
 
     private val _orderUiEvent = MutableSharedFlow<OrderUiEvent>()
     val orderUiEvent = _orderUiEvent.asSharedFlow()
@@ -325,6 +335,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickNotice() {
         viewModelScope.launch {
+            _notices.value = getNotices().first()
             _homeUiEvent.emit(HomeUiEvent.GoToNotice)
         }
     }
@@ -407,6 +418,16 @@ class MainViewModel @Inject constructor(
 
     override fun onClickGoToJoin() {
         join()
+    }
+
+    /*** Notice Click ***/
+    override fun onClickNoticeDelete(position: Int) {
+        viewModelScope.launch {
+            val newNotices = _notices.value.toMutableList()
+            newNotices.removeAt(position)
+            _notices.value = newNotices.toList()
+            _noticeUiEvent.emit(NoticeUiEvent.DeleteNotice)
+        }
     }
 
     /*** Order Click ***/
@@ -1048,10 +1069,17 @@ class MainViewModel @Inject constructor(
 
     /*** Init Function ***/
     private fun setTheme() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val appTheme = getAppTheme().first()
             _appThemeName.value = appTheme
-            Timber.d("App Theme: ${_appThemeName.value}")
+        }
+    }
+
+    private fun setNotices() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newNotices = getNotices().first()
+            _notices.value = newNotices.toList()
+            validateNoticeState()
         }
     }
 
@@ -1374,6 +1402,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun validateNoticeState() {
+        when (_notices.value.isNotEmpty()) {
+            true -> _noticeUiState.update { it.copy(noticesState = EmptyState.NONE) }
+
+            else -> _noticeUiState.update { it.copy(noticesState = EmptyState.EMPTY) }
+        }
+    }
+
     /*** Data Store ***/
     private suspend fun getUserId(): Flow<String> = flow {
         val userId = getUserIdUseCase.getUserId().first()
@@ -1390,9 +1426,15 @@ class MainViewModel @Inject constructor(
         emit(cookies)
     }
 
+    private suspend fun getNotices(): Flow<List<String>> = flow {
+        val notices = getNoticesUseCase.getNotices().firstOrNull() ?: emptyList()
+        emit(notices)
+    }
+
     /*** Public Methods ***/
     fun initStatesWithLogin() {
         setTheme()
+        setNotices()
         getShop()
         getUser()
         getLastMonthOrders()
@@ -1498,6 +1540,16 @@ class MainViewModel @Inject constructor(
                     _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
                 }
             }
+        }
+    }
+
+    fun getNewNotice(notice: String) {
+        viewModelScope.launch {
+            _notices.value = _notices.value.toMutableList().apply {
+                add(notice)
+            }
+            validateNoticeState()
+            setNoticesUseCase.setNotices(_notices.value)
         }
     }
 

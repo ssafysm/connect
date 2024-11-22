@@ -17,4 +17,8 @@ interface DataStoreRepository {
     suspend fun setAppTheme(theme: String)
 
     fun getAppTheme(): Flow<String>
+
+    suspend fun setNotices(notices: HashSet<String>)
+
+    fun getNotices(): Flow<List<String>>
 }

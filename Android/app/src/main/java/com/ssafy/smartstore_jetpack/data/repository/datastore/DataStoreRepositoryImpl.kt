@@ -80,10 +80,35 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun setNotices(notices: HashSet<String>) {
+        dataStore.edit { preferences ->
+            preferences[NOTICE_INFO] = notices
+        }
+    }
+
+    override fun getNotices(): Flow<List<String>> {
+        return dataStore.data.catch {
+            if (it is IOException) {
+                it.printStackTrace()
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }.map { preferences ->
+            val notices = preferences[NOTICE_INFO]
+            when (notices.isNullOrEmpty()) {
+                true -> listOf()
+
+                else -> notices.toList()
+            }
+        }
+    }
+
     companion object {
 
         private val USER_ID = stringPreferencesKey("user_id")
         private val COOKIE_INFO = stringSetPreferencesKey("cookie_info")
         private val THEME_NAME = stringPreferencesKey("theme_name")
+        private val NOTICE_INFO = stringSetPreferencesKey("notice_info")
     }
 }

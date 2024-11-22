@@ -1,31 +1,47 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.notice
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.smartstore_jetpack.R
+import com.ssafy.smartstore_jetpack.databinding.ListItemNoticeBinding
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
-class NoticeAdapter : RecyclerView.Adapter<NoticeAdapter.NoticeHolder>(){
+class NoticeAdapter(private val viewModel: MainViewModel) :
+    ListAdapter<String, RecyclerView.ViewHolder>(diffUtil) {
 
-    inner class NoticeHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class NoticeViewHolder(private val binding: ListItemNoticeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bindInfo(){
-
+        fun bind(notice: String, viewModel: MainViewModel) {
+            binding.tvTitleNotify.text = notice
+            binding.ivNotify.setOnClickListener {
+                viewModel.onClickNoticeDelete(layoutPosition)
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item_notice, parent, false)
-        return NoticeHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder =
+        NoticeViewHolder(
+            ListItemNoticeBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as NoticeViewHolder).bind(currentList[position], viewModel)
     }
 
-    override fun onBindViewHolder(holder: NoticeHolder, position: Int) {
-        holder.bindInfo()
-    }
+    companion object {
 
-    override fun getItemCount(): Int {
-        return 10
+        val diffUtil = object : DiffUtil.ItemCallback<String>() {
+
+            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+                (oldItem == newItem)
+
+            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
+                (oldItem.hashCode() == newItem.hashCode())
+        }
     }
 }
