@@ -8,6 +8,7 @@ import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShopDialogBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseDialogFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
+import com.ssafy.smartstore_jetpack.presentation.views.main.coupondetail.CouponDetailUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,9 @@ class ShopDialogFragment : BaseDialogFragment<FragmentShopDialogBinding>(R.layou
         lifecycleScope.launch {
             viewModel.shoppingUiEvent.collectLatest {
                 if (it == ShoppingListUiEvent.Tagged) dismiss()
+            }
+            viewModel.couponDetailUiEvent.collectLatest {
+                if (it == CouponDetailUiEvent.Tagged) dismiss()
             }
         }
     }

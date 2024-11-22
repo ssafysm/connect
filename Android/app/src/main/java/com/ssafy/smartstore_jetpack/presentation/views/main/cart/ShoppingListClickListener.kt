@@ -1,13 +1,8 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
-import com.google.android.gms.maps.model.Marker
 import com.ssafy.smartstore_jetpack.domain.model.Shop
 
 interface ShoppingListClickListener {
-
-    fun onClickNFCTrue()
-
-    fun onClickNFCFalse()
 
     fun onClickShop()
 
@@ -21,7 +16,7 @@ interface ShoppingListClickListener {
 
     fun onClickShopSelectCancel()
 
-    fun onClickTakeOutFinish()
+    fun onClickShoppingFinish()
 
     fun onClickProductAdd(position: Int)
 

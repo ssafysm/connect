@@ -11,202 +11,181 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragment_join"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:backgroundCustomTheme="@{vm.appThemeName}"
-                tools:context=".join.JoinFragment">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl_start_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl_top_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="32dp" />
-
-                <TextView
-                    android:id="@+id/tv_title_join"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardblack"
-                    android:text="@string/text_join"
-                    android:textColor="@color/neutral_70"
-                    android:textSize="32sp"
-                    app:layout_constraintBottom_toTopOf="@id/tv_description_join"
-                    app:layout_constraintEnd_toStartOf="@id/gl_end_join"
-                    app:layout_constraintStart_toEndOf="@id/gl_start_join"
-                    app:layout_constraintTop_toBottomOf="@id/gl_top_join" />
-
-                <TextView
-                    android:id="@+id/tv_description_join"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/pretendardregular"
-                    android:text="@string/text_confirm_join"
-                    android:textColor="@color/neutral_100"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@id/til_id_join"
-                    app:layout_constraintEnd_toStartOf="@id/gl_end_join"
-                    app:layout_constraintStart_toEndOf="@id/gl_start_join"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title_join"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_id_join"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:errorEnabled="true"
-                    app:layout_constraintBottom_toTopOf="@id/til_pw_join"
-                    app:layout_constraintEnd_toStartOf="@id/btn_check_join"
-                    app:layout_constraintStart_toEndOf="@id/gl_start_join"
-                    app:layout_constraintTop_toBottomOf="@id/tv_description_join">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_id_join"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_comment"
-                        android:hint="@string/text_hint_join_id"
-                        android:maxLength="12"
-                        android:onTextChanged="@{(id, s, b, c) -> vm.validateJoinId(id)}"
-                        android:text="@={vm.joinId}"
-                        android:textColor="@color/neutral_70" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/btn_check_join"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_margin="16dp"
-                    android:background="@{(vm.joinUiState.isIdCheckBtnState == true) ? @drawable/button_regular : @drawable/button_regular_red}"
-                    android:enabled="@{vm.joinUiState.isIdCheckBtnEnable}"
-                    android:onClick="@{() -> vm.onClickCheckId()}"
-                    android:padding="4dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/check"
-                    app:layout_constraintBottom_toBottomOf="@id/til_id_join"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@id/gl_end_join"
-                    app:layout_constraintTop_toTopOf="@id/til_id_join" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_pw_join"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:layout_constraintBottom_toTopOf="@id/til_pw_confirm_join"
-                    app:layout_constraintEnd_toStartOf="@id/gl_end_join"
-                    app:layout_constraintStart_toEndOf="@id/gl_start_join"
-                    app:layout_constraintTop_toBottomOf="@id/til_id_join"
-                    app:passwordCustomTheme="@{vm.appThemeName}"
-                    app:passwordToggleEnabled="true"
-                    app:validateNewPassword="@{vm.joinUiState}">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_pw_join"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_comment"
-                        android:hint="@string/text_hint_join_pw"
-                        android:inputType="textPassword"
-                        android:onTextChanged="@{(pass, s, b, c) -> vm.validateJoinPass(pass)}"
-                        android:text="@={vm.joinPass}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_pw_confirm_join"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:layout_constraintBottom_toTopOf="@id/til_nickname_join"
-                    app:layout_constraintEnd_toStartOf="@id/gl_end_join"
-                    app:layout_constraintStart_toEndOf="@id/gl_start_join"
-                    app:layout_constraintTop_toBottomOf="@id/til_id_join"
-                    app:passwordConfirmCustomTheme="@{vm.appThemeName}"
-                    app:passwordToggleEnabled="true"
-                    app:validateNewPasswordConfirm="@{vm.joinUiState}">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_pw_confirm_join"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_comment"
-                        android:hint="@string/text_hint_join_pw"
-                        android:inputType="textPassword"
-                        android:onTextChanged="@{(passConfirm, s, b, c) -> vm.validateJoinPassConfirm(passConfirm)}"
-                        android:text="@={vm.joinPassConfirm}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_nickname_join"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:layout_constraintBottom_toTopOf="@id/gl_bottom_join"
-                    app:layout_constraintEnd_toStartOf="@id/gl_end_join"
-                    app:layout_constraintStart_toEndOf="@id/gl_start_join"
-                    app:layout_constraintTop_toBottomOf="@id/til_pw_confirm_join">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_nickname_join"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/shape_comment"
-                        android:hint="@string/text_hint_join_nickname"
-                        android:onTextChanged="@{(name, s, b, c) -> vm.validateJoinName(name)}"
-                        android:text="@={vm.joinName}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl_end_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_end="16dp" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl_bottom_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_end="64dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_join"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            app:backgroundCustomTheme="@{vm.appThemeName}"
+            tools:context=".join.JoinFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_top_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="32dp" />
+
+            <TextView
+                android:id="@+id/tv_title_join"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardblack"
+                android:text="@string/text_join"
+                android:textColor="@color/neutral_70"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_description_join"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/gl_top_join" />
+
+            <TextView
+                android:id="@+id/tv_description_join"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendardregular"
+                android:text="@string/text_confirm_join"
+                android:textColor="@color/neutral_100"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/til_id_join"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_join"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_id_join"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@id/til_pw_join"
+                app:layout_constraintEnd_toStartOf="@id/btn_check_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/tv_description_join">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_id_join"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_comment"
+                    android:hint="@string/text_hint_join_id"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="12"
+                    android:onTextChanged="@{(id, s, b, c) -> vm.validateJoinId(id)}"
+                    android:text="@={vm.joinId}"
+                    android:textColor="@color/neutral_70" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_check_join"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                android:background="@{(vm.joinUiState.isIdCheckBtnState == true) ? @drawable/button_regular : @drawable/button_regular_red}"
+                android:enabled="@{vm.joinUiState.isIdCheckBtnEnable}"
+                android:onClick="@{() -> vm.onClickCheckId()}"
+                android:padding="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/check"
+                app:layout_constraintBottom_toBottomOf="@id/til_id_join"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintTop_toTopOf="@id/til_id_join" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_pw_join"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@id/til_pw_confirm_join"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/til_id_join"
+                app:passwordCustomTheme="@{vm.appThemeName}"
+                app:passwordToggleEnabled="true"
+                app:validateNewPassword="@{vm.joinUiState}">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_pw_join"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_comment"
+                    android:hint="@string/text_hint_join_pw"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:onTextChanged="@{(pass, s, b, c) -> vm.validateJoinPass(pass)}"
+                    android:text="@={vm.joinPass}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_pw_confirm_join"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@id/til_nickname_join"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/til_id_join"
+                app:passwordConfirmCustomTheme="@{vm.appThemeName}"
+                app:passwordToggleEnabled="true"
+                app:validateNewPasswordConfirm="@{vm.joinUiState}">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_pw_confirm_join"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_comment"
+                    android:hint="@string/text_hint_join_pw"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:onTextChanged="@{(passConfirm, s, b, c) -> vm.validateJoinPassConfirm(passConfirm)}"
+                    android:text="@={vm.joinPassConfirm}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nickname_join"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@id/btn_join"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/til_pw_confirm_join">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_nickname_join"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_comment"
+                    android:hint="@string/text_hint_join_nickname"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:onTextChanged="@{(name, s, b, c) -> vm.validateJoinName(name)}"
+                    android:text="@={vm.joinName}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_join"
@@ -219,13 +198,27 @@
                 android:textColor="@{(vm.joinUiState.isJoinBtnEnable == true) ? @color/neutral_white : @color/neutral_100}"
                 app:enableJoin="@{vm.joinUiState}"
                 app:enableJoinCustomTheme="@{vm.appThemeName}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@id/gl_bottom_join"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_join"
+                app:layout_constraintStart_toEndOf="@id/gl_start_join"
+                app:layout_constraintTop_toBottomOf="@id/til_nickname_join" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="64dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

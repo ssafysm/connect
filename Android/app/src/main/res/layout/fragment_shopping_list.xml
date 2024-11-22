@@ -53,31 +53,6 @@
                 app:layout_constraintStart_toEndOf="@id/gl_start_cart"
                 app:layout_constraintTop_toBottomOf="@id/gl_top_cart" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_tout_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@{(vm.nfcMode == true) ? @drawable/button_non_color : @drawable/button_color}"
-                android:onClick="@{() -> vm.onClickNFCFalse()}"
-                android:text="@string/text_take_out"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_title_cart"
-                app:layout_constraintEnd_toStartOf="@id/gl_end_cart"
-                app:layout_constraintTop_toBottomOf="@id/gl_top_cart" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_shop_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@{(vm.nfcMode == true) ? @drawable/button_color : @drawable/button_non_color}"
-                android:onClick="@{() -> vm.onClickNFCTrue()}"
-                android:text="@string/text_shop"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_title_cart"
-                app:layout_constraintEnd_toStartOf="@id/btn_tout_cart"
-                app:layout_constraintTop_toBottomOf="@id/gl_top_cart" />
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_empty_cart"
                 android:layout_width="wrap_content"

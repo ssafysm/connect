@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.login
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
@@ -21,6 +22,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
         binding.vm = viewModel
 
+        setEditTextFocus()
+
         collectLatestFlow(viewModel.loginUiEvent) { handleUiEvent(it) }
     }
 
@@ -28,6 +31,33 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         super.onResume()
 
         viewModel.setBnvState(false)
+    }
+
+    private fun setEditTextFocus() {
+        with(binding) {
+            etIdLogin.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    true -> {
+                        etPwLogin.requestFocus()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            etPwLogin.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_DONE) {
+                    true -> {
+                        if (btnLoginLogin.isEnabled) {
+                            viewModel.onClickLogin()
+                        }
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
     }
 
     private fun handleUiEvent(event: LoginUiEvent) = when (event) {

@@ -329,6 +329,8 @@ class MainViewModel @Inject constructor(
 
     override fun onClickHomeLogin() {
         viewModelScope.launch {
+            _userId.value = ""
+            _userPass.value = ""
             _homeUiEvent.emit(HomeUiEvent.GoToLogin)
         }
     }
@@ -712,26 +714,19 @@ class MainViewModel @Inject constructor(
         _totalPrice.value = makeComma((_shoppingList.value.sumOf { it.totalPrice.toInt() }))
     }
 
-    override fun onClickNFCTrue() {
-        _nfcMode.value = true
-    }
-
-    override fun onClickNFCFalse() {
-        _nfcMode.value = false
-    }
-
     override fun onClickShop() {
         viewModelScope.launch {
+            _nfcMode.value = true
+            initShop()
             _shoppingUiEvent.emit(ShoppingListUiEvent.ShopOrder)
+            _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponShop)
         }
     }
 
     override fun onClickTakeout() {
         viewModelScope.launch {
-            _searchedShops.value = _shops.value
-            _shopSearchKeyword.value = ""
-            _isMapMode.value = false
-            _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
+            _nfcMode.value = false
+            initShop()
             _shoppingUiEvent.emit(ShoppingListUiEvent.TakeOutOrder)
             _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponTakeOut)
         }
@@ -791,54 +786,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onClickTakeOutFinish() {
+    override fun onClickShoppingFinish() {
         viewModelScope.launch {
-            val newDetails = mutableListOf<OrderDetail>()
-            _shoppingList.value.forEach { product ->
-                newDetails.add(
-                    OrderDetail(
-                        id = 0,
-                        orderId = 0,
-                        productId = product.menuId,
-                        quantity = product.menuCnt.toInt(),
-                        unitPrice = "",
-                        img = "",
-                        productName = ""
-                    )
-                )
-            }
-
-            val newOrder = Order(
-                id = 0,
-                userId = getUserId().first(),
-                orderTable = _tableNumber.value.toString(),
-                orderTime = "",
-                completed = "N",
-                details = newDetails.toList()
-            )
-
-            val response = getOrderUseCase.makeOrder(newOrder)
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    _shoppingList.value = emptyList()
-                    validateShoppingList()
-                    val orderId = response.data ?: 0
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
-                    _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
-                    _totalOrder.value = "0"
-                    _totalPrice.value = "￦0"
-                    getUser()
-                    getLastMonthOrders()
-                    getLast6MonthsOrders()
-                    getProducts()
-                    validateShoppingList()
-                    deleteCoupon()
+            when (_nfcMode.value) {
+                true -> {
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.NeedTagging)
                 }
 
                 else -> {
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
-                    _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponOrderFail)
+                    finishShopping()
                 }
             }
         }
@@ -854,18 +810,14 @@ class MainViewModel @Inject constructor(
                         when (response.data) {
                             true -> {
                                 getCouponUseCase.getCoupons(getUserId().first())
-                                // Coupon List 검증 로직 추가
+                                validateCouponState()
                             }
 
-                            else -> {
-
-                            }
+                            else -> {}
                         }
                     }
 
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }
@@ -1067,6 +1019,16 @@ class MainViewModel @Inject constructor(
     }
 
     /*** Coupon Detail Click ***/
+    override fun onClickShopCoupon() {
+        viewModelScope.launch {
+            val selectedCouponMenu = _selectedCouponMenu.value
+            if (selectedCouponMenu != null) {
+                _shoppingList.value = listOf(selectedCouponMenu)
+            }
+            onClickShop()
+        }
+    }
+
     override fun onClickTakeoutCoupon() {
         viewModelScope.launch {
             val selectedCouponMenu = _selectedCouponMenu.value
@@ -1240,6 +1202,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun initShop() {
+        viewModelScope.launch {
+            _searchedShops.value = _shops.value
+            _shopSearchKeyword.value = ""
+            _isMapMode.value = false
+            _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCH) }
+        }
+    }
+
     /*** Get Dto ***/
     private fun getUserBody(
         id: String,
@@ -1327,6 +1298,59 @@ class MainViewModel @Inject constructor(
 
                 else -> {
                     _joinUiEvent.emit(JoinUiEvent.JoinFail)
+                }
+            }
+        }
+    }
+
+    private fun finishShopping() {
+        viewModelScope.launch {
+            val newDetails = mutableListOf<OrderDetail>()
+            _shoppingList.value.forEach { product ->
+                newDetails.add(
+                    OrderDetail(
+                        id = 0,
+                        orderId = 0,
+                        productId = product.menuId,
+                        quantity = product.menuCnt.toInt(),
+                        unitPrice = "",
+                        img = "",
+                        productName = ""
+                    )
+                )
+            }
+
+            val newOrder = Order(
+                id = 0,
+                userId = getUserId().first(),
+                orderTable = _tableNumber.value.toString(),
+                orderTime = "",
+                completed = "N",
+                details = newDetails.toList()
+            )
+
+            val response = getOrderUseCase.makeOrder(newOrder)
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    _shoppingList.value = emptyList()
+                    validateShoppingList()
+                    val orderId = response.data ?: 0
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
+                    _totalOrder.value = "0"
+                    _totalPrice.value = "￦0"
+                    getUser()
+                    getLastMonthOrders()
+                    getLast6MonthsOrders()
+                    getProducts()
+                    validateShoppingList()
+                    deleteCoupon()
+                }
+
+                else -> {
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponOrderFail)
                 }
             }
         }
@@ -1541,28 +1565,21 @@ class MainViewModel @Inject constructor(
                     validateShoppingList()
                     val orderId = response.data ?: 0
                     _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
                     _totalOrder.value = "0"
                     _totalPrice.value = "0원"
                     getUser()
                     getLastMonthOrders()
                     getLast6MonthsOrders()
                     getProducts()
+                    validateShoppingList()
+                    deleteCoupon()
                 }
 
                 else -> {
                     _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
                 }
             }
-        }
-    }
-
-    fun getNewNotice(notice: String) {
-        viewModelScope.launch {
-            _notices.value = _notices.value.toMutableList().apply {
-                add(notice)
-            }
-            validateNoticeState()
-            setNoticesUseCase.setNotices(_notices.value)
         }
     }
 

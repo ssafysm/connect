@@ -22,7 +22,7 @@ class NoticeAdapter(private val viewModel: MainViewModel) :
             binding.tvTitleNotify.text = noticeContent[1]
             binding.tvMessageNotify.text = noticeContent[2]
             binding.tvTimeNotify.text = noticeContent[0]
-            binding.ivNotify.setOnClickListener {
+            binding.btnNotify.setOnClickListener {
                 viewModel.onClickNoticeDelete(layoutPosition)
             }
         }

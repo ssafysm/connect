@@ -146,6 +146,7 @@
                     android:layout_marginTop="36dp"
                     android:layout_marginEnd="8dp"
                     android:enabled="@{(vm.selectedCouponMenu == null) ? false : true}"
+                    android:onClick="@{() -> vm.onClickShopCoupon()}"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="10dp"
                     app:layout_constraintBottom_toTopOf="@id/gl_bottom_coupon_detail"

@@ -64,7 +64,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyApp.Main"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
 
             <!-- NFC 인텐트 필터 추가 -->
             <intent-filter>

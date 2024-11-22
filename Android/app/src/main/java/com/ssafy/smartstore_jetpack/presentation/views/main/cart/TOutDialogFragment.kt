@@ -21,7 +21,7 @@ class TOutDialogFragment :
         }
         binding.tvConfirmTOutDialog.setOnClickListener {
             dismiss()
-            viewModel.onClickTakeOutFinish()
+            viewModel.onClickShoppingFinish()
         }
     }
 }

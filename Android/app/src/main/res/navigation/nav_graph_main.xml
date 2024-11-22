@@ -83,10 +83,6 @@
             app:popUpToInclusive="false" />
 
         <action
-            android:id="@+id/action_order_to_map"
-            app:destination="@id/fragment_map" />
-
-        <action
             android:id="@+id/action_order_to_cart"
             app:destination="@id/fragment_cart" />
 
@@ -216,18 +212,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_map"
-        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.map.MapFragment"
-        android:label="Map"
-        tools:layout="@layout/fragment_map">
-
-        <action
-            android:id="@+id/action_map_to_map_dialog"
-            app:destination="@id/fragment_map_dialog" />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/fragment_detail"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailFragment"
         android:label="Detail"
@@ -252,10 +236,6 @@
         tools:layout="@layout/fragment_shopping_list">
 
         <action
-            android:id="@+id/cart_to_shop_dialog"
-            app:destination="@id/fragment_shop_dialog" />
-
-        <action
             android:id="@+id/cart_to_t_out_dialog"
             app:destination="@id/fragment_t_out_dialog" />
 
@@ -272,12 +252,6 @@
         tools:layout="@layout/fragment_order_detail" />
 
     <dialog
-        android:id="@+id/fragment_map_dialog"
-        android:name="com.ssafy.smartstore_ui.map.MapDialogFragment"
-        android:label="Map Dialog"
-        tools:layout="@layout/fragment_map_dialog" />
-
-    <dialog
         android:id="@+id/fragment_app_theme_bottom_sheet"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.setting.AppThemeBottomSheetFragment"
         android:label="App Theme"
@@ -287,7 +261,13 @@
         android:id="@+id/fragment_shop_select_bottom_sheet_dialog"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectBottomSheetDialogFragment"
         android:label="Shop Select"
-        tools:layout="@layout/fragment_shop_select_bottom_sheet_dialog" />
+        tools:layout="@layout/fragment_shop_select_bottom_sheet_dialog" >
+
+        <action
+            android:id="@+id/action_shop_select_to_shop_dialog"
+            app:destination="@id/fragment_shop_dialog" />
+
+    </dialog>
 
     <dialog
         android:id="@+id/fragment_shop_dialog"

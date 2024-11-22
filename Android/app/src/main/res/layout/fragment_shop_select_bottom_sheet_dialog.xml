@@ -249,7 +249,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/button_try_order"
             android:fontFamily="@font/pretendardsemibold"
-            android:onClick="@{() -> vm.onClickTakeOutFinish()}"
+            android:onClick="@{() -> vm.onClickShoppingFinish()}"
             android:text="@string/text_try_order"
             android:textColor="@color/neutral_white"
             android:textSize="20sp"

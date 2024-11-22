@@ -30,7 +30,6 @@ class ShoppingListFragment :
     BaseFragment<FragmentShoppingListBinding>(R.layout.fragment_shopping_list) {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var shoppingListAdapter: ShoppingListAdapter
     private var nfcAdapter: NfcAdapter? = null
 
     @SuppressLint("ClickableViewAccessibility")
@@ -40,8 +39,6 @@ class ShoppingListFragment :
         binding.vm = viewModel
 
         initAdapter()
-        // initEvent()
-        // refreshList()
 
         binding.clBottomCart.post {
             val layoutHeight = binding.clBottomCart.height
@@ -50,7 +47,6 @@ class ShoppingListFragment :
             val heightPercent = (screenHeight - layoutHeight).toFloat() / screenHeight * 100
             val params = binding.glBottomCart.layoutParams as ConstraintLayout.LayoutParams
 
-            Timber.d("Percent: $heightPercent")
             binding.glBottomCart.setGuidelinePercent(heightPercent - 10F)
 
             binding.rvCart.setOnTouchListener { _, motionEvent ->
@@ -87,7 +83,6 @@ class ShoppingListFragment :
             }
         }
 
-        // NFC 초기화
         nfcAdapter = NfcAdapter.getDefaultAdapter(requireContext())
 
         collectLatestFlow(viewModel.shoppingUiEvent) { handleUiEvent(it) }
@@ -117,8 +112,7 @@ class ShoppingListFragment :
     }
 
     private fun initAdapter() {
-        shoppingListAdapter = ShoppingListAdapter(viewModel)
-        binding.rvCart.adapter = shoppingListAdapter
+        binding.rvCart.adapter = ShoppingListAdapter(viewModel)
         binding.rvCart.setHasFixedSize(false)
     }
 
@@ -133,7 +127,8 @@ class ShoppingListFragment :
                 val textData = String(payload, 3, payload.size - 3) // 첫 3바이트는 메타데이터
 
                 requireActivity().runOnUiThread {
-                    val tableNumber = textData.split(":")[1].toInt()
+                    Timber.d("NFC Text: $textData")
+                    val tableNumber = textData.split(":")[0].toInt()
                     viewModel.setTableNumber(tableNumber)
                     Toast.makeText(
                         requireContext(),
@@ -153,7 +148,8 @@ class ShoppingListFragment :
 
     private fun handleUiEvent(event: ShoppingListUiEvent) = when (event) {
         is ShoppingListUiEvent.ShopOrder -> {
-
+            findNavController().navigateSafely(R.id.cart_to_shop_select)
+            applyBlur(binding.fragmentShoppingList, 20F)
         }
 
         is ShoppingListUiEvent.TakeOutOrder -> {
@@ -178,96 +174,4 @@ class ShoppingListFragment :
 
         else -> {}
     }
-
-//    private fun refreshList() {
-//        shoppingListAdapter.list = activityViewModel.shoppingList
-//        shoppingListAdapter.notifyDataSetChanged()
-//    }
-//
-//    private fun initEvent() {
-//        binding.btnShop.setOnClickListener {
-//            binding.btnShop.background =
-//                ContextCompat.getDrawable(requireContext(), R.drawable.button_color)
-//            binding.btnTakeout.background =
-//                ContextCompat.getDrawable(requireContext(), R.drawable.button_non_color)
-//            isShop = true
-//        }
-//        binding.btnTakeout.setOnClickListener {
-//            binding.btnTakeout.background =
-//                ContextCompat.getDrawable(requireContext(), R.drawable.button_color)
-//            binding.btnShop.background =
-//                ContextCompat.getDrawable(requireContext(), R.drawable.button_non_color)
-//            isShop = false
-//        }
-//        binding.btnOrder.setOnClickListener {
-//            if (isShop) showDialogForOrderInShop()
-//            else {
-//                //거리가 200이상이라면
-//                if (true) showDialogForOrderTakeoutOver200m()
-//            }
-//        }
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        mainActivity.hideBottomNav(false)
-//    }
-//
-//    private fun showDialogForOrderInShop() {
-//        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-//        builder.setTitle("알림")
-//        builder.setMessage(
-//            "Table NFC를 먼저 찍어주세요.\n"
-//        )
-//        builder.setCancelable(true)
-//        builder.setNegativeButton(
-//            "취소"
-//        ) { dialog, _ ->
-//            dialog.cancel()
-//            dialog.cancel()
-//            showToast("주문이 취소되었습니다.")
-//        }
-//        builder.create().show()
-//    }
-//
-//    private fun showDialogForOrderTakeoutOver200m() {
-//        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-//        builder.setTitle("알림")
-//        builder.setMessage(
-//            "현재 고객님의 위치가 매장과 200m 이상 떨어져 있습니다.\n정말 주문하시겠습니까?"
-//        )
-//        builder.setCancelable(true)
-//        builder.setPositiveButton("확인") { _, _ ->
-//            completedOrder("Take Out 주문")
-//        }
-//        builder.setNegativeButton("취소") { dialog, _ ->
-//            dialog.cancel()
-//            showToast("주문이 취소되었습니다.")
-//        }
-//        builder.create().show()
-//    }
-//
-//
-//    private fun completedOrder(table: String) {
-//
-//        if (activityViewModel.shoppingList.size <= 0) {
-//            showToast("장바구니가 비어 있습니다.")
-//            return;
-//        }
-//
-//        showToast("주문이 완료되었습니다.")
-//
-//
-//    }
-//
-//    // 재주문할때는 parameter로 넘기기.
-//    companion object {
-//        @JvmStatic
-//        fun newInstance(param: Int) =
-//            ShoppingListFragment().apply {
-//                arguments = Bundle().apply {
-//                    putInt(ORDER_ID, param)
-//                }
-//            }
-//    }
 }

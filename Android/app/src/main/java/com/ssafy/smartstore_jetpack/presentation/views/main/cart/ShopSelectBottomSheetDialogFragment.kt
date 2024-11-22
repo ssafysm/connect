@@ -1,7 +1,6 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -14,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -59,15 +59,14 @@ class ShopSelectBottomSheetDialogFragment :
                 when (uiEvent) {
                     is ShoppingListUiEvent.OrderFail -> dismiss()
 
+                    is ShoppingListUiEvent.NeedTagging -> {
+                        findNavController().navigate(R.id.action_shop_select_to_shop_dialog)
+                    }
+
                     else -> {}
                 }
             }
         }
-
-//        binding.tvConfirmTOutDialog.setOnClickListener {
-//            dismiss()
-//            viewModel.onClickTakeOutFinish()
-//        }
     }
 
     override fun onRequestPermissionsResult(
@@ -164,7 +163,6 @@ class ShopSelectBottomSheetDialogFragment :
         }
     }
 
-    @SuppressLint("MissingInflatedId", "InflateParams")
     private fun createCustomMarkerIcon(shop: Shop): BitmapDescriptor {
         val markerView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_marker, null)
         val textView = markerView.findViewById<TextView>(R.id.tv_marker)

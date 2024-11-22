@@ -1,7 +1,11 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.join
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
@@ -22,6 +26,8 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
 
         binding.vm = viewModel
 
+        setEditTextFocus()
+
         collectLatestFlow(viewModel.joinUiEvent) { handleUiEvent(it) }
     }
 
@@ -31,14 +37,72 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
         viewModel.setBnvState(false)
     }
 
+    private fun showKeyboard(editText: EditText) {
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun setEditTextFocus() {
+        with(binding) {
+            etIdJoin.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    true -> {
+                        if (btnCheckJoin.isEnabled) {
+                            viewModel.onClickCheckId()
+                        }
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            etPwJoin.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    true -> {
+                        etPwConfirmJoin.requestFocus()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            etPwConfirmJoin.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    true -> {
+                        etNicknameJoin.requestFocus()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            etNicknameJoin.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_DONE) {
+                    true -> {
+                        if (btnJoin.isEnabled) {
+                            viewModel.onClickGoToJoin()
+                        }
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
+    }
+
     private fun handleUiEvent(event: JoinUiEvent) = when (event) {
         is JoinUiEvent.CheckId -> {
             when (event.isUsedId) {
                 false -> {
+                    binding.etPwJoin.requestFocus()
+                    showKeyboard(binding.etPwJoin)
                     Toast.makeText(requireContext(), "사용 가능한 ID라네요!", Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {
+                    binding.etIdJoin.requestFocus()
+                    showKeyboard(binding.etIdJoin)
                     Toast.makeText(requireContext(), "이미 사용중인 ID거나, 다른 오류가 있습니다!", Toast.LENGTH_SHORT).show()
                 }
             }
