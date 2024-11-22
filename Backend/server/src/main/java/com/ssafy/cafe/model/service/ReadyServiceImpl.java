@@ -1,11 +1,12 @@
 package com.ssafy.cafe.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.ssafy.cafe.model.dao.OrderDao;
 import com.ssafy.cafe.model.dao.ReadyDao;
+import com.ssafy.cafe.model.dto.OrderWithInfo;
 import com.ssafy.cafe.model.dto.Ready;
 
 @Service
@@ -13,6 +14,9 @@ public class ReadyServiceImpl implements ReadyService {
 
     @Autowired
     private ReadyDao readyDao;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Override
     public void addReady(Ready ready) {
@@ -33,5 +37,16 @@ public class ReadyServiceImpl implements ReadyService {
     @Override
     public Ready getReadyByOrderId(Integer orderId) {
         return readyDao.selectByOrderId(orderId);
+    }
+
+    @Override
+    public List<OrderWithInfo> getPendingOrders() {
+        List<Ready> readyList = readyDao.selectByPickUp(false);
+        List<OrderWithInfo> pendingOrders = new ArrayList<>();
+        for (Ready ready : readyList) {
+            OrderWithInfo order = orderDao.selectOrderWithInfo(ready.getOId());
+            pendingOrders.add(order);
+        }
+        return pendingOrders;
     }
 }

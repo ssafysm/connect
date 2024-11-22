@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pending Orders</title>
+</head>
+<body>
+
+    <h1>픽업 대기 중인 주문</h1>
+    <div id="orders"></div>
+
+    <script>
+        // 픽업 대기 중인 주문을 가져와서 표시하는 함수
+        function fetchPendingOrders() {
+            fetch('/rest/ready/pendingOrders')
+                .then(response => response.json())
+                .then(data => {
+                    const ordersDiv = document.getElementById('orders');
+                    ordersDiv.innerHTML = ''; // 이전 내용 제거
+
+                    data.forEach(order => {
+                        const orderDiv = document.createElement('div');
+                        orderDiv.style.border = '1px solid black';
+                        orderDiv.style.padding = '10px';
+                        orderDiv.style.margin = '10px';
+
+                        const orderInfo = document.createElement('p');
+                        orderInfo.innerText = '주문 번호: ' + order.id + ', 사용자 ID: ' + order.userId + ', 주문 시간: ' + order.orderTime;
+                        orderDiv.appendChild(orderInfo);
+
+                        const detailsList = document.createElement('ul');
+                        order.details.forEach(detail => {
+                            const detailItem = document.createElement('li');
+                            detailItem.innerText = detail.name + ' x ' + detail.quantity;
+                            detailsList.appendChild(detailItem);
+                        });
+                        orderDiv.appendChild(detailsList);
+
+                        const readyButton = document.createElement('button');
+                        readyButton.innerText = 'Ready';
+                        readyButton.onclick = function() {
+                            updatePickUpStatus(order.id);
+                        };
+                        orderDiv.appendChild(readyButton);
+
+                        ordersDiv.appendChild(orderDiv);
+                    });
+                });
+        }
+
+        // 픽업 상태를 업데이트하는 함수
+        function updatePickUpStatus(orderId) {
+            fetch('/rest/ready/' + orderId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(true)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    alert('주문 ' + orderId + '이(가) 픽업 준비되었습니다.');
+                    fetchPendingOrders(); // 목록 갱신
+                } else {
+                    alert('주문 상태 업데이트에 실패했습니다.');
+                }
+            });
+        }
+
+        // 페이지 로드 시 픽업 대기 중인 주문을 가져옴
+        window.onload = fetchPendingOrders;
+    </script>
+
+</body>
+</html>
