@@ -37,13 +37,10 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
         viewModel.setBnvState(false)
     }
 
-    private fun showKeyboard(editText: EditText) {
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
-    }
-
     private fun setEditTextFocus() {
         with(binding) {
+            etIdJoin.requestFocus()
+            showKeyboard(etIdJoin)
             etIdJoin.setOnEditorActionListener { _, actionId, _ ->
                 when (actionId == EditorInfo.IME_ACTION_NEXT) {
                     true -> {

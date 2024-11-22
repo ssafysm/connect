@@ -3,6 +3,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.menudetail
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -45,6 +46,7 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
         viewModel.setBnvState(false)
         initRecyclerView()
         initViews()
+        setEditTextFocus()
 
         collectLatestFlow(viewModel.menuDetailUiEvent) { handleUiEvent(it) }
     }
@@ -91,6 +93,23 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
             }
         }
         binding.ivTitleDetail.transitionName = "menu_detail_${viewModel.selectedProduct.value?.id}"
+    }
+
+    private fun setEditTextFocus() {
+        with(binding) {
+            etCommentDetail.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_DONE) {
+                    true -> {
+                        if (btnEnrollDetail.isEnabled) {
+                            viewModel.onClickSelectRating()
+                        }
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
     }
 
     private fun handleUiEvent(event: MenuDetailUiEvent) = when (event) {

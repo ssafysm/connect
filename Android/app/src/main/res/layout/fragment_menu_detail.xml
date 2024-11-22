@@ -117,12 +117,13 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:backgroundCustomTheme="@{vm.appThemeName}">
 
                 <androidx.constraintlayout.widget.Guideline
@@ -202,6 +203,8 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/shape_comment"
                     android:hint="@string/text_hint_comment"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:text="@={vm.nowComment}"
                     android:textColor="@color/neutral_70"
                     android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"

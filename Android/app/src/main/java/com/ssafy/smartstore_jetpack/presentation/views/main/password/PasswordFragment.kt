@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.password
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -21,13 +22,43 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>(R.layout.fragment
 
         binding.vm = viewModel
 
+        setEditTextFocus()
+
         collectLatestFlow(viewModel.passwordUiEvent) { handleUiEvent(it) }
+    }
+
+    private fun setEditTextFocus() {
+        with(binding) {
+            etPassword.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    true -> {
+                        etConfirmPassword.requestFocus()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            etConfirmPassword.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId == EditorInfo.IME_ACTION_DONE) {
+                    true -> {
+                        if (btnPassword.isEnabled) {
+                            viewModel.onClickPasswordUpdate()
+                        }
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
     }
 
     private fun handleUiEvent(event: PasswordUiEvent) = when (event) {
         is PasswordUiEvent.PasswordUpdateSuccess -> {
             findNavController().popBackStack(R.id.fragment_my_page, false)
-            Toast.makeText(requireContext(), "비밀번호를 성공적으로 변경했어요. 다시 로그인해주세요!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "비밀번호를 성공적으로 변경했어요. 다시 로그인해주세요!", Toast.LENGTH_SHORT)
+                .show()
         }
 
         is PasswordUiEvent.PasswordUpdateFailed -> {

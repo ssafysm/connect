@@ -1,12 +1,17 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -26,6 +31,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShopSelectBottomSheetDialogBinding
 import com.ssafy.smartstore_jetpack.domain.model.Shop
@@ -34,7 +40,9 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
+@SuppressLint("ClickableViewAccessibility")
 @AndroidEntryPoint
 class ShopSelectBottomSheetDialogFragment :
     BaseBottomSheetDialogFragment<FragmentShopSelectBottomSheetDialogBinding>(R.layout.fragment_shop_select_bottom_sheet_dialog),
@@ -44,6 +52,7 @@ class ShopSelectBottomSheetDialogFragment :
     private lateinit var shopItemAdapter: ShopItemAdapter
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var behavior: BottomSheetBehavior<*>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,6 +62,15 @@ class ShopSelectBottomSheetDialogFragment :
         initRecyclerView()
         setFusedLocation()
         setMapFragment()
+        setEditTextFocus()
+
+        dialog?.let { dialog ->
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            behavior = BottomSheetBehavior.from(bottomSheet!!)
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.isDraggable = false
+            binding.nsvShopSelect.isNestedScrollingEnabled = false
+        }
 
         lifecycleScope.launch {
             viewModel.shoppingUiEvent.collectLatest { uiEvent ->
@@ -66,6 +84,31 @@ class ShopSelectBottomSheetDialogFragment :
                     else -> {}
                 }
             }
+        }
+    }
+
+    private fun expandBottomSheetAndDisableScroll() {
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.isDraggable = false
+        binding.nsvShopSelect.isNestedScrollingEnabled = false
+        Timber.d("맵 모드")
+    }
+
+    private fun enableScrollAndCollapseBottomSheet() {
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        behavior.isDraggable = true
+        binding.nsvShopSelect.isNestedScrollingEnabled = true
+        Timber.d("맵 모드 아님")
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        dialog?.let { dialog ->
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.isDraggable = true
+
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -105,6 +148,13 @@ class ShopSelectBottomSheetDialogFragment :
     private fun setMapFragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.fcv_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        binding.fcvMap.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> behavior.isDraggable = false
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> behavior.isDraggable = true
+            }
+            false
+        }
     }
 
     private fun hasLocationPermission(): Boolean {
@@ -122,6 +172,7 @@ class ShopSelectBottomSheetDialogFragment :
         )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun enableMyLocation() {
         try {
             if (hasLocationPermission()) {
@@ -156,9 +207,18 @@ class ShopSelectBottomSheetDialogFragment :
                 shops.forEach { shop ->
                     val position = LatLng(shop.latitude, shop.longitude)
                     mMap.addMarker(
-                        MarkerOptions().position(position).title(shop.id).icon(createCustomMarkerIcon(shop))
+                        MarkerOptions().position(position).title(shop.id)
+                            .icon(createCustomMarkerIcon(shop))
                     )?.showInfoWindow()
                 }
+            }
+        }
+    }
+
+    private fun setEditTextFocus() {
+        with(binding) {
+            etShopSelect.setOnEditorActionListener { _, actionId, _ ->
+                actionId == EditorInfo.IME_ACTION_DONE
             }
         }
     }
@@ -196,7 +256,11 @@ class ShopSelectBottomSheetDialogFragment :
 
         markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)
-        val bitmap = Bitmap.createBitmap(markerView.measuredWidth, markerView.measuredHeight, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(
+            markerView.measuredWidth,
+            markerView.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(bitmap)
         markerView.draw(canvas)
 

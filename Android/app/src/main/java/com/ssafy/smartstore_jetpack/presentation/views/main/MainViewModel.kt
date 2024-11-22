@@ -964,13 +964,14 @@ class MainViewModel @Inject constructor(
                         response.data?.let { it ->
                             when (it) {
                                 true -> {
-                                    Timber.d("비번 변경 성공")
+                                    _newPassword.value = ""
+                                    _newPasswordConfirm.value = ""
+                                    validateNewPasswords()
                                     _passwordUiEvent.emit(PasswordUiEvent.PasswordUpdateSuccess)
                                     onClickLogout()
                                 }
 
                                 else -> {
-                                    Timber.d("비번 변경 실패인데 통신은 됨")
                                     _passwordUiEvent.emit(PasswordUiEvent.PasswordUpdateFailed)
                                 }
                             }
@@ -978,7 +979,6 @@ class MainViewModel @Inject constructor(
                     }
 
                     else -> {
-                        Timber.d("비번 변경하는 통신도 안 됨 ㅅㅂ")
                         _passwordUiEvent.emit(PasswordUiEvent.PasswordUpdateFailed)
                     }
                 }
@@ -1688,6 +1688,36 @@ class MainViewModel @Inject constructor(
 
             else -> {
                 _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.NONE) }
+            }
+        }
+    }
+
+    private fun validateNewPasswords() {
+        if (_newPassword.value.isBlank()) {
+            _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.INIT) }
+        } else {
+            when (validatePassword(_newPassword.value)) {
+                true -> {
+                    _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.VALID) }
+                }
+
+                else -> {
+                    _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.NONE) }
+                }
+            }
+        }
+
+        if (_newPasswordConfirm.value.isBlank()) {
+            _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.INIT) }
+        } else {
+            when (_newPasswordConfirm.value == _newPassword.value) {
+                true -> {
+                    _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.VALID) }
+                }
+
+                else -> {
+                    _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.NONE) }
+                }
             }
         }
     }

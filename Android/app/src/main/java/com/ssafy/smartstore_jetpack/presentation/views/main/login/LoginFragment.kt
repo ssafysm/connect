@@ -35,6 +35,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
     private fun setEditTextFocus() {
         with(binding) {
+            etIdLogin.requestFocus()
+            showKeyboard(etIdLogin)
             etIdLogin.setOnEditorActionListener { _, actionId, _ ->
                 when (actionId == EditorInfo.IME_ACTION_NEXT) {
                     true -> {
