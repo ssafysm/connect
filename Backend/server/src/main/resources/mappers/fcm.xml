@@ -20,5 +20,8 @@
     <select id="selectAllTokens" resultType="String">
         SELECT fcm_token FROM t_fcm;
     </select>
+    <select id="selectAllUserIds" resultType="String">
+    	SELECT DISTINCT user_id FROM t_fcm;
+	</select>
 
 </mapper>

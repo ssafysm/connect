@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import com.ssafy.cafe.model.dto.OrderWithInfo;
 import com.ssafy.cafe.model.dto.OrderDetailWithInfo;
 import com.ssafy.cafe.model.dto.Ready;
+import com.ssafy.cafe.model.dto.Alarm;
 import com.ssafy.cafe.model.service.FcmService;
 import com.ssafy.cafe.model.service.FirebaseCloudMessageService;
 import com.ssafy.cafe.model.service.OrderService;
 import com.ssafy.cafe.model.service.ReadyService;
+import com.ssafy.cafe.model.service.AlarmService;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
@@ -30,6 +32,9 @@ public class ReadyRestController {
 
     @Autowired
     private FirebaseCloudMessageService firebaseCloudMessageService;
+    
+    @Autowired
+    private AlarmService alarmService;
 
     @Operation(summary = "새 픽업 대기 상태를 추가한다.")
     @PostMapping
@@ -73,12 +78,15 @@ public class ReadyRestController {
                         e.printStackTrace();
                     }
                 }
+
+                // 알람 저장
+                alarmService.addAlarm(new Alarm(userId, "주문 준비 완료", messageBody));
             }
         }
 
         return ResponseEntity.ok(true);
     }
-
+    
     @Operation(summary = "모든 픽업 대기 상태를 조회한다.")
     @GetMapping
     public ResponseEntity<?> getReadyList() {

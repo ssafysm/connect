@@ -33,4 +33,9 @@ public class FcmServiceImpl implements FcmService {
     public List<String> getAllTokens() {
         return fcmDao.selectAllTokens();
     }
+    
+    @Override
+    public List<String> getAllUserIds() {
+        return fcmDao.selectAllUserIds();
+    }
 }
