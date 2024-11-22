@@ -20,6 +20,8 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_not
 
         binding.vm = viewModel
 
+        initRecyclerView()
+
         collectLatestFlow(viewModel.noticeUiEvent) { handleUiEvent(it) }
     }
 
@@ -27,6 +29,10 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_not
         super.onResume()
 
         viewModel.setBnvState(false)
+    }
+
+    private fun initRecyclerView() {
+        binding.adapter = NoticeAdapter(viewModel)
     }
 
     private fun handleUiEvent(event: NoticeUiEvent) = when (event) {

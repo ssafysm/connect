@@ -26,7 +26,6 @@ import kotlin.math.abs
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var noticeAdapter: NoticeAdapter
     private lateinit var orderAdapter: OrderAdapter
     private lateinit var eventAdapter: EventAdapter
     private var pageChangeCallback: ViewPager2.OnPageChangeCallback? = null
@@ -65,7 +64,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun initRecyclerView() {
-        noticeAdapter = NoticeAdapter(viewModel)
         orderAdapter = OrderAdapter(viewModel)
         binding.orderAdapter = orderAdapter
         eventAdapter = EventAdapter()
@@ -137,6 +135,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         is HomeUiEvent.GoToOrderDetail -> {
             findNavController().navigateSafely(R.id.action_home_to_order_detail)
+        }
+
+        is HomeUiEvent.GoToChatting -> {
+            findNavController().navigateSafely(R.id.action_home_to_chatting)
         }
     }
 }

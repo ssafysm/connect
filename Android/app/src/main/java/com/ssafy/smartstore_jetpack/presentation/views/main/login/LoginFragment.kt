@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.databinding.FragmentLoginBinding
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login) {
@@ -54,6 +55,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
         is LoginUiEvent.GoToJoin -> {
             findNavController().navigateSafely(R.id.action_login_to_join)
+        }
+
+        is LoginUiEvent.GetUserInfo -> {
+            (requireActivity() as MainActivity).initFCM()
         }
     }
 }

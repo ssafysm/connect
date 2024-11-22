@@ -36,15 +36,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 		uploadTokenToServer(token)
 	}
 
-	private fun setNotices(notice: String) {
-		CoroutineScope(Dispatchers.IO).launch {
-			val notices = dataStoreRepository.getNotices().first().toMutableList().apply {
-				add(notice)
-			}.toList().toHashSet()
-			dataStoreRepository.setNotices(notices)
-		}
-	}
-
 	override fun onMessageReceived(remoteMessage: RemoteMessage) {
 		super.onMessageReceived(remoteMessage)
 		var messageTitle = ""
@@ -56,7 +47,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 			val title = remoteMessage.notification?.title ?: "새 알림"
 			val message = remoteMessage.notification?.body ?: "알림 내용이 없습니다."
 			sendNotification(title, message)
-			setNotices("$title: $messageTitle")
+			setNotices("$title\n $message")
 
 		} else {
 			// 데이터 페이로드 처리
@@ -64,7 +55,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 			val message = remoteMessage.data["myBody"] ?: "알림 내용이 없습니다."
 			Log.d(TAG, "FCM 메시지 수신: title=$title, body=$message")
 			sendNotification(title, message)
-			setNotices("$title: $messageTitle")
+			setNotices("$title\n $message")
 		}
 	}
 
@@ -103,5 +94,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 	private fun uploadTokenToServer(token: String) {
 		// 서버로 FCM 토큰을 전송하는 로직을 여기에 구현하세요.
 		Log.d(TAG, "FCM 토큰 서버 전송: $token")
+	}
+
+	private fun setNotices(notice: String) {
+		CoroutineScope(Dispatchers.IO).launch {
+			val notices = dataStoreRepository.getNotices().first().toMutableList().apply {
+				add(notice)
+			}.toList().toHashSet()
+			dataStoreRepository.setNotices(notices)
+		}
 	}
 }

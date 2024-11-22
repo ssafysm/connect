@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemNoticeBinding
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
+import timber.log.Timber
 
 class NoticeAdapter(private val viewModel: MainViewModel) :
     ListAdapter<String, RecyclerView.ViewHolder>(diffUtil) {
@@ -16,6 +17,7 @@ class NoticeAdapter(private val viewModel: MainViewModel) :
 
         fun bind(notice: String, viewModel: MainViewModel) {
             binding.tvTitleNotify.text = notice
+            Timber.d("Notice: $notice")
             binding.ivNotify.setOnClickListener {
                 viewModel.onClickNoticeDelete(layoutPosition)
             }

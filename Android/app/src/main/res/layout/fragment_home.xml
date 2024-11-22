@@ -214,12 +214,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            app:progressAsTitle="@{vm.user.grade}"
                             android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@id/tv_grade_home"
-                            app:layout_constraintTop_toBottomOf="@id/tv_grade_home" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_grade_home"
+                            app:progressAsTitle="@{vm.user.grade}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -334,6 +334,16 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_temp_home"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="16dp"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.onClickChatting()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_notice_home"

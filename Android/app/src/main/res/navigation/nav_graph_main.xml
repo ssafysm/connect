@@ -12,6 +12,10 @@
         tools:layout="@layout/fragment_home">
 
         <action
+            android:id="@+id/action_home_to_chatting"
+            app:destination="@id/fragment_chatting" />
+
+        <action
             android:id="@+id/action_home_to_login"
             app:destination="@id/fragment_login" />
 
@@ -26,6 +30,16 @@
         <action
             android:id="@+id/action_home_to_notice"
             app:destination="@id/fragment_notice" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_chatting"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingFragment"
+        android:label="Chatting"
+        tools:layout="@layout/fragment_chatting">
+
+
 
     </fragment>
 

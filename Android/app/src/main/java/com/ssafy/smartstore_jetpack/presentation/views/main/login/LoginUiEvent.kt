@@ -7,4 +7,6 @@ sealed class LoginUiEvent {
     data object LoginFail : LoginUiEvent()
 
     data object GoToJoin : LoginUiEvent()
+
+    data object GetUserInfo : LoginUiEvent()
 }

@@ -332,16 +332,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    companion object {
-
-        private const val BEACON_UUID = "fda50693-a4e2-4fb1-afcf-c6eb07647825"
-        private const val BEACON_MAJOR = "10004"
-        private const val BEACON_MINOR = "54480"
-        private const val BEACON_DISTANCE = 5.0
-        private const val BLUETOOTH_ADDRESS = "00:81:F9:E2:49:E1"
-    }
-
-    private fun initFCM() {
+    fun initFCM() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "FCM 등록 토큰 가져오기 실패", task.exception)
@@ -361,5 +352,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
         // 알림 채널 생성
         createNotificationChannel("ssafy_channel", "ssafy")
+    }
+
+    companion object {
+
+        private const val BEACON_UUID = "fda50693-a4e2-4fb1-afcf-c6eb07647825"
+        private const val BEACON_MAJOR = "10004"
+        private const val BEACON_MINOR = "54480"
+        private const val BEACON_DISTANCE = 5.0
+        private const val BLUETOOTH_ADDRESS = "00:81:F9:E2:49:E1"
     }
 }

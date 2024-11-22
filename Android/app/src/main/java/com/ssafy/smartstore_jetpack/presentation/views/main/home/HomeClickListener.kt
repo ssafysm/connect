@@ -11,4 +11,6 @@ interface HomeClickListener {
     fun onClickNotice()
 
     fun onClickOrderDetail(order: Order)
+
+    fun onClickChatting()
 }

@@ -336,7 +336,14 @@ class MainViewModel @Inject constructor(
     override fun onClickNotice() {
         viewModelScope.launch {
             _notices.value = getNotices().first()
+            Timber.d("Notices: ${_notices.value}")
             _homeUiEvent.emit(HomeUiEvent.GoToNotice)
+        }
+    }
+
+    override fun onClickChatting() {
+        viewModelScope.launch {
+            _homeUiEvent.emit(HomeUiEvent.GoToChatting)
         }
     }
 
@@ -426,6 +433,8 @@ class MainViewModel @Inject constructor(
             val newNotices = _notices.value.toMutableList()
             newNotices.removeAt(position)
             _notices.value = newNotices.toList()
+            setNoticesUseCase.setNotices(_notices.value)
+            validateNoticeState()
             _noticeUiEvent.emit(NoticeUiEvent.DeleteNotice)
         }
     }
@@ -1130,6 +1139,7 @@ class MainViewModel @Inject constructor(
                     if (newUser != null) {
                         getCoupons(newUser.user.id)
                     }
+                    _loginUiEvent.emit(LoginUiEvent.GetUserInfo)
                     Timber.d("User: ${_user.value}")
                 }
 

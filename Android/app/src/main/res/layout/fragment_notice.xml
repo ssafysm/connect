@@ -11,6 +11,10 @@
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
+        <variable
+            name="adapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,6 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
+            android:adapter="@{adapter}"
             android:orientation="vertical"
             android:visibility="@{(vm.noticeUiState.isNoticesNotEmpty == true) ? View.VISIBLE : View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
