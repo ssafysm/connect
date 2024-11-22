@@ -81,7 +81,7 @@
             android:id="@+id/vp_order"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:overScrollMode="ifContentScrolls"
             app:layout_constraintBottom_toTopOf="@id/gl_bottom_order"
             app:layout_constraintEnd_toStartOf="@id/gl_end_order"

@@ -2,11 +2,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.order
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
@@ -33,8 +29,23 @@ class MenuPageFragment : BaseFragment<FragmentMenuPageBinding>(R.layout.fragment
 
         binding.vm = viewModel
 
+        setModeButton()
+
         arguments?.let { argument ->
             val menuType = argument.getInt("menu_type")
+
+            when (menuType) {
+                0 -> {
+                    binding.btnHotBeverage.visibility = View.VISIBLE
+                    binding.btnIcedBeverage.visibility = View.VISIBLE
+                }
+
+                1 -> {
+                    binding.btnHotBeverage.visibility = View.GONE
+                    binding.btnIcedBeverage.visibility = View.GONE
+                }
+            }
+
             lifecycleScope.launch {
                 with(binding.rvOrder) {
                     viewModel.products.collectLatest { products ->
@@ -74,6 +85,18 @@ class MenuPageFragment : BaseFragment<FragmentMenuPageBinding>(R.layout.fragment
             }
         }
     }
+
+    private fun setModeButton() {
+        with(binding) {
+            btnHotBeverage.setOnClickListener {
+                viewModel.setIcedMode(false)
+            }
+            btnIcedBeverage.setOnClickListener {
+                viewModel.setIcedMode(true)
+            }
+        }
+    }
+
 
     companion object {
 

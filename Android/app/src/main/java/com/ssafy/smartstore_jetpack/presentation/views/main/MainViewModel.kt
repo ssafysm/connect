@@ -160,6 +160,9 @@ class MainViewModel @Inject constructor(
     private val _user = MutableStateFlow<UserInfo?>(null)
     val user = _user.asStateFlow()
 
+    private val _originalProducts = MutableStateFlow<List<List<Product>>>(emptyList())
+    val originalProducts = _originalProducts.asStateFlow()
+
     private val _products = MutableStateFlow<List<List<Product>>>(emptyList())
     val products = _products.asStateFlow()
 
@@ -272,6 +275,9 @@ class MainViewModel @Inject constructor(
 
     private val _tableNumber = MutableStateFlow<Int>(0)
     val tableNumber = _tableNumber.asStateFlow()
+
+    private val _isIcedMode = MutableStateFlow<Boolean>(false)
+    val isIcedMode = _isIcedMode.asStateFlow()
 
     /****** Ui Event ******/
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
@@ -1148,7 +1154,8 @@ class MainViewModel @Inject constructor(
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let { products ->
-                        _products.value = products.toList()
+                        _originalProducts.value = products.toList()
+                        setIcedMode(false)
                     }
                 }
 
@@ -1475,6 +1482,33 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _isPushReceiving.value = isPushReceiving
         }
+    }
+
+    fun setIcedMode(mode: Boolean) {
+        _isIcedMode.value = mode
+        val newBeverages = mutableListOf<Product>()
+        val newFoods = _originalProducts.value[1]
+        val newProducts = mutableListOf<List<Product>>()
+        when (_isIcedMode.value) {
+            true -> {
+                _originalProducts.value[0].forEach { product ->
+                    if (product.mode == "ICED") {
+                        newBeverages.add(product)
+                    }
+                }
+            }
+
+            else -> {
+                _originalProducts.value[0].forEach { product ->
+                    if (product.mode == "HOT") {
+                        newBeverages.add(product)
+                    }
+                }
+            }
+        }
+        newProducts.add(newBeverages)
+        newProducts.add(newFoods)
+        _products.value = newProducts.toList()
     }
 
     fun setMapMode(isMapMode: Boolean) {

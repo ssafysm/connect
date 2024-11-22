@@ -1,24 +1,21 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.order
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemMenuBinding
 import com.ssafy.smartstore_jetpack.domain.model.Product
-import timber.log.Timber
 
 class MenuAdapter(
     private val products: List<Product>,
-    private val clickListener: MenuClickListener
+    private val clickListener: MenuClickListener,
 ) : ListAdapter<Product, MenuAdapter.MenuViewHolder>(diffUtil) {
 
     inner class MenuViewHolder(private val binding: ListItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindInfo(product: Product, clickListener: MenuClickListener) {
-            Timber.d("Product: $product")
             binding.product = product
             binding.executePendingBindings()
 
