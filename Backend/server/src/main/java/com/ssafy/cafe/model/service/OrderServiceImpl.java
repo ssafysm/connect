@@ -16,6 +16,9 @@ import com.ssafy.cafe.model.dto.OrderDetailWithInfo;
 import com.ssafy.cafe.model.dto.OrderWithInfo;
 import com.ssafy.cafe.model.dto.Stamp;
 import com.ssafy.cafe.model.dto.User;
+import com.ssafy.cafe.model.dao.ReadyDao; // ReadyDao import
+import com.ssafy.cafe.model.dto.Ready; // Ready import
+
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -32,6 +35,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     UserDao uDao;
 
+    @Autowired
+    ReadyDao readyDao; // ReadyDao 주입
+    
     @Override
     @Transactional
     public void makeOrder(Order order) {
@@ -47,7 +53,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         uDao.updateStamp(user);
+
+        // t_ready 데이터 추가
+        Ready ready = new Ready(orderId, false);
+        readyDao.insert(ready); // 인스턴스를 통해 호출
     }
+
+
 
     @Override
     public Order getOrderWithDetails(Integer orderId) {
