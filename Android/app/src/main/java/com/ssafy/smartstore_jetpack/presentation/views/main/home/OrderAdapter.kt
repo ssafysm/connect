@@ -1,10 +1,8 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.home
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +15,6 @@ import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.dateFormat
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 class OrderAdapter(private val viewModel: MainViewModel) :
     ListAdapter<Order, OrderAdapter.OrderViewHolder>(diffUtil) {
 

@@ -592,6 +592,15 @@ fun <T> RecyclerView.submitData(items: List<T>?) {
     adapter.submitList(items ?: emptyList())
 }
 
+@BindingAdapter("submitDataWithMap")
+fun <K, V> RecyclerView.submitData(data: HashMap<K, V>?) {
+    val items = data?.entries?.map { it.value } ?: emptyList()
+
+    @Suppress("UNCHECKED_CAST")
+    val adapter = this.adapter as? ListAdapter<V, *> ?: return
+    adapter.submitList(items)
+}
+
 @BindingAdapter("submitDataViewPager")
 fun <T> ViewPager2.submitData(items: List<T>?) {
     Timber.d("Data submitted: ${items?.size ?: 0}")

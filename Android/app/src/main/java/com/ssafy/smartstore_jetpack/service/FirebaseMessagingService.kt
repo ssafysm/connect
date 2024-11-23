@@ -14,6 +14,7 @@ import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {

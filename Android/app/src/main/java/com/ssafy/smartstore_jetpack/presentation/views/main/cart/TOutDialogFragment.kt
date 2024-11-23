@@ -16,12 +16,14 @@ class TOutDialogFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvCancelTOutDialog.setOnClickListener {
+        binding.vm = viewModel
+
+        binding.ivTOutDialog.setOnClickListener {
             dismiss()
         }
         binding.tvConfirmTOutDialog.setOnClickListener {
             dismiss()
-            viewModel.onClickShoppingFinish()
+            viewModel.finishShopping()
         }
     }
 }

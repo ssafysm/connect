@@ -106,7 +106,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Coil
-    implementation("io.coil-kt:coil:2.0.0-rc03")
+    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil-gif:2.4.0")
 
     // Google map API
     implementation ("com.google.android.gms:play-services-maps:18.2.0")

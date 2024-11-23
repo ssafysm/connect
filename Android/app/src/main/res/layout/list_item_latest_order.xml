@@ -16,47 +16,46 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_item_order"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="16dp"
         android:padding="16dp"
         app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_order"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@drawable/button_non_color"
             android:scaleType="fitStart"
-            app:layout_constraintBottom_toTopOf="@id/tv_order_number_order"
+            app:layout_constraintBottom_toBottomOf="@id/tv_date_order"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/tv_order_number_order" />
 
         <TextView
             android:id="@+id/tv_order_number_order"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/pretendardsemibold"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_order_list_order"
+            android:textColor="@color/neutral_100"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_order" />
+            app:layout_constraintStart_toEndOf="@id/iv_order"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_order_list_order"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:textColor="@color/black"
-            android:textSize="24sp"
+            android:fontFamily="@font/pretendardregular"
+            android:textColor="@color/neutral_100"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_price_order"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_number_order"
+            app:layout_constraintStart_toStartOf="@id/tv_order_number_order"
             app:layout_constraintTop_toBottomOf="@id/tv_order_number_order" />
 
         <TextView
@@ -64,12 +63,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:textColor="@color/black"
-            android:textSize="24sp"
+            android:fontFamily="@font/pretendardregular"
+            android:textColor="@color/neutral_100"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_date_order"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_number_order"
+            app:layout_constraintStart_toStartOf="@id/tv_order_number_order"
             app:layout_constraintTop_toBottomOf="@id/tv_order_list_order" />
 
         <TextView
@@ -77,16 +76,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/pretendardsemibold"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@id/iv_cart_order"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:fontFamily="@font/pretendardregular"
+            android:textColor="@color/neutral_100"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_cart_order"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_number_order"
+            app:layout_constraintStart_toStartOf="@id/tv_order_number_order"
             app:layout_constraintTop_toBottomOf="@id/tv_price_order" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/iv_cart_order"
+            android:id="@+id/btn_cart_order"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -97,7 +96,7 @@
             android:paddingEnd="16dp"
             android:text="@string/text_go_cart"
             android:textColor="@color/neutral_white"
-            android:textSize="24sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

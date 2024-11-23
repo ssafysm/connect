@@ -145,7 +145,7 @@
     <string name="text_time">운영 시간</string>
 
     <!-- Shopping Dialog -->
-    <string name="text_table_nfc">Table NFC를 찍어주세요.</string>
+    <string name="text_table_nfc">주문 시 필요한 NFC를 태깅해주세요!</string>
 
     <!-- Take Out Dialog -->
     <string name="text_alarm">알림</string>
@@ -154,7 +154,5 @@
     <!-- Item Layout -->
     <string name="text_order_finish_notice">주문하신 메뉴가 나왔습니다.</string>
     <string name="text_pick_up_finish">픽업완료</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

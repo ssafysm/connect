@@ -6,11 +6,13 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -19,7 +21,11 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -48,6 +54,8 @@ class ShopSelectBottomSheetDialogFragment :
     private lateinit var shopItemAdapter: ShopItemAdapter
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,10 +76,30 @@ class ShopSelectBottomSheetDialogFragment :
                         findNavController().navigate(R.id.action_shop_select_to_shop_dialog)
                     }
 
+                    is ShoppingListUiEvent.LongDistance -> {
+                        findNavController().navigate(R.id.action_shop_select_to_t_out_dialog)
+                    }
+
                     else -> {}
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (hasLocationPermission()) {
+            enableMyLocation()
+        } else {
+            requestLocationPermission()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onRequestPermissionsResult(
@@ -84,6 +112,8 @@ class ShopSelectBottomSheetDialogFragment :
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 enableMyLocation()
+            } else {
+                Toast.makeText(requireContext(), "위치 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -105,6 +135,10 @@ class ShopSelectBottomSheetDialogFragment :
 
     private fun setFusedLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000L)
+            .setMinUpdateIntervalMillis(2000L)
+            .setWaitForAccurateLocation(true)
+            .build()
     }
 
     private fun setMapFragment() {
@@ -129,26 +163,48 @@ class ShopSelectBottomSheetDialogFragment :
 
     private fun enableMyLocation() {
         try {
+            if (!::mMap.isInitialized) return
             if (hasLocationPermission()) {
                 mMap.isMyLocationEnabled = true
                 mMap.setOnMarkerClickListener { marker ->
-                    viewModel.shops.value.forEach { shop ->
-                        if (marker.title == shop.id) {
-                            viewModel.onClickShopSelectInMap(shop)
+                    if (viewModel.searchedShops.value.containsKey(marker.title)) {
+                        viewModel.searchedShops.value[marker.title]?.let {
+                            viewModel.onClickShopSelectInMap(it)
                         }
                     }
-                    true
+                    false
                 }
 
-                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                    location?.let {
-                        val currentLocation = LatLng(it.latitude, it.longitude)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15F))
-                        mMap.addMarker(MarkerOptions().position(currentLocation).title("현재 위치"))
-                        viewModel.sortSearchedShop(it)
+                locationCallback = object : LocationCallback() {
+
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        for (location in locationResult.locations) {
+                            location?.let {
+                                val currentLocation = LatLng(it.latitude, it.longitude)
+                                mMap.moveCamera(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                        currentLocation,
+                                        15F
+                                    )
+                                )
+                                mMap.addMarker(
+                                    MarkerOptions().position(currentLocation).title("현재 위치")
+                                )
+                                viewModel.sortSearchedShop(it)
+                            }
+                        }
                     }
                 }
+
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    locationCallback,
+                    Looper.getMainLooper()
+                )
+
                 addShopsMarkers()
+            } else {
+                requestLocationPermission() // 권한 요청
             }
         } catch (e: SecurityException) {
             e.printStackTrace()
@@ -160,14 +216,14 @@ class ShopSelectBottomSheetDialogFragment :
             viewModel.searchedShops.collectLatest { shops ->
                 mMap.clear()
                 shops.forEach { shop ->
-                    val position = LatLng(shop.latitude, shop.longitude)
+                    val position = LatLng(shop.value.latitude, shop.value.longitude)
                     mMap.addMarker(
-                        MarkerOptions().position(position).title(shop.id)
-                            .icon(createCustomMarkerIcon(shop))
+                        MarkerOptions().position(position).title(shop.key)
+                            .icon(createCustomMarkerIcon(shop.value))
                     )
                 }
 
-                updateCameraToShowAllMarkers(shops)
+                updateCameraToShowAllMarkers(shops.values.toList())
             }
         }
     }
@@ -206,30 +262,7 @@ class ShopSelectBottomSheetDialogFragment :
         val imageView = markerView.findViewById<ImageView>(R.id.iv_marker)
         textView.text = shop.name
 
-        when (viewModel.appThemeName.value) {
-            "봄" -> {
-                imageView.setBackgroundResource(R.drawable.ic_shop_spring)
-            }
-
-            "여름" -> {
-                imageView.setBackgroundResource(R.drawable.ic_shop_summer)
-            }
-
-            "가을" -> {
-                imageView.setBackgroundResource(R.drawable.ic_shop_autumn)
-            }
-
-            "겨울" -> {
-                imageView.setBackgroundResource(R.drawable.ic_shop_winter)
-            }
-
-            else -> {
-                imageView.setBackgroundResource(R.drawable.ic_shop)
-            }
-        }
-        imageView.load(shop.image) {
-            transformations(CircleCropTransformation())
-        }
+        imageView.setBackgroundResource(R.drawable.ic_map_marker)
 
         markerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         markerView.layout(0, 0, markerView.measuredWidth, markerView.measuredHeight)

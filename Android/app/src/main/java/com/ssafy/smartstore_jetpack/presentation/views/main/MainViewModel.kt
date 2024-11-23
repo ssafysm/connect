@@ -222,11 +222,14 @@ class MainViewModel @Inject constructor(
     val selectProductRating = _selectProductRating.asStateFlow()
 
     /*** Shop ***/
-    private val _searchedShops = MutableStateFlow<List<Shop>>(emptyList())
+    private val _searchedShops = MutableStateFlow<HashMap<String, Shop>>(hashMapOf())
     val searchedShops = _searchedShops.asStateFlow()
 
     private val _selectShop = MutableStateFlow<Shop?>(null)
     val selectShop = _selectShop.asStateFlow()
+
+    private val _myPosition = MutableStateFlow<Location?>(null)
+    val myPosition = _myPosition.asStateFlow()
 
     /****** Ui State ******/
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState())
@@ -344,6 +347,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickNotice() {
         viewModelScope.launch {
+            user.value?.user?.let { getAlarms(it.id) }
             _homeUiEvent.emit(HomeUiEvent.GoToNotice)
         }
     }
@@ -708,6 +712,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickShop() {
         viewModelScope.launch {
+            _searchedShops.value = _shops.value.associateBy { it.id }.toMap(HashMap())
             _nfcMode.value = true
             initShop()
             _shoppingUiEvent.emit(ShoppingListUiEvent.ShopOrder)
@@ -717,6 +722,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickTakeout() {
         viewModelScope.launch {
+            _searchedShops.value = _shops.value.associateBy { it.id }.toMap(HashMap())
             _nfcMode.value = false
             initShop()
             _shoppingUiEvent.emit(ShoppingListUiEvent.TakeOutOrder)
@@ -786,7 +792,13 @@ class MainViewModel @Inject constructor(
                 }
 
                 else -> {
-                    finishShopping()
+                    when (checkDistanceToShop()) {
+                        true -> {
+                            _shoppingUiEvent.emit(ShoppingListUiEvent.LongDistance)
+                        }
+
+                        else -> finishShopping()
+                    }
                 }
             }
         }
@@ -1278,57 +1290,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun finishShopping() {
-        viewModelScope.launch {
-            val newDetails = mutableListOf<OrderDetail>()
-            _shoppingList.value.forEach { product ->
-                newDetails.add(
-                    OrderDetail(
-                        id = 0,
-                        orderId = 0,
-                        productId = product.menuId,
-                        quantity = product.menuCnt.toInt(),
-                        unitPrice = "",
-                        img = "",
-                        productName = ""
-                    )
-                )
-            }
-
-            val newOrder = Order(
-                id = 0,
-                userId = getUserId().first(),
-                orderTable = _tableNumber.value.toString(),
-                orderTime = "",
-                completed = "N",
-                details = newDetails.toList()
-            )
-
-            val response = getOrderUseCase.makeOrder(newOrder)
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    _shoppingList.value = emptyList()
-                    validateShoppingList()
-                    val orderId = response.data ?: 0
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
-                    _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
-                    _totalOrder.value = "0"
-                    _totalPrice.value = "￦0"
-                    getUser()
-                    getLastMonthOrders()
-                    getLast6MonthsOrders()
-                    getProducts()
-                    validateShoppingList()
-                    deleteCoupon()
-                }
-
-                else -> {
-                    _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
-                    _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponOrderFail)
-                }
-            }
+    private fun checkDistanceToShop(): Boolean {
+        val myPosition = _myPosition.value ?: return false
+        val selectedShop = _selectShop.value ?: return false
+        val shopLocation = Location("").apply {
+            latitude = selectedShop.latitude
+            longitude = selectedShop.longitude
         }
+
+        return (abs(shopLocation.distanceTo(myPosition)) >= 200F)
     }
 
     /*** Validate Ui State ***/
@@ -1476,6 +1446,59 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun finishShopping() {
+        viewModelScope.launch {
+            val newDetails = mutableListOf<OrderDetail>()
+            _shoppingList.value.forEach { product ->
+                newDetails.add(
+                    OrderDetail(
+                        id = 0,
+                        orderId = 0,
+                        productId = product.menuId,
+                        quantity = product.menuCnt.toInt(),
+                        unitPrice = "",
+                        img = "",
+                        productName = ""
+                    )
+                )
+            }
+
+            val newOrder = Order(
+                id = 0,
+                userId = getUserId().first(),
+                orderTable = _tableNumber.value.toString(),
+                orderTime = "",
+                completed = "N",
+                details = newDetails.toList()
+            )
+
+            val response = getOrderUseCase.makeOrder(newOrder)
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    _shoppingList.value = emptyList()
+                    validateShoppingList()
+                    val orderId = response.data ?: 0
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.FinishOrder(orderId))
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
+                    _totalOrder.value = "0"
+                    _totalPrice.value = "￦0"
+                    getUser()
+                    getLastMonthOrders()
+                    getLast6MonthsOrders()
+                    getProducts()
+                    validateShoppingList()
+                    deleteCoupon()
+                }
+
+                else -> {
+                    _shoppingUiEvent.emit(ShoppingListUiEvent.OrderFail)
+                    _couponDetailUiEvent.emit(CouponDetailUiEvent.CouponOrderFail)
+                }
+            }
+        }
+    }
+
     fun setIcedMode(mode: Boolean) {
         _isIcedMode.value = mode
         val newBeverages = mutableListOf<Product>()
@@ -1521,14 +1544,32 @@ class MainViewModel @Inject constructor(
     }
 
     fun sortSearchedShop(myPosition: Location) {
-        _searchedShops.value = _shops.value.sortedBy { shop ->
+        _myPosition.value = myPosition
+        val newSearchedShops = mutableListOf<Shop>()
+        _searchedShops.value.forEach { shop ->
             val shopLocation = Location("").apply {
-                latitude = shop.latitude
-                longitude = shop.longitude
+                latitude = shop.value.latitude
+                longitude = shop.value.longitude
             }
+            val distance = abs(shopLocation.distanceTo(myPosition))
 
-            abs(shopLocation.distanceTo(myPosition))
+            newSearchedShops.add(
+                Shop(
+                    id = shop.value.id,
+                    name = shop.value.name,
+                    image = shop.value.image,
+                    description = shop.value.description,
+                    time = shop.value.time,
+                    latitude = shop.value.latitude,
+                    longitude = shop.value.longitude,
+                    distance = distance
+                )
+            )
         }
+        newSearchedShops.sortBy { it.distance }
+
+        _searchedShops.value = newSearchedShops.associateBy { it.id }.toMap(HashMap()).toList()
+            .sortedBy { it.second.distance }.toMap(LinkedHashMap())
     }
 
     fun setTableNumber(number: Int) {
@@ -1726,7 +1767,7 @@ class MainViewModel @Inject constructor(
 
     fun validateShopSearchKeyword(shopSearchKeyword: CharSequence) {
         if (shopSearchKeyword.isBlank()) {
-            _searchedShops.value = _shops.value
+            _searchedShops.value = _shops.value.associateBy { it.id }.toMap(HashMap())
             return
         }
 
@@ -1738,7 +1779,7 @@ class MainViewModel @Inject constructor(
             }
         }
 
-        _searchedShops.value = newSearchedShops.toList()
+        _searchedShops.value = newSearchedShops.associateBy { it.id }.toMap(HashMap())
     }
 
     // FCM 토큰 업로드 메서드 추가

@@ -1,9 +1,7 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.home
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,22 +11,17 @@ import com.ssafy.smartstore_jetpack.databinding.FragmentHomeBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
-import com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var orderAdapter: OrderAdapter
-    private lateinit var eventAdapter: EventAdapter
     private var pageChangeCallback: ViewPager2.OnPageChangeCallback? = null
     private var autoScrollJob: Job? = null
 
@@ -65,10 +58,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun initRecyclerView() {
-        orderAdapter = OrderAdapter(viewModel)
-        binding.orderAdapter = orderAdapter
-        eventAdapter = EventAdapter()
-        binding.vpTodayEventHome.adapter = eventAdapter
+        binding.orderAdapter = OrderAdapter(viewModel)
+        binding.vpTodayEventHome.adapter = EventAdapter()
         binding.vpTodayEventHome.offscreenPageLimit = 5
         binding.vpTodayEventHome.setPageTransformer { page, position ->
             val scaleFactor = 0.85F + (1 - abs(position)) * 0.15F

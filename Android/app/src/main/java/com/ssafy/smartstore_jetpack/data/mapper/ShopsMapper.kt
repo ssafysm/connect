@@ -17,7 +17,8 @@ object ShopsMapper {
                     description = shopEntity.description ?: "",
                     time = shopEntity.time ?: "",
                     latitude = shopEntity.latitude ?: 0.0,
-                    longitude = shopEntity.longitude ?: 0.0
+                    longitude = shopEntity.longitude ?: 0.0,
+                    distance = -1F
                 )
             )
         }
