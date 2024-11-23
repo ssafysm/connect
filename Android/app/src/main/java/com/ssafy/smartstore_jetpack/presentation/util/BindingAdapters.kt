@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
@@ -28,6 +29,7 @@ import com.ssafy.smartstore_jetpack.app.ApplicationClass
 import com.ssafy.smartstore_jetpack.domain.model.Grade
 import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import timber.log.Timber
 import kotlin.math.log
@@ -156,6 +158,24 @@ fun ProgressBar.bindProgressAsTitle(grade: Grade?) {
             }
         }
     }
+}
+
+@SuppressLint("UseCompatLoadingForDrawables")
+@BindingAdapter("app:progressAsTheme")
+fun ProgressBar.bindProgressAsTheme(appThemeName: String) {
+    val drawable = when (appThemeName) {
+        "봄" -> ResourcesCompat.getDrawable(resources, R.drawable.layer_list_spring, context.theme)
+
+        "여름" -> ResourcesCompat.getDrawable(resources, R.drawable.layer_list_winter, context.theme)
+
+        "가을" -> ResourcesCompat.getDrawable(resources, R.drawable.layer_list_autumn, context.theme)
+
+        "겨울" -> ResourcesCompat.getDrawable(resources, R.drawable.layer_list_winter, context.theme)
+
+        else -> ResourcesCompat.getDrawable(resources, R.drawable.layer_list, context.theme)
+    }
+
+    drawable?.let { progressDrawable = it }
 }
 
 @BindingAdapter("app:coordinatorCustomTheme")
@@ -357,21 +377,6 @@ fun TextView.bindHomeBannerText(appThemeName: String) {
     }
 }
 
-@SuppressLint("DiscouragedApi")
-@BindingAdapter("app:stampImage")
-fun ImageView.bindStamp(src: String) {
-    val resourceName = src.split(".")[0]
-    val packageName = context.packageName
-    val resId = resources.getIdentifier(resourceName, "drawable", packageName)
-
-    if (resId != 0) {
-        load(resId)
-        scaleType = ImageView.ScaleType.CENTER_CROP
-    } else {
-        load(R.drawable.seeds)
-    }
-}
-
 @BindingAdapter("app:buttonCustomTheme")
 fun Button.bindButtonBackground(appThemeName: String) {
     when (appThemeName) {
@@ -390,6 +395,27 @@ fun Button.bindButtonBackground(appThemeName: String) {
 @BindingAdapter("app:enableLogin", "app:enableLoginCustomTheme")
 fun Button.bindEnableCustomTheme(loginUiState: LoginUiState, appThemeName: String) {
     when (loginUiState.isLoginBtnEnable) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+                "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+                "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+                "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+                else -> setBackgroundResource(R.drawable.shape_background_sub)
+            }
+        }
+
+        else -> setBackgroundResource(R.drawable.button_disabled)
+    }
+}
+
+@BindingAdapter("app:enableComment", "app:enableMenuDetailCustomTheme")
+fun Button.bindEnableCustomThemeInMenuDetail(menuDetailUiState: MenuDetailUiState, appThemeName: String) {
+    when (menuDetailUiState.isEnrollBtnEnable) {
         true -> {
             when (appThemeName) {
                 "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)

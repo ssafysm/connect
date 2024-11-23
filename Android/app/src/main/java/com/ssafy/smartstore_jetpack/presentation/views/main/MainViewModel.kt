@@ -66,6 +66,7 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.CommentClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.GradeState
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.my.MyPageUiEvent
@@ -240,6 +241,9 @@ class MainViewModel @Inject constructor(
 
     private val _noticeUiState = MutableStateFlow<NoticeUiState>(NoticeUiState())
     val noticeUiState = _noticeUiState.asStateFlow()
+
+    private val _menuDetailUiState = MutableStateFlow<MenuDetailUiState>(MenuDetailUiState())
+    val menuDetailUiState = _menuDetailUiState.asStateFlow()
 
     private val _shoppingListUiState = MutableStateFlow<ShoppingListUiState>(ShoppingListUiState())
     val shoppingListUiState = _shoppingListUiState.asStateFlow()
@@ -442,6 +446,8 @@ class MainViewModel @Inject constructor(
     override fun onClickProduct(product: Product) {
         _selectedProduct.value = null
         _selectedProductPrice.value = ""
+        _nowComment.value = ""
+        _menuDetailUiState.update { it.copy(commentValidState = InputValidState.NONE) }
         viewModelScope.launch {
             val response = getProductUseCase.getProductWithComment(product.id)
             when (response.status) {
@@ -488,6 +494,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _menuDetailUiEvent.emit(MenuDetailUiEvent.SelectRating)
         }
+    }
+
+    fun setRating(rating: Float) {
+        _selectProductRating.value = rating
     }
 
     override fun onClickInsertComment() {
@@ -1699,6 +1709,14 @@ class MainViewModel @Inject constructor(
             true -> _joinUiState.update { it.copy(joinNameValidState = InputValidState.VALID) }
 
             else -> _joinUiState.update { it.copy(joinNameValidState = InputValidState.NONE) }
+        }
+    }
+
+    fun validateComment(nowComment: CharSequence) {
+        when (nowComment.isNotBlank()) {
+            true -> _menuDetailUiState.update { it.copy(commentValidState = InputValidState.VALID) }
+
+            false -> _menuDetailUiState.update { it.copy(commentValidState = InputValidState.NONE) }
         }
     }
 

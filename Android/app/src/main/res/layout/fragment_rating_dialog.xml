@@ -20,31 +20,49 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/neutral_white"
+            android:padding="8dp"
+            app:backgroundCustomSubTheme="@{vm.appThemeName}"
             tools:context=".detail.RatingDialogFragment">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_rating_dialog"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> vm.onClickCommentCancel()}"
+                android:src="@drawable/ic_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_title_rating_dialog"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32sp"
-                android:fontFamily="@font/eland_choice_b"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/pretendardblack"
                 android:text="@string/text_select_rating"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/neutral_white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@id/iv_rating_dialog"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <RatingBar
-                android:id="@+id/rb_rating_dialog"
-                android:layout_width="wrap_content"
+            <ProgressBar
+                android:id="@+id/pb_rating_dialog"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:progressTint="@color/teal_200"
-                android:rating="4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_rating_dialog" />
+                android:layout_marginTop="32dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="100"
+                app:layout_constraintEnd_toEndOf="@id/iv_rating_dialog"
+                app:layout_constraintStart_toStartOf="@id/tv_title_rating_dialog"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_rating_dialog"
+                app:progressAsTheme="@{vm.appThemeName}" />
 
             <TextView
                 android:id="@+id/tv_confirm_rating_dialog"
@@ -53,24 +71,24 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16sp"
+                android:fontFamily="@font/pretendardregular"
                 android:onClick="@{() -> vm.onClickInsertComment()}"
                 android:text="@string/text_confirm"
-                android:textColor="@color/coffee_brown_light"
+                android:textColor="@color/sub_submit"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rb_rating_dialog" />
+                app:layout_constraintTop_toBottomOf="@id/pb_rating_dialog" />
 
             <TextView
-                android:id="@+id/tv_cancel_rating_dialog"
+                android:id="@+id/tv_current_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:onClick="@{() -> vm.onClickCommentCancel()}"
-                android:text="@string/text_cancel"
-                android:textColor="@color/coffee_brown_light"
-                app:layout_constraintBottom_toBottomOf="@id/tv_confirm_rating_dialog"
-                app:layout_constraintEnd_toStartOf="@id/tv_confirm_rating_dialog"
-                app:layout_constraintTop_toTopOf="@id/tv_confirm_rating_dialog" />
+                android:fontFamily="@font/pretendardsemibold"
+                android:textColor="@color/neutral_white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/pb_rating_dialog" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
