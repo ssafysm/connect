@@ -9,100 +9,152 @@
             type="com.ssafy.smartstore_jetpack.domain.model.Comment" />
 
         <variable
-            name="clickListener"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.CommentClickListener" />
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_comment"
-            android:layout_width="0dp"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="marquee"
-            android:fontFamily="@font/pretendardsemibold"
-            android:maxLines="1"
-            android:text="@{comment.comment}"
-            android:textSize="20sp"
+            android:layout_margin="@dimen/margin_padding_small"
+            app:cardBackgroundColor="@color/neutral_white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_modify_comment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:textColor="@color/neutral_70"
-            android:id="@+id/et_comment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/shape_comment_update"
-            android:fontFamily="@font/pretendardsemibold"
-            android:maxLines="1"
-            android:text="@{comment.comment}"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_update_comment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_update_comment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:drawable/ic_menu_save"
-            android:textColor="@color/coffee_dark_brown"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/btn_cancel_comment"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_cancel_comment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:drawable/ic_menu_close_clear_cancel"
-            android:backgroundTint="@color/coffee_dark_brown"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_modify_comment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:drawable/ic_menu_edit"
-            android:textColor="@color/coffee_dark_brown"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/btn_delete_comment"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_padding_small">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_delete_comment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:drawable/ic_delete"
-            android:backgroundTint="@color/coffee_dark_brown"
-            android:onClick="@{() -> clickListener.onClickDeleteComment(comment)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tv_user_name_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:ellipsize="marquee"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:maxLines="1"
+                    android:text="@{comment.userName}"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="@dimen/font_size_normal"
+                    app:layout_constraintEnd_toStartOf="@id/btn_modify_comment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_rating_comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:layout_marginTop="@dimen/margin_padding_small"
+                    android:src="@drawable/ic_comment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_name_comment" />
+
+                <TextView
+                    android:id="@+id/tv_rating_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="@dimen/font_size_regular"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_rating_comment"
+                    app:layout_constraintStart_toEndOf="@id/iv_rating_comment"
+                    app:layout_constraintTop_toTopOf="@id/iv_rating_comment" />
+
+                <TextView
+                    android:id="@+id/tv_comment_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
+                    android:fontFamily="@font/pretendardregular"
+                    android:text="@{comment.comment}"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="@dimen/font_size_small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_modify_comment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_rating_comment" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
+                    android:background="@drawable/shape_comment_update"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:maxLines="1"
+                    android:padding="4dp"
+                    android:text="@{comment.comment}"
+                    android:textColor="@color/neutral_70"
+                    android:textSize="@dimen/font_size_smaller"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_update_comment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_rating_comment"
+                    app:normalEditText="@{vm.appThemeName}" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_update_comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
+                    android:background="@drawable/ic_save"
+                    android:textColor="@color/coffee_dark_brown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_cancel_comment"
+                    app:layout_constraintTop_toTopOf="@id/btn_cancel_comment" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cancel_comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel"
+                    android:backgroundTint="@color/coffee_dark_brown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_modify_comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
+                    android:background="@drawable/ic_modify"
+                    android:textColor="@color/coffee_dark_brown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_delete_comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
+                    android:background="@drawable/ic_delete"
+                    android:backgroundTint="@color/coffee_dark_brown"
+                    android:onClick="@{() -> vm.onClickDeleteComment(comment)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
 
 </layout>
 

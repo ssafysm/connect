@@ -21,7 +21,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/margin_padding_small"
             app:cardBackgroundColor="@color/neutral_white"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/margin_padding_regular">
 
                 <TextView
                     android:id="@+id/tv_item_coupon"
@@ -43,14 +43,14 @@
                     android:gravity="center"
                     android:text="@{coupon.name}"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/font_size_regular"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="@dimen/height_line"
+                    android:layout_marginTop="@dimen/margin_padding_small"
+                    android:layout_marginBottom="@dimen/margin_padding_small"
                     android:background="@drawable/dotted_line" />
 
                 <LinearLayout
@@ -63,8 +63,8 @@
                         android:id="@+id/iv_item_coupon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="Coupon Icon"
+                        android:layout_marginEnd="@dimen/margin_padding_regular"
+                        android:contentDescription="@string/description_coupon"
                         android:src="@drawable/ic_coupon" />
 
                     <LinearLayout
@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/font_size_small" />
 
                         <TextView
                             android:id="@+id/tv_iat_item_coupon"
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/font_size_smaller" />
 
                         <TextView
                             android:id="@+id/tv_exp_item_coupon"
@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/font_size_smaller" />
 
                     </LinearLayout>
 
@@ -104,9 +104,9 @@
                     android:id="@+id/btnRedeemCoupon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/margin_padding_less_smaller"
                     android:onClick="@{() -> vm.onClickCoupon(coupon)}"
-                    android:text="자세히 보기"
+                    android:text="@string/text_use_coupon"
                     android:textColor="@color/neutral_white"
                     app:buttonCustomTheme="@{vm.appThemeName}" />
 

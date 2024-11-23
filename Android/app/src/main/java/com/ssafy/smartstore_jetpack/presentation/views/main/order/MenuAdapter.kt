@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemMenuBinding
 import com.ssafy.smartstore_jetpack.domain.model.Product
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 
 class MenuAdapter(
     private val products: List<Product>,
@@ -17,6 +18,7 @@ class MenuAdapter(
 
         fun bindInfo(product: Product, clickListener: MenuClickListener) {
             binding.product = product
+            binding.tvPriceMenu.text = makeComma(product.price.toInt())
             binding.executePendingBindings()
 
             binding.root.setOnClickListener {

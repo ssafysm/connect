@@ -8,27 +8,30 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.smartstore_jetpack.databinding.ListItemCommentBinding
 import com.ssafy.smartstore_jetpack.domain.model.Comment
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class CommentAdapter(
-    private val clickListener: CommentClickListener,
+    private val viewModel: MainViewModel,
     private val userId: String
 ) : ListAdapter<Comment, CommentAdapter.CommentHolder>(diffUtil) {
 
     inner class CommentHolder(private val binding: ListItemCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(comment: Comment, clickListener: CommentClickListener) {
+        fun bind(comment: Comment, viewModel: MainViewModel) {
             binding.comment = comment
-            binding.clickListener = clickListener
+            binding.vm = viewModel
+            binding.tvRatingComment.text = comment.rating.toString()
             binding.btnModifyComment.visibility = View.VISIBLE
             binding.btnDeleteComment.visibility = View.VISIBLE
             binding.btnUpdateComment.visibility = View.GONE
             binding.btnCancelComment.visibility = View.GONE
             binding.etComment.visibility = View.GONE
-            binding.tvComment.visibility = View.VISIBLE
+            binding.tvCommentComment.visibility = View.VISIBLE
 
             CoroutineScope(Dispatchers.IO).launch {
                 if (comment.userId != userId) {
@@ -36,7 +39,6 @@ class CommentAdapter(
                     binding.btnCancelComment.visibility = View.GONE
                     binding.btnDeleteComment.visibility = View.GONE
                     binding.btnModifyComment.visibility = View.GONE
-                    binding.etComment.visibility = View.GONE
                 }
             }
 
@@ -46,8 +48,8 @@ class CommentAdapter(
                 binding.btnUpdateComment.visibility = View.VISIBLE
                 binding.btnCancelComment.visibility = View.VISIBLE
                 binding.etComment.visibility = View.VISIBLE
-                binding.etComment.setText(binding.tvComment.text)
-                binding.tvComment.visibility = View.GONE
+                binding.etComment.setText(binding.tvCommentComment.text)
+                binding.tvCommentComment.visibility = View.GONE
             }
 
             binding.btnCancelComment.setOnClickListener {
@@ -56,11 +58,11 @@ class CommentAdapter(
                 binding.btnUpdateComment.visibility = View.GONE
                 binding.btnCancelComment.visibility = View.GONE
                 binding.etComment.visibility = View.GONE
-                binding.tvComment.visibility = View.VISIBLE
+                binding.tvCommentComment.visibility = View.VISIBLE
             }
 
             binding.btnUpdateComment.setOnClickListener {
-                clickListener.onClickUpdateComment(
+                viewModel.onClickUpdateComment(
                     Comment(
                         id = comment.id,
                         userId = comment.userId,
@@ -75,7 +77,7 @@ class CommentAdapter(
                 binding.btnUpdateComment.visibility = View.GONE
                 binding.btnCancelComment.visibility = View.GONE
                 binding.etComment.visibility = View.GONE
-                binding.tvComment.visibility = View.VISIBLE
+                binding.tvCommentComment.visibility = View.VISIBLE
             }
         }
     }
@@ -88,7 +90,7 @@ class CommentAdapter(
         )
 
     override fun onBindViewHolder(holder: CommentHolder, position: Int) {
-        holder.bind(currentList[position], clickListener)
+        holder.bind(currentList[position], viewModel)
     }
 
     companion object {

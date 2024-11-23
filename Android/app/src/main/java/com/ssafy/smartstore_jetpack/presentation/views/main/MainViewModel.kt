@@ -233,6 +233,7 @@ class MainViewModel @Inject constructor(
     val myPosition = _myPosition.asStateFlow()
 
     /****** Ui State ******/
+
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState())
     val loginUiState = _loginUiState.asStateFlow()
 
@@ -337,6 +338,7 @@ class MainViewModel @Inject constructor(
     /*** Home Click ***/
     override fun onClickHomeSignUp() {
         viewModelScope.launch {
+            initJoinInfo()
             _homeUiEvent.emit(HomeUiEvent.GoToJoin)
         }
     }
@@ -1122,13 +1124,10 @@ class MainViewModel @Inject constructor(
                 Status.SUCCESS -> {
                     response.data?.let { orders ->
                         _ordersMonth.value = orders
-                        Timber.d("Orders: ${_ordersMonth.value}")
                     }
                 }
 
-                else -> {
-                    Timber.d("Order Fail")
-                }
+                else -> {}
             }
         }
     }
@@ -1200,6 +1199,22 @@ class MainViewModel @Inject constructor(
             validateNoticeState()
         }
     }
+    private fun initJoinInfo() {
+        _joinId.value = ""
+        _joinPass.value = ""
+        _joinPassConfirm.value = ""
+        _joinName.value = ""
+        _joinUiState.update {
+            it.copy(
+                joinIdValidState = InputValidState.NONE,
+                joinIdDuplicateState = DuplicateState.DUPLICATE,
+                joinPassValidState = PasswordState.INIT,
+                joinPassConfirmValidState = PasswordState.INIT,
+                joinNameValidState = InputValidState.NONE
+            )
+        }
+    }
+
 
     private fun initShop() {
         viewModelScope.launch {
@@ -1654,6 +1669,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun validateJoinId(id: CharSequence) {
+        _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
         if (id.isBlank()) {
             _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
             return

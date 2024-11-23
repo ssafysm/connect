@@ -42,7 +42,7 @@ class OrderListAdapter(private val viewModel: MainViewModel) :
             binding.tvPriceOrder.text = makeComma(totalPrice)
             binding.order = order
             binding.vm = viewModel
-            binding.tvDateOrder.text = dateFormat(order.orderTime)
+            binding.tvDateOrder.text = "주문 날짜 : ${dateFormat(order.orderTime)}"
         }
     }
 

@@ -55,25 +55,20 @@ class ShoppingListFragment :
                 false
             }
 
-            lifecycleScope.launch {
-                viewModel.shoppingList.collectLatest {
-                    if (it.size > 2) {
-                        binding.rvCart.addOnScrollListener(object :
-                            RecyclerView.OnScrollListener() {
-                            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                                super.onScrolled(recyclerView, dx, dy)
-                                if (dy > 0) {
-                                    hideBottomLayout(binding.clBottomCart)
-                                } else if (dy < 0) {
-                                    showBottomLayout(binding.clBottomCart)
-                                }
-                            }
-                        })
-                    } else if (it.isNotEmpty()) {
-                        showBottomLayout(binding.clBottomCart)
+            binding.nsvShoppingList.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+                if (scrollY > oldScrollY && binding.clBottomCart.visibility == View.VISIBLE) {
+                    hideBottomLayout(binding.clBottomCart)
+                    if ((binding.rvCart.adapter?.itemCount ?: 0) > 2) {
+                        setViewHeight(binding.clBottomCart.height / 2)
                     }
+                } else if (scrollY < oldScrollY && binding.clBottomCart.visibility == View.GONE) {
+                    showBottomLayout(binding.clBottomCart)
+                    setViewHeight(binding.clBottomCart.height)
                 }
             }
+            val params = binding.viewCart.layoutParams
+            params.height = binding.clBottomCart.height
+            binding.viewCart.layoutParams = params
         }
 
         collectLatestFlow(viewModel.shoppingUiEvent) { handleUiEvent(it) }
@@ -88,6 +83,12 @@ class ShoppingListFragment :
     private fun initAdapter() {
         binding.rvCart.adapter = ShoppingListAdapter(viewModel)
         binding.rvCart.setHasFixedSize(false)
+    }
+
+    private fun setViewHeight(height: Int) {
+        val params = binding.viewCart.layoutParams
+        params.height = height
+        binding.viewCart.layoutParams = params
     }
 
     private fun handleUiEvent(event: ShoppingListUiEvent) = when (event) {

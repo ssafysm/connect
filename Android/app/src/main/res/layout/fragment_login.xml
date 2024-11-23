@@ -28,14 +28,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="16dp" />
+                app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl_top_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="32dp" />
+                app:layout_constraintGuide_begin="@dimen/margin_padding_less_larger" />
 
             <TextView
                 android:id="@+id/tv_title_login"
@@ -44,7 +44,7 @@
                 android:fontFamily="@font/pretendardblack"
                 android:text="@string/text_login"
                 android:textColor="@color/neutral_100"
-                android:textSize="32sp"
+                android:textSize="@dimen/font_size_title"
                 app:layout_constraintEnd_toStartOf="@id/gl_end_login"
                 app:layout_constraintStart_toEndOf="@id/gl_start_login"
                 app:layout_constraintTop_toBottomOf="@id/gl_top_login" />
@@ -56,56 +56,60 @@
                 android:fontFamily="@font/pretendardregular"
                 android:text="@string/text_need_login"
                 android:textColor="@color/neutral_70"
-                android:textSize="20sp"
+                android:textSize="@dimen/font_size_normal"
                 app:layout_constraintBottom_toTopOf="@id/et_id_login"
                 app:layout_constraintEnd_toStartOf="@id/gl_end_login"
                 app:layout_constraintStart_toEndOf="@id/gl_start_login"
-                app:layout_constraintTop_toBottomOf="@id/gl_top_login"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_login"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_id_login"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="@dimen/margin_padding_less_larger"
+                android:layout_marginTop="@dimen/margin_padding_less_larger"
+                android:layout_marginEnd="@dimen/margin_padding_less_larger"
                 android:background="@drawable/shape_comment"
                 android:hint="@string/text_hint_id"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:onTextChanged="@{(id, s, b, c) -> vm.validateUserId(id)}"
                 android:text="@={vm.userId}"
+                android:textSize="@dimen/font_size_regular"
                 app:layout_constraintBottom_toTopOf="@id/et_pw_login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_description_login" />
+                app:layout_constraintTop_toBottomOf="@id/tv_description_login"
+                app:normalEditText="@{vm.appThemeName}" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_pw_login"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="@dimen/margin_padding_less_larger"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_less_larger"
                 android:background="@drawable/shape_comment"
                 android:hint="@string/text_hint_pw"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:onTextChanged="@{(pass, s, b, c) -> vm.validateUserPass(pass)}"
                 android:text="@={vm.userPass}"
+                android:textSize="@dimen/font_size_regular"
                 app:layout_constraintBottom_toTopOf="@id/btn_login_login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_id_login" />
+                app:layout_constraintTop_toBottomOf="@id/et_id_login"
+                app:normalEditText="@{vm.appThemeName}" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_login_login"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/margin_padding_regular"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_small"
                 android:enabled="@{vm.loginUiState.loginBtnEnable}"
                 android:onClick="@{() -> vm.onClickLogin()}"
                 android:text="@string/text_button_login"
@@ -121,8 +125,8 @@
                 android:id="@+id/btn_join_login"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/margin_padding_small"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
                 android:onClick="@{() -> vm.onClickJoin()}"
                 android:text="@string/text_button_join"
                 android:textColor="@color/neutral_100"
@@ -137,14 +141,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="16dp" />
+                app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl_bottom_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_end="16dp" />
+                app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

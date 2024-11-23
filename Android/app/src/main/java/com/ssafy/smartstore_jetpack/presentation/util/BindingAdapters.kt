@@ -2,11 +2,15 @@ package com.ssafy.smartstore_jetpack.presentation.util
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.os.Build
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +36,6 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
 import timber.log.Timber
-import kotlin.math.log
 
 @BindingAdapter("app:backgroundCustomTheme")
 fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
@@ -51,6 +54,21 @@ fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
 
 @BindingAdapter("app:nestedScrollViewCustomTheme")
 fun NestedScrollView.bindNestedScrollViewBackgroundColor(appThemeName: String) {
+    when (appThemeName) {
+        "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
+
+        "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
+
+        "여름" -> setBackgroundColor(resources.getColor(R.color.summer_primary, context.theme))
+
+        "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
+
+        "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
+    }
+}
+
+@BindingAdapter("app:frameLayoutCustomTheme")
+fun FrameLayout.bindFrameLayoutBackgroundColor(appThemeName: String) {
     when (appThemeName) {
         "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
 
@@ -286,7 +304,7 @@ fun FloatingActionButton.bindFloatingActionButtonBackgroundColor(appThemeName: S
 fun ImageView.bindImage(src: String?) {
     if (!src.isNullOrEmpty()) {
         load("${ApplicationClass.MENU_IMGS_URL}$src") {
-            transformations(RoundedCornersTransformation(10F))
+            transformations(RoundedCornersTransformation(15F))
         }
     } else {
         this.setImageResource(R.drawable.logo)
@@ -414,7 +432,10 @@ fun Button.bindEnableCustomTheme(loginUiState: LoginUiState, appThemeName: Strin
 }
 
 @BindingAdapter("app:enableComment", "app:enableMenuDetailCustomTheme")
-fun Button.bindEnableCustomThemeInMenuDetail(menuDetailUiState: MenuDetailUiState, appThemeName: String) {
+fun Button.bindEnableCustomThemeInMenuDetail(
+    menuDetailUiState: MenuDetailUiState,
+    appThemeName: String
+) {
     when (menuDetailUiState.isEnrollBtnEnable) {
         true -> {
             when (appThemeName) {
@@ -455,9 +476,205 @@ fun Button.bindEnableJoinCustomTheme(joinUiState: JoinUiState, appThemeName: Str
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
+@BindingAdapter("app:normalEditText")
+fun EditText.bindEditTextCustomTheme(appThemeName: String) {
+    highlightColor = when (appThemeName) {
+        "봄" -> resources.getColor(R.color.spring_secondary, context.theme)
+
+        "여름" -> resources.getColor(R.color.summer_secondary, context.theme)
+
+        "가을" -> resources.getColor(R.color.autumn_secondary, context.theme)
+
+        "겨울" -> resources.getColor(R.color.winter_secondary, context.theme)
+
+        else -> resources.getColor(R.color.background_sub, context.theme)
+    }
+    textCursorDrawable = when (appThemeName) {
+        "봄" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_spring)
+
+        "여름" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_summer)
+
+        "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_autumn)
+
+        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_winter)
+
+        else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor)
+    }
+    val customTextSelectHandle = when (appThemeName) {
+        "봄" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_spring)
+
+        "여름" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_summer)
+
+        "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_autumn)
+
+        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_winter)
+
+        else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle)
+    }
+    val customTextSelectHandleLeft = when (appThemeName) {
+        "봄" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_spring)
+
+        "여름" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_summer)
+
+        "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_autumn)
+
+        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_winter)
+
+        else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left)
+    }
+    val customTextSelectHandleRight = when (appThemeName) {
+        "봄" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_spring)
+
+        "여름" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_summer)
+
+        "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_autumn)
+
+        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_winter)
+
+        else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right)
+    }
+    if (customTextSelectHandle != null) {
+        setTextSelectHandle(customTextSelectHandle)
+    }
+    if (customTextSelectHandleLeft != null) {
+        setTextSelectHandleLeft(customTextSelectHandleLeft)
+    }
+    if (customTextSelectHandleRight != null) {
+        setTextSelectHandleRight(customTextSelectHandleRight)
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.Q)
+@SuppressLint("ResourceType")
+@BindingAdapter("app:validateNewId", "app:idCustomTheme")
+fun TextInputLayout.bindNewId(joinUiState: JoinUiState, appThemeName: String) {
+    cursorColor = when (appThemeName) {
+        "봄" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.spring_secondary))
+
+        "여름" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.summer_secondary))
+
+        "가을" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.autumn_secondary))
+
+        "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
+
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+    }
+
+    val hintColor = when (appThemeName) {
+        "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
+
+        "여름" -> ContextCompat.getColor(context, R.color.summer_secondary)
+
+        "가을" -> ContextCompat.getColor(context, R.color.autumn_secondary)
+
+        "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
+
+        else -> ContextCompat.getColor(context, R.color.background_sub)
+    }
+
+    when (joinUiState.joinPassValidState) {
+        PasswordState.VALID -> {
+            helperText = "사용해도 좋은 아이디에요."
+            defaultHintTextColor = ColorStateList.valueOf(hintColor)
+        }
+
+        PasswordState.INIT -> {
+            helperText = ""
+            error = ""
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.neutral_70)
+            )
+        }
+
+        else -> {
+            error = "생성 불가능한 아이디에요."
+            defaultHintTextColor = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.sub_alert)
+            )
+        }
+    }
+
+    isEndIconVisible = joinUiState.isIdCheckBtnEnable
+    isEndIconCheckable = joinUiState.isIdCheckBtnEnable
+
+    when (joinUiState.isIdCheckBtnState) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setEndIconTintList(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.spring_secondary
+                        )
+                    )
+                )
+
+                "여름" -> setEndIconTintList(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.summer_secondary
+                        )
+                    )
+                )
+
+                "가을" -> setEndIconTintList(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.autumn_secondary
+                        )
+                    )
+                )
+
+                "겨울" -> setEndIconTintList(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.winter_secondary
+                        )
+                    )
+                )
+
+                else -> setEndIconTintList(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.background_sub
+                        )
+                    )
+                )
+            }
+        }
+
+        else -> setEndIconTintList(
+            ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    context,
+                    R.color.sub_cancel
+                )
+            )
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.Q)
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validateNewPassword", "app:passwordCustomTheme")
 fun TextInputLayout.bindNewPassword(joinUiState: JoinUiState, appThemeName: String) {
+    cursorColor = when (appThemeName) {
+        "봄" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.spring_secondary))
+
+        "여름" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.summer_secondary))
+
+        "가을" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.autumn_secondary))
+
+        "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
+
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+    }
+
     val hintColor = when (appThemeName) {
         "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
 
@@ -493,9 +710,22 @@ fun TextInputLayout.bindNewPassword(joinUiState: JoinUiState, appThemeName: Stri
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validateNewPasswordConfirm", "app:passwordConfirmCustomTheme")
 fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeName: String) {
+    cursorColor = when (appThemeName) {
+        "봄" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.spring_secondary))
+
+        "여름" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.summer_secondary))
+
+        "가을" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.autumn_secondary))
+
+        "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
+
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+    }
+
     val hintColor = when (appThemeName) {
         "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
 
@@ -531,9 +761,22 @@ fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeNam
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validatePassword", "app:newPasswordCustomTheme")
 fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName: String) {
+    cursorColor = when (appThemeName) {
+        "봄" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.spring_secondary))
+
+        "여름" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.summer_secondary))
+
+        "가을" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.autumn_secondary))
+
+        "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
+
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+    }
+
     val hintColor = when (appThemeName) {
         "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
 
@@ -569,9 +812,22 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validatePasswordConfirm", "app:newPasswordConfirmCustomTheme")
 fun TextInputLayout.bindPasswordConfirm(passwordUiState: PasswordUiState, appThemeName: String) {
+    cursorColor = when (appThemeName) {
+        "봄" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.spring_secondary))
+
+        "여름" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.summer_secondary))
+
+        "가을" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.autumn_secondary))
+
+        "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
+
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+    }
+
     val hintColor = when (appThemeName) {
         "봄" -> ContextCompat.getColor(context, R.color.spring_secondary)
 

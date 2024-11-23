@@ -28,14 +28,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="16dp" />
+            app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_top_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="32dp" />
+            app:layout_constraintGuide_begin="@dimen/margin_padding_less_larger" />
 
         <TextView
             android:id="@+id/tv_title_notice"
@@ -44,7 +44,7 @@
             android:fontFamily="@font/pretendardblack"
             android:text="@string/text_notices"
             android:textColor="@color/neutral_100"
-            android:textSize="32sp"
+            android:textSize="@dimen/font_size_title"
             app:layout_constraintStart_toEndOf="@id/gl_start_notice"
             app:layout_constraintTop_toBottomOf="@id/gl_top_notice" />
 
@@ -68,7 +68,7 @@
             android:text="@string/text_notice_nothing"
             android:textAlignment="center"
             android:textColor="@color/neutral_100"
-            android:textSize="24sp"
+            android:textSize="@dimen/font_size_normal"
             android:visibility="@{(vm.noticeUiState.isNoticesNotEmpty == true) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/gl_bottom_notice"
             app:layout_constraintEnd_toStartOf="@id/gl_end_notice"
@@ -79,7 +79,7 @@
             android:id="@+id/rv_notice"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_padding_regular"
             android:adapter="@{adapter}"
             android:orientation="vertical"
             android:visibility="@{(vm.noticeUiState.isNoticesNotEmpty == true) ? View.VISIBLE : View.GONE}"
@@ -96,14 +96,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="16dp" />
+            app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_bottom_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="16dp" />
+            app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

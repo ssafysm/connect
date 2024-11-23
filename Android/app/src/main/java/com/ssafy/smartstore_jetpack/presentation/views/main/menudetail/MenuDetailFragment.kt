@@ -1,5 +1,6 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.menudetail
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -8,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialContainerTransform
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
@@ -17,9 +17,9 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import kotlin.math.abs
 
+@SuppressLint("ClickableViewAccessibility")
 @AndroidEntryPoint
 class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.fragment_menu_detail){
 
@@ -58,37 +58,77 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
     }
 
     private fun initRecyclerView() {
-        viewModel.user.value?.let { userInfo ->
-            commentAdapter = CommentAdapter(viewModel, userInfo.user.id)
-            binding.adapter = commentAdapter
-        }
+        binding.adapter = CommentAdapter(viewModel, viewModel.user.value?.user?.id ?: "")
     }
 
     private fun initViews() {
+        binding.nsvMenuDetail.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY && binding.clBottomMenuDetail.visibility == View.VISIBLE) {
+                hideBottomLayout(binding.clBottomMenuDetail)
+            } else if (scrollY < oldScrollY && binding.clBottomMenuDetail.visibility == View.GONE) {
+                showBottomLayout(binding.clBottomMenuDetail)
+            }
+        }
+
         lifecycleScope.launch {
             viewModel.selectedProduct.collectLatest { product ->
                 if ((product != null) && (product.productRatingAvg != null)) {
-                    binding.ablMenuDetail.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+                    binding.ablMenuDetail.addOnOffsetChangedListener { _, verticalOffset ->
                         val totalScrollRange = binding.ablMenuDetail.totalScrollRange
                         val collapseRatio = abs(verticalOffset).toFloat() / totalScrollRange
 
                         val alpha = (collapseRatio * 255).toInt()
 
                         when (viewModel.appThemeName.value) {
-                            "봄" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 255, 231, 233))
+                            "봄" -> binding.toolbarDetail.setBackgroundColor(
+                                Color.argb(
+                                    alpha,
+                                    255,
+                                    231,
+                                    233
+                                )
+                            )
 
-                            "여름" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 223, 241, 255))
+                            "여름" -> binding.toolbarDetail.setBackgroundColor(
+                                Color.argb(
+                                    alpha,
+                                    223,
+                                    241,
+                                    255
+                                )
+                            )
 
-                            "가을" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 254, 234, 205))
+                            "가을" -> binding.toolbarDetail.setBackgroundColor(
+                                Color.argb(
+                                    alpha,
+                                    254,
+                                    234,
+                                    205
+                                )
+                            )
 
-                            "겨울" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 218, 250, 247))
+                            "겨울" -> binding.toolbarDetail.setBackgroundColor(
+                                Color.argb(
+                                    alpha,
+                                    218,
+                                    250,
+                                    247
+                                )
+                            )
 
-                            else -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 245, 245, 220))
+                            else -> binding.toolbarDetail.setBackgroundColor(
+                                Color.argb(
+                                    alpha,
+                                    245,
+                                    245,
+                                    220
+                                )
+                            )
                         }
                         binding.toolbarDetail.elevation = 10F
 
                         binding.ctlMenuDetail.title = if (collapseRatio > 0.7f) product.name else ""
-                    })
+                    }
                 }
             }
         }

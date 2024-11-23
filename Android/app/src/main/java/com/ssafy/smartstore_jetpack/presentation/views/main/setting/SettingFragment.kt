@@ -1,5 +1,7 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.setting
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -21,6 +23,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
 
         binding.vm = viewModel
 
+        binding.tvVersionValueSetting.text = getAppVersion(requireContext())
+
         collectLatestFlow(viewModel.settingUiEvent) { handleUiEvent(it) }
     }
 
@@ -28,6 +32,20 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
         super.onResume()
 
         viewModel.setBnvState(false)
+    }
+
+    private fun getAppVersion(context: Context): String {
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                packageInfo.longVersionCode
+            } else {
+                packageInfo.versionCode.toLong()
+            }
+            "${packageInfo.versionName} ($versionCode)"
+        } catch (e: Exception) {
+            "Version info not available"
+        }
     }
 
     private fun handleUiEvent(event: SettingUiEvent) = when (event) {

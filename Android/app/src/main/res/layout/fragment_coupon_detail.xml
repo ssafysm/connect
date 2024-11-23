@@ -31,23 +31,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp" />
+                    app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gl_top_coupon_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="32dp" />
+                    app:layout_constraintGuide_begin="@dimen/margin_padding_less_larger" />
 
                 <TextView
                     android:id="@+id/tv_title_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardblack"
-                    android:text="쿠폰 상세 정보"
+                    android:text="@string/text_title_coupon_detail"
                     android:textColor="@color/neutral_100"
-                    android:textSize="32sp"
+                    android:textSize="@dimen/font_size_title"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_coupon_detail"
                     app:layout_constraintTop_toBottomOf="@id/gl_top_coupon_detail" />
@@ -56,7 +56,7 @@
                     android:id="@+id/iv_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/margin_padding_normal"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_coupon_detail"
@@ -67,11 +67,11 @@
                     android:id="@+id/tv_name_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/margin_padding_normal"
                     android:fontFamily="@font/pretendardsemibold"
                     android:text="@{vm.selectedCoupon.name}"
                     android:textColor="@color/neutral_100"
-                    android:textSize="24sp"
+                    android:textSize="@dimen/font_size_subtitle"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_coupon_detail"
                     app:layout_constraintTop_toBottomOf="@id/iv_coupon_detail" />
@@ -80,11 +80,11 @@
                     android:id="@+id/tv_description_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
                     android:fontFamily="@font/pretendardsemibold"
                     android:text="@{vm.selectedCoupon.description}"
                     android:textColor="@color/neutral_70"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_regular"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_coupon_detail"
                     app:layout_constraintTop_toBottomOf="@id/tv_name_coupon_detail" />
@@ -93,11 +93,11 @@
                     android:id="@+id/tv_iat_coupon_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/margin_padding_small"
                     android:fontFamily="@font/pretendardregular"
                     android:text="@{vm.selectedCoupon.iat}"
                     android:textColor="@color/neutral_70"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_regular"
                     app:layout_constraintEnd_toStartOf="@id/tv_iat_end_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_coupon_detail"
                     app:layout_constraintTop_toBottomOf="@id/tv_description_coupon_detail" />
@@ -107,9 +107,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardregular"
-                    android:text="부터"
+                    android:text="@string/text_iat_coupon_detail"
                     android:textColor="@color/neutral_70"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_regular"
                     app:layout_constraintBottom_toBottomOf="@id/tv_iat_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/tv_iat_coupon_detail"
                     app:layout_constraintTop_toTopOf="@id/tv_iat_coupon_detail" />
@@ -118,11 +118,11 @@
                     android:id="@+id/tv_exp_coupon_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/margin_padding_small"
                     android:fontFamily="@font/pretendardregular"
                     android:text="@{vm.selectedCoupon.exp}"
                     android:textColor="@color/neutral_70"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_regular"
                     app:layout_constraintEnd_toStartOf="@id/tv_exp_end_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/gl_start_coupon_detail"
                     app:layout_constraintTop_toBottomOf="@id/tv_iat_coupon_detail" />
@@ -132,9 +132,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardregular"
-                    android:text="까지"
+                    android:text="@string/text_exp_coupon_detail"
                     android:textColor="@color/neutral_70"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_regular"
                     app:layout_constraintBottom_toBottomOf="@id/tv_exp_coupon_detail"
                     app:layout_constraintStart_toEndOf="@id/tv_exp_coupon_detail"
                     app:layout_constraintTop_toTopOf="@id/tv_exp_coupon_detail" />
@@ -143,8 +143,8 @@
                     android:id="@+id/mcv_shop_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="36dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="@dimen/margin_padding_large"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
                     android:enabled="@{(vm.selectedCouponMenu == null) ? false : true}"
                     android:onClick="@{() -> vm.onClickShopCoupon()}"
                     app:cardCornerRadius="20dp"
@@ -175,11 +175,11 @@
                             android:id="@+id/tv_shop_coupon_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="@dimen/margin_padding_small"
                             android:fontFamily="@font/pretendardsemibold"
                             android:text="@string/text_shop"
                             android:textColor="@color/neutral_100"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/font_size_normal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -193,7 +193,7 @@
                     android:id="@+id/mcv_t_out_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/margin_padding_small"
                     android:enabled="@{(vm.selectedCouponMenu == null) ? false : true}"
                     android:onClick="@{() -> vm.onClickTakeoutCoupon()}"
                     app:cardCornerRadius="20dp"
@@ -223,11 +223,11 @@
                             android:id="@+id/tv_t_out_coupon_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="@dimen/margin_padding_small"
                             android:fontFamily="@font/pretendardsemibold"
                             android:text="@string/text_take_out"
                             android:textColor="@color/neutral_100"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/font_size_normal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -242,14 +242,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_end="16dp" />
+                    app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gl_bottom_coupon_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_end="32dp" />
+                    app:layout_constraintGuide_end="@dimen/margin_padding_less_larger" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

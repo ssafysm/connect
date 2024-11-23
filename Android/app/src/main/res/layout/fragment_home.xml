@@ -12,10 +12,6 @@
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
         <variable
-            name="noticeAdapter"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeAdapter" />
-
-        <variable
             name="orderAdapter"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.home.OrderAdapter" />
 
@@ -32,12 +28,15 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/margin_padding_large"
             app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_home"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="@dimen/margin_padding_bottom_nav"
                 app:backgroundCustomTheme="@{vm.appThemeName}"
                 tools:context=".home.HomeFragment">
 
@@ -46,14 +45,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="16dp" />
+                    app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gl_top_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="16dp" />
+                    app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_title_home"
@@ -87,11 +86,11 @@
                                 android:id="@+id/tv_name_home"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
+                                android:layout_margin="@dimen/margin_padding_regular"
                                 android:fontFamily="@font/pretendardsemibold"
                                 android:text="@{vm.user.user.name}"
-                                android:textColor="@color/black"
-                                android:textSize="24sp"
+                                android:textColor="@color/neutral_100"
+                                android:textSize="@dimen/font_size_normal"
                                 android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                                 app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toTopOf="@id/tv_welcome_home"
@@ -103,8 +102,8 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/pretendardsemibold"
                                 android:text="@string/text_name_end"
-                                android:textColor="@color/black"
-                                android:textSize="24sp"
+                                android:textColor="@color/neutral_100"
+                                android:textSize="@dimen/font_size_normal"
                                 android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                                 app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toBottomOf="@id/tv_name_home"
@@ -115,11 +114,11 @@
                                 android:id="@+id/tv_welcome_home"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
+                                android:layout_margin="@dimen/margin_padding_regular"
                                 android:fontFamily="@font/pretendardsemibold"
                                 android:text="@string/text_welcome"
-                                android:textColor="@color/black"
-                                android:textSize="24sp"
+                                android:textColor="@color/neutral_100"
+                                android:textSize="@dimen/font_size_normal"
                                 app:homeBannerText="@{vm.appThemeName}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -135,7 +134,7 @@
                     android:id="@+id/mcv_grade_home"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/margin_padding_regular"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_home"
@@ -145,20 +144,21 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="16dp"
+                        android:padding="@dimen/margin_padding_regular"
                         app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_sign_up_home"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginEnd="@dimen/margin_padding_small"
                             android:background="@drawable/button_enabled_2"
                             android:fontFamily="@font/pretendardsemibold"
                             android:onClick="@{() -> vm.onClickHomeSignUp()}"
+                            android:stateListAnimator="@null"
                             android:text="@string/text_join"
                             android:textColor="@color/neutral_white"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/font_size_regular"
                             android:visibility="@{(vm.user == null) ? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/btn_login_home"
@@ -169,13 +169,14 @@
                             android:id="@+id/btn_login_home"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="@dimen/margin_padding_small"
                             android:background="@drawable/button_enabled_3"
                             android:fontFamily="@font/pretendardsemibold"
                             android:onClick="@{() -> vm.onClickHomeLogin()}"
+                            android:stateListAnimator="@null"
                             android:text="@string/text_login"
                             android:textColor="@color/neutral_white"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/font_size_regular"
                             android:visibility="@{(vm.user == null) ? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -198,11 +199,11 @@
                             android:id="@+id/tv_grade_home"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="@dimen/margin_padding_regular"
                             android:fontFamily="@font/pretendardsemibold"
                             android:text="@{vm.user.grade.title}"
-                            android:textColor="@color/black"
-                            android:textSize="24sp"
+                            android:textColor="@color/neutral_100"
+                            android:textSize="@dimen/font_size_regular"
                             android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/iv_grade_home"
@@ -213,7 +214,7 @@
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/margin_padding_regular"
                             android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -229,11 +230,11 @@
                     android:id="@+id/tv_today_event_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/margin_padding_large"
                     android:fontFamily="@font/pretendardsemibold"
                     android:text="@string/text_today_event"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="@dimen/font_size_subtitle"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
                     app:layout_constraintTop_toBottomOf="@id/mcv_grade_home" />
 
@@ -241,7 +242,7 @@
                     android:id="@+id/rv_today_event_home"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
                     android:adapter="@{eventAdapter}"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
@@ -258,11 +259,12 @@
                     android:id="@+id/vp_today_event_home"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:overScrollMode="never"
-                    android:paddingStart="40dp"
-                    android:paddingEnd="40dp"
+                    android:paddingStart="@dimen/margin_padding_view_pager"
+                    android:paddingEnd="@dimen/margin_padding_view_pager"
                     app:layout_constraintBottom_toTopOf="@id/tv_latest_order_home"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_home"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
@@ -276,9 +278,8 @@
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/pretendardsemibold"
                     android:text="@string/text_latest_orders"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="@dimen/font_size_subtitle"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
                     app:layout_constraintTop_toBottomOf="@id/vp_today_event_home" />
 
@@ -286,10 +287,10 @@
                     android:id="@+id/rv_latest_order_home"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
                     android:adapter="@{orderAdapter}"
                     android:orientation="horizontal"
-                    android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{(vm.ordersMonth.isEmpty() == false) ? View.VISIBLE : View.GONE}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@id/gl_bottom_home"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
@@ -301,11 +302,12 @@
                     android:id="@+id/iv_empty_home"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/margin_padding_regular"
                     android:background="@drawable/shape_empty_list"
-                    android:fontFamily="@font/eland_choice_b"
+                    android:fontFamily="@font/pretendardsemibold"
                     android:text="@string/text_no_orders"
-                    android:textSize="32sp"
-                    android:visibility="gone"
+                    android:textSize="@dimen/font_size_subtitle"
+                    android:visibility="@{(vm.ordersMonth.isEmpty() == false) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_home"
                     app:layout_constraintStart_toEndOf="@id/gl_start_home"
@@ -316,14 +318,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_end="16dp" />
+                    app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gl_bottom_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.86132175" />
+                    app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -339,7 +341,7 @@
                 android:id="@+id/btn_temp_home"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/margin_padding_regular"
                 android:background="@color/neutral_white"
                 android:onClick="@{() -> vm.onClickChatting()}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -350,7 +352,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
                 android:onClick="@{() -> vm.onClickNotice()}"
                 android:visibility="@{(vm.user == null) ? View.GONE : View.VISIBLE}"
                 app:noticeCustomTheme="@{vm.appThemeName}" />

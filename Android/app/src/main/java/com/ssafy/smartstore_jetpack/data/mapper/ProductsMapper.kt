@@ -38,7 +38,7 @@ object ProductsMapper {
                             img = productEntity.img,
                             description = productEntity.description ?: productEntity.name,
                             mode = productEntity.mode ?: "ICED",
-                            comments = newComments,
+                            comments = newComments.reversed(),
                             productCommentTotalCnt = productEntity.productCommentTotalCnt,
                             productRatingAvg = productEntity.productRatingAvg.toString(),
                             productTotalSellCnt = productEntity.productTotalSellCnt

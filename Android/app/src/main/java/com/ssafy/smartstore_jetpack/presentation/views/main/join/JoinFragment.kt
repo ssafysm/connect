@@ -1,11 +1,8 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.join
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
@@ -26,6 +23,7 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
 
         binding.vm = viewModel
 
+        initView()
         setEditTextFocus()
 
         collectLatestFlow(viewModel.joinUiEvent) { handleUiEvent(it) }
@@ -35,6 +33,17 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
         super.onResume()
 
         viewModel.setBnvState(false)
+    }
+
+    private fun initView() {
+        with(binding) {
+            tilIdJoin.setEndIconOnClickListener {
+                val inputText = etIdJoin.text.toString()
+                if (inputText.isNotEmpty()) {
+                    viewModel.onClickCheckId()
+                }
+            }
+        }
     }
 
     private fun setEditTextFocus() {
