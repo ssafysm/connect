@@ -756,6 +756,7 @@ class MainViewModel @Inject constructor(
     override fun onClickShopSelect(shop: Shop) {
         viewModelScope.launch {
             _selectShop.value = shop
+            _selectShop.emit(shop)
             _shopSelectUiState.update { it.copy(selectValidState = ShopSelectValidState.SEARCHSELECT) }
         }
     }

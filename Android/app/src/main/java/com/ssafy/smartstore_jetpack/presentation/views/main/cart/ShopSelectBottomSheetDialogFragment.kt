@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.cart
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -10,6 +11,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,8 +20,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -44,7 +44,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@SuppressLint("InflateParams")
+@SuppressLint("ClickableViewAccessibility, InflateParams")
 @AndroidEntryPoint
 class ShopSelectBottomSheetDialogFragment :
     BaseBottomSheetDialogFragment<FragmentShopSelectBottomSheetDialogBinding>(R.layout.fragment_shop_select_bottom_sheet_dialog),
@@ -83,6 +83,18 @@ class ShopSelectBottomSheetDialogFragment :
                     else -> {}
                 }
             }
+        }
+        view.setOnTouchListener { _, _ ->
+            hideKeyboard()
+            false // 터치 이벤트를 계속 전달
+        }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocus = dialog?.currentFocus
+        if (currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
         }
     }
 
@@ -170,6 +182,7 @@ class ShopSelectBottomSheetDialogFragment :
                     if (viewModel.searchedShops.value.containsKey(marker.title)) {
                         viewModel.searchedShops.value[marker.title]?.let {
                             viewModel.onClickShopSelectInMap(it)
+                            hideKeyboard()
                         }
                     }
                     false
