@@ -21,7 +21,6 @@
         android:id="@+id/cdl_menu_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:coordinatorCustomTheme="@{vm.appThemeName}"
         tools:context=".detail.DetailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -35,9 +34,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                app:collapsedTitleGravity="center"
+                app:collapsedTitleGravity="start"
+                app:collapsedTitleTextAppearance="@style/CollapsedToolbarTitle"
                 app:contentScrim="@android:color/transparent"
-                app:expandedTitleGravity="center"
+                app:expandedTitleGravity="center_vertical"
+                app:expandedTitleTextAppearance="@style/ExpandedToolbarTitle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,11 +64,11 @@
                         android:id="@+id/tv_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:fontFamily="@font/pretendardsemibold"
+                        android:layout_margin="@dimen/margin_padding_regular"
+                        android:fontFamily="@font/pretendardbold"
                         android:text="@{vm.selectedProduct.name}"
                         android:textColor="@color/neutral_100"
-                        android:textSize="32sp"
+                        android:textSize="@dimen/font_size_title"
                         app:layout_constraintBottom_toTopOf="@id/tv_subtitle"
                         app:layout_constraintEnd_toStartOf="@id/tv_price_tag_detail"
                         app:layout_constraintStart_toStartOf="parent"
@@ -77,12 +78,12 @@
                         android:id="@+id/tv_subtitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="@dimen/margin_padding_regular"
+                        android:layout_marginEnd="@dimen/margin_padding_regular"
                         android:fontFamily="@font/pretendardsemibold"
                         android:text="@{vm.selectedProduct.name}"
                         android:textColor="@color/neutral_70"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/font_size_regular"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -92,11 +93,11 @@
                         android:id="@+id/tv_price_tag_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/margin_padding_regular"
                         android:fontFamily="@font/pretendardsemibold"
                         android:text="@{vm.selectedProduct.price}"
                         android:textColor="@color/neutral_100"
-                        android:textSize="28sp"
+                        android:textSize="@dimen/font_size_subtitle"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_title"
                         app:layout_constraintTop_toBottomOf="@id/iv_title_detail" />
@@ -109,9 +110,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@android:color/transparent"
-                    android:elevation="10dp"
+                    android:elevation="@dimen/toolbar_elevation"
                     android:fitsSystemWindows="true"
-                    android:textAlignment="center"
                     app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -123,14 +123,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:backgroundCustomTheme="@{vm.appThemeName}">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gl_start_menu_detail"
@@ -185,7 +183,7 @@
                     android:fontFamily="@font/pretendardsemibold"
                     android:text="@string/text_rating_end"
                     android:textColor="@color/neutral_100"
-                    android:textSize="@dimen/font_size_normal"
+                    android:textSize="@dimen/font_size_subtitle"
                     app:layout_constraintBottom_toBottomOf="@id/iv_comment_menu_detail"
                     app:layout_constraintStart_toEndOf="@id/tv_rating_value_menu_detail"
                     app:layout_constraintTop_toTopOf="@id/iv_comment_menu_detail" />
@@ -313,7 +311,7 @@
                 <View
                     android:id="@+id/view_detail"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="@dimen/menu_image_size"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

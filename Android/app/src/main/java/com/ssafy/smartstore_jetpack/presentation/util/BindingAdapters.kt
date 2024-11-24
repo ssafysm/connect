@@ -40,7 +40,7 @@ import timber.log.Timber
 @BindingAdapter("app:backgroundCustomTheme")
 fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
     when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
+        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
 
         "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
 
@@ -55,7 +55,7 @@ fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
 @BindingAdapter("app:nestedScrollViewCustomTheme")
 fun NestedScrollView.bindNestedScrollViewBackgroundColor(appThemeName: String) {
     when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
+        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
 
         "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
 
@@ -70,7 +70,7 @@ fun NestedScrollView.bindNestedScrollViewBackgroundColor(appThemeName: String) {
 @BindingAdapter("app:frameLayoutCustomTheme")
 fun FrameLayout.bindFrameLayoutBackgroundColor(appThemeName: String) {
     when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
+        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
 
         "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
 
@@ -199,7 +199,7 @@ fun ProgressBar.bindProgressAsTheme(appThemeName: String) {
 @BindingAdapter("app:coordinatorCustomTheme")
 fun CoordinatorLayout.bindCoordinatorBackgroundColor(appThemeName: String) {
     when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.background_main, context.theme))
+        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
 
         "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
 
@@ -254,7 +254,7 @@ fun TabLayout.bindTextColor(appThemeName: String) {
 
         "겨울" -> resources.getColor(R.color.winter_secondary, context.theme)
 
-        else -> resources.getColor(R.color.background_sub, context.theme)
+        else -> resources.getColor(R.color.main_end, context.theme)
     }
 
     setTabTextColors(normalTextColor, selectedTextColor)
@@ -264,7 +264,7 @@ fun TabLayout.bindTextColor(appThemeName: String) {
 fun BottomAppBar.bindBottomBackgroundColor(appThemeName: String) {
     when (appThemeName) {
         "기본" -> backgroundTint =
-            ColorStateList.valueOf(resources.getColor(R.color.background_sub, context.theme))
+            ColorStateList.valueOf(resources.getColor(R.color.main_end, context.theme))
 
         "봄" -> backgroundTint =
             ColorStateList.valueOf(resources.getColor(R.color.spring_secondary, context.theme))
@@ -284,7 +284,7 @@ fun BottomAppBar.bindBottomBackgroundColor(appThemeName: String) {
 fun FloatingActionButton.bindFloatingActionButtonBackgroundColor(appThemeName: String) {
     when (appThemeName) {
         "기본" -> backgroundTintList =
-            ColorStateList.valueOf(resources.getColor(R.color.background_sub, context.theme))
+            ColorStateList.valueOf(resources.getColor(R.color.main_end, context.theme))
 
         "봄" -> backgroundTintList =
             ColorStateList.valueOf(resources.getColor(R.color.spring_secondary, context.theme))
@@ -488,7 +488,7 @@ fun EditText.bindEditTextCustomTheme(appThemeName: String) {
 
         "겨울" -> resources.getColor(R.color.winter_secondary, context.theme)
 
-        else -> resources.getColor(R.color.background_sub, context.theme)
+        else -> resources.getColor(R.color.main_end, context.theme)
     }
     textCursorDrawable = when (appThemeName) {
         "봄" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_spring)
@@ -497,7 +497,7 @@ fun EditText.bindEditTextCustomTheme(appThemeName: String) {
 
         "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_autumn)
 
-        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_winter)
+        "겨울" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor_winter)
 
         else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_cursor)
     }
@@ -508,7 +508,7 @@ fun EditText.bindEditTextCustomTheme(appThemeName: String) {
 
         "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_autumn)
 
-        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_winter)
+        "겨울" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_winter)
 
         else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle)
     }
@@ -519,7 +519,7 @@ fun EditText.bindEditTextCustomTheme(appThemeName: String) {
 
         "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_autumn)
 
-        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_winter)
+        "겨울" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left_winter)
 
         else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_left)
     }
@@ -530,7 +530,7 @@ fun EditText.bindEditTextCustomTheme(appThemeName: String) {
 
         "가을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_autumn)
 
-        "겨을" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_winter)
+        "겨울" -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right_winter)
 
         else -> ContextCompat.getDrawable(context, R.drawable.shape_edit_text_handle_right)
     }
@@ -558,7 +558,7 @@ fun TextInputLayout.bindNewId(joinUiState: JoinUiState, appThemeName: String) {
 
         "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
 
-        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.main_end))
     }
 
     val hintColor = when (appThemeName) {
@@ -570,7 +570,7 @@ fun TextInputLayout.bindNewId(joinUiState: JoinUiState, appThemeName: String) {
 
         "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
 
-        else -> ContextCompat.getColor(context, R.color.background_sub)
+        else -> ContextCompat.getColor(context, R.color.main_end)
     }
 
     when (joinUiState.joinPassValidState) {
@@ -641,7 +641,7 @@ fun TextInputLayout.bindNewId(joinUiState: JoinUiState, appThemeName: String) {
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             context,
-                            R.color.background_sub
+                            R.color.main_end
                         )
                     )
                 )
@@ -672,7 +672,7 @@ fun TextInputLayout.bindNewPassword(joinUiState: JoinUiState, appThemeName: Stri
 
         "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
 
-        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.main_end))
     }
 
     val hintColor = when (appThemeName) {
@@ -684,7 +684,7 @@ fun TextInputLayout.bindNewPassword(joinUiState: JoinUiState, appThemeName: Stri
 
         "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
 
-        else -> ContextCompat.getColor(context, R.color.background_sub)
+        else -> ContextCompat.getColor(context, R.color.main_end)
     }
 
     when (joinUiState.joinPassValidState) {
@@ -723,7 +723,7 @@ fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeNam
 
         "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
 
-        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.main_end))
     }
 
     val hintColor = when (appThemeName) {
@@ -735,7 +735,7 @@ fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeNam
 
         "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
 
-        else -> ContextCompat.getColor(context, R.color.background_sub)
+        else -> ContextCompat.getColor(context, R.color.main_end)
     }
 
     when (joinUiState.joinPassConfirmValidState) {
@@ -774,7 +774,7 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
 
         "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
 
-        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.main_end))
     }
 
     val hintColor = when (appThemeName) {
@@ -786,7 +786,7 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
 
         "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
 
-        else -> ContextCompat.getColor(context, R.color.background_sub)
+        else -> ContextCompat.getColor(context, R.color.main_end)
     }
 
     when (passwordUiState.newPasswordValidState) {
@@ -825,7 +825,7 @@ fun TextInputLayout.bindPasswordConfirm(passwordUiState: PasswordUiState, appThe
 
         "겨울" -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.winter_secondary))
 
-        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_sub))
+        else -> ColorStateList.valueOf(ContextCompat.getColor(context, R.color.main_end))
     }
 
     val hintColor = when (appThemeName) {
@@ -837,7 +837,7 @@ fun TextInputLayout.bindPasswordConfirm(passwordUiState: PasswordUiState, appThe
 
         "겨울" -> ContextCompat.getColor(context, R.color.winter_secondary)
 
-        else -> ContextCompat.getColor(context, R.color.background_sub)
+        else -> ContextCompat.getColor(context, R.color.main_end)
     }
 
     when (passwordUiState.newPasswordConfirmValidState) {

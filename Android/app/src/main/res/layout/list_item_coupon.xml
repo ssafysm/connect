@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_small"
             app:cardBackgroundColor="@color/neutral_white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            app:cardCornerRadius="@dimen/card_view_small_radius"
+            app:cardElevation="@dimen/card_view_elevation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,9 +40,10 @@
                     android:id="@+id/tv_item_coupon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardsemibold"
                     android:gravity="center"
                     android:text="@{coupon.name}"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/neutral_100"
                     android:textSize="@dimen/font_size_regular"
                     android:textStyle="bold" />
 
@@ -61,8 +62,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_item_coupon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="@dimen/toolbar_button_big"
+                        android:layout_height="@dimen/toolbar_button_big"
                         android:layout_marginEnd="@dimen/margin_padding_regular"
                         android:contentDescription="@string/description_coupon"
                         android:src="@drawable/ic_coupon" />
@@ -77,23 +78,26 @@
                             android:id="@+id/tv_description_item_coupon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
+                            android:fontFamily="@font/pretendardregular"
+                            android:textColor="@color/neutral_100"
                             android:textSize="@dimen/font_size_small" />
 
                         <TextView
                             android:id="@+id/tv_iat_item_coupon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginTop="@dimen/margin_padding_smaller"
+                            android:fontFamily="@font/pretendardregular"
+                            android:textColor="@color/neutral_70"
                             android:textSize="@dimen/font_size_smaller" />
 
                         <TextView
                             android:id="@+id/tv_exp_item_coupon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginTop="@dimen/margin_padding_smaller"
+                            android:fontFamily="@font/pretendardregular"
+                            android:textColor="@color/neutral_70"
                             android:textSize="@dimen/font_size_smaller" />
 
                     </LinearLayout>
@@ -101,13 +105,16 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnRedeemCoupon"
+                    android:id="@+id/btn_redeem_coupon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_less_smaller"
+                    android:fontFamily="@font/pretendardregular"
                     android:onClick="@{() -> vm.onClickCoupon(coupon)}"
+                    android:stateListAnimator="@null"
                     android:text="@string/text_use_coupon"
                     android:textColor="@color/neutral_white"
+                    android:textSize="@dimen/font_size_regular"
                     app:buttonCustomTheme="@{vm.appThemeName}" />
 
             </LinearLayout>

@@ -29,15 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/margin_padding_large"
-            app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
+            android:paddingBottom="@dimen/margin_padding_large">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_home"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="@dimen/margin_padding_bottom_nav"
-                app:backgroundCustomTheme="@{vm.appThemeName}"
                 tools:context=".home.HomeFragment">
 
                 <androidx.constraintlayout.widget.Guideline

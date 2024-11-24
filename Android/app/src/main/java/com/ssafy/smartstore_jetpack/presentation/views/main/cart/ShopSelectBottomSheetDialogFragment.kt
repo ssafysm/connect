@@ -6,15 +6,17 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -35,6 +37,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentShopSelectBottomSheetDialogBinding
 import com.ssafy.smartstore_jetpack.domain.model.Shop
@@ -62,6 +66,21 @@ class ShopSelectBottomSheetDialogFragment :
 
         binding.vm = viewModel
 
+        val rootView = requireView()
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+
+            if (keypadHeight > screenHeight * 0.15) {
+                (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                (dialog as? BottomSheetDialog)?.behavior?.state =
+                    BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
+
         initRecyclerView()
         setFusedLocation()
         setMapFragment()
@@ -86,15 +105,38 @@ class ShopSelectBottomSheetDialogFragment :
         }
         view.setOnTouchListener { _, _ ->
             hideKeyboard()
-            false // 터치 이벤트를 계속 전달
+            false
+        }
+        binding.scShopSelect.setOnCheckedChangeListener { _, isMapMode ->
+            viewModel.setMapMode(isMapMode)
+
+            if (isMapMode) {
+                val editText: EditText = binding.etShopSelect
+                editText.clearFocus()
+
+                val inputMethodManager =
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
+            }
         }
     }
 
-    private fun hideKeyboard() {
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val currentFocus = dialog?.currentFocus
-        if (currentFocus != null) {
-            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+    override fun onStart() {
+        super.onStart()
+
+        dialog?.let { dialog ->
+            val bottomSheet =
+                dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            behavior = BottomSheetBehavior.from(bottomSheet!!)
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.isDraggable = true
+            behavior.peekHeight = (resources.displayMetrics.heightPixels * 0.9).toInt()
+
+            val layoutParams = bottomSheet.layoutParams
+            layoutParams.height = resources.displayMetrics.heightPixels
+            bottomSheet.layoutParams = layoutParams
+
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -125,7 +167,7 @@ class ShopSelectBottomSheetDialogFragment :
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 enableMyLocation()
             } else {
-                Toast.makeText(requireContext(), "위치 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                showToastMessage(getString(R.string.message_location_permission_need))
             }
         }
     }
@@ -258,6 +300,15 @@ class ShopSelectBottomSheetDialogFragment :
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(singlePosition, 15f))
         } else {
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+        }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocus = dialog?.currentFocus
+        if (currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
         }
     }
 

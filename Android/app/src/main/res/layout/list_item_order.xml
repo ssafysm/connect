@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_small"
             app:cardBackgroundColor="@color/neutral_white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="@dimen/card_view_radius"
+            app:cardElevation="@dimen/card_view_elevation">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_item_order"
@@ -36,8 +36,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/iv_order"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/menu_image_size"
+                    android:layout_height="@dimen/menu_image_size"
                     android:layout_marginBottom="@dimen/margin_padding_regular"
                     android:background="@drawable/button_non_color"
                     android:scaleType="fitStart"

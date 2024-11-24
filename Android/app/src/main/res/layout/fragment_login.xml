@@ -20,7 +20,6 @@
             android:id="@+id/fragment_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:backgroundCustomTheme="@{vm.appThemeName}"
             tools:context=".login.LoginFragment">
 
             <androidx.constraintlayout.widget.Guideline

@@ -2,7 +2,6 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.notice
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentNoticeBinding
@@ -37,7 +36,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_not
 
     private fun handleUiEvent(event: NoticeUiEvent) = when (event) {
         is NoticeUiEvent.DeleteNotice -> {
-            Toast.makeText(requireContext(), "알림을 삭제했어요.", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_notice_delete))
         }
     }
 }

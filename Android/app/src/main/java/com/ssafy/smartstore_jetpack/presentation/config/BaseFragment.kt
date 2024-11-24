@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -86,6 +87,10 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    protected fun showToastMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     fun NavController.navigateSafely(

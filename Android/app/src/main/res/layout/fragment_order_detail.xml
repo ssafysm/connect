@@ -17,14 +17,12 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragment_order_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:backgroundCustomTheme="@{vm.appThemeName}"
+            android:layout_height="wrap_content"
             tools:context=".orderdetail.OrderDetailFragment">
 
             <androidx.constraintlayout.widget.Guideline
@@ -32,23 +30,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="16dp" />
+                app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl_top_order_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="16dp" />
+                app:layout_constraintGuide_begin="@dimen/margin_padding_less_larger" />
 
             <TextView
                 android:id="@+id/tv_title_order_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendardblack"
+                android:fontFamily="@font/pretendardbold"
                 android:text="@string/text_order_detail"
                 android:textColor="@color/neutral_100"
-                android:textSize="32sp"
+                android:textSize="@dimen/font_size_title"
                 app:layout_constraintBottom_toTopOf="@id/tv_price_start_order_detail"
                 app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
                 app:layout_constraintTop_toBottomOf="@id/gl_top_order_detail" />
@@ -57,11 +55,11 @@
                 android:id="@+id/tv_price_start_order_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_padding_normal"
                 android:fontFamily="@font/pretendardsemibold"
                 android:text="@string/text_total_start"
                 android:textColor="@color/neutral_100"
-                android:textSize="24sp"
+                android:textSize="@dimen/font_size_subtitle"
                 app:layout_constraintEnd_toStartOf="@id/tv_total_price_order_detail"
                 app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_order_detail" />
@@ -70,10 +68,10 @@
                 android:id="@+id/tv_total_price_order_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/margin_padding_small"
                 android:fontFamily="@font/pretendardsemibold"
                 android:textColor="@color/neutral_100"
-                android:textSize="24sp"
+                android:textSize="@dimen/font_size_normal"
                 app:layout_constraintBottom_toBottomOf="@id/tv_price_start_order_detail"
                 app:layout_constraintStart_toEndOf="@id/tv_price_start_order_detail"
                 app:layout_constraintTop_toTopOf="@id/tv_price_start_order_detail" />
@@ -84,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardregular"
                 android:textColor="@color/neutral_100"
-                android:textSize="20sp"
+                android:textSize="@dimen/font_size_regular"
                 app:layout_constraintBottom_toTopOf="@id/rv_order_detail"
                 app:layout_constraintStart_toEndOf="@id/gl_start_order_detail"
                 app:layout_constraintTop_toBottomOf="@id/tv_price_start_order_detail" />
@@ -93,7 +91,7 @@
                 android:id="@+id/rv_order_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/margin_padding_regular"
                 android:adapter="@{adapter}"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -109,14 +107,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="16dp" />
+                app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl_bottom_order_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_end="16dp" />
+                app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

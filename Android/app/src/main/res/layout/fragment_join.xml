@@ -14,14 +14,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragment_join"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:backgroundCustomTheme="@{vm.appThemeName}"
             tools:context=".join.JoinFragment">
 
             <androidx.constraintlayout.widget.Guideline
@@ -42,7 +40,7 @@
                 android:id="@+id/tv_title_join"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendardblack"
+                android:fontFamily="@font/pretendardbold"
                 android:text="@string/text_join"
                 android:textColor="@color/neutral_70"
                 android:textSize="@dimen/font_size_title"

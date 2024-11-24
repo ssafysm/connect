@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
@@ -40,7 +39,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
             val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode
             } else {
-                packageInfo.versionCode.toLong()
+                packageInfo.versionName
             }
             "${packageInfo.versionName} ($versionCode)"
         } catch (e: Exception) {
@@ -54,7 +53,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
         }
 
         is SettingUiEvent.DoLogout -> {
-            Toast.makeText(requireContext(), "로그아웃에 성공했어요.", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_logout))
             requireActivity().supportFragmentManager.popBackStack()
         }
 

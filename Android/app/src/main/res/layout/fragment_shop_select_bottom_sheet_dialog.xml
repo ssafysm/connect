@@ -21,6 +21,7 @@
         android:id="@+id/nsv_shop_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/shape_bottom_sheet"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:fitsSystemWindows="true">
@@ -29,7 +30,6 @@
             android:id="@+id/cl_shop_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_bottom_sheet"
             android:paddingTop="16dp"
             tools:context=".presentation.views.main.cart.ShopSelectBottomSheetDialogFragment">
 
@@ -86,7 +86,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/shape_comment"
                 android:fontFamily="@font/pretendardsemibold"
-                android:hint="매장을 입력하세요."
+                android:hint="@string/text_search_shop_select"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:onTextChanged="@{(shopSearchKeyword, s, b, c) -> vm.validateShopSearchKeyword(shopSearchKeyword)}"
@@ -97,7 +97,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/sc_shop_select"
                 app:layout_constraintEnd_toStartOf="@id/sc_shop_select"
                 app:layout_constraintStart_toEndOf="@id/gl_start_shop_select"
-                app:layout_constraintTop_toTopOf="@id/sc_shop_select" />
+                app:layout_constraintTop_toTopOf="@id/sc_shop_select"
+                app:normalEditText="@{vm.appThemeName}" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sc_shop_select"
@@ -106,7 +107,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:checked="@{vm.isMapMode}"
-                android:onCheckedChanged="@{(_, isMapMode) -> vm.setMapMode(isMapMode)}"
                 android:visibility="@{(vm.shopSelectUiState.isSearchSelectMode == true || vm.shopSelectUiState.isMapSelectMode == true) ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toStartOf="@id/gl_end_shop_select"
                 app:layout_constraintStart_toEndOf="@id/et_shop_select"

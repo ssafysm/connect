@@ -128,10 +128,7 @@
         android:id="@+id/fragment_notice"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.notice.NoticeFragment"
         android:label="Notice"
-        tools:layout="@layout/fragment_notice">
-
-
-    </fragment>
+        tools:layout="@layout/fragment_notice" />
 
     <fragment
         android:id="@+id/fragment_history"
@@ -185,19 +182,13 @@
         android:id="@+id/fragment_pay"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.pay.PayFragment"
         android:label="Pay"
-        tools:layout="@layout/fragment_pay">
-
-
-    </fragment>
+        tools:layout="@layout/fragment_pay" />
 
     <fragment
         android:id="@+id/fragment_password"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordFragment"
         android:label="Password"
-        tools:layout="@layout/fragment_password">
-
-
-    </fragment>
+        tools:layout="@layout/fragment_password" />
 
     <fragment
         android:id="@+id/fragment_setting"

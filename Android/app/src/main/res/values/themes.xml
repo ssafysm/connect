@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    
+
     <!-- Base application theme. -->
     <style name="Theme.SmartstoreUI" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
@@ -13,7 +13,7 @@
 
         <item name="colorControlActivated">@color/coffee_point_red</item>
 
-        <item name="android:statusBarColor">@color/background_sub</item>
+        <item name="android:statusBarColor">@color/main_end</item>
 
     </style>
 
@@ -41,7 +41,7 @@
         <item name="android:background">#00000000</item>
 
     </style>
-    
+
     <!-- Concept Theme -->
     <style name="Theme.Spring" parent="Theme.SmartstoreUI">
 
@@ -94,19 +94,21 @@
 
         <item name="android:windowBackground">@drawable/splash_background</item>
 
-        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="S">@android:color/transparent</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="S">
+            @android:color/transparent
+        </item>
 
     </style>
 
     <style name="Theme.MyApp.Main" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="android:statusBarColor">@color/background_sub</item>
+        <item name="android:statusBarColor">@color/main_end</item>
 
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
 
-        <item name="windowSplashScreenBackground">@color/background_sub</item>
+        <item name="windowSplashScreenBackground">@color/main_end</item>
 
         <item name="windowSplashScreenAnimatedIcon">@null</item>
 
@@ -127,6 +129,26 @@
         <item name="cornerSizeTopLeft">0dp</item>
 
         <item name="cornerSizeTopRight">0dp</item>
+
+    </style>
+
+    <style name="CollapsedToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+
+        <item name="android:fontFamily">@font/pretendardsemibold</item>
+
+        <item name="android:textSize">@dimen/font_size_normal</item>
+
+        <item name="android:textColor">@color/neutral_100</item>
+
+    </style>
+
+    <style name="ExpandedToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+
+        <item name="android:fontFamily">@font/pretendardregular</item>
+
+        <item name="android:textSize">@dimen/font_size_small</item>
+
+        <item name="android:textColor">@color/neutral_70</item>
 
     </style>
 

@@ -1,11 +1,9 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.menudetail
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,12 +17,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-@SuppressLint("ClickableViewAccessibility")
 @AndroidEntryPoint
 class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.fragment_menu_detail){
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var commentAdapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,52 +76,16 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
                         val alpha = (collapseRatio * 255).toInt()
 
                         when (viewModel.appThemeName.value) {
-                            "봄" -> binding.toolbarDetail.setBackgroundColor(
-                                Color.argb(
-                                    alpha,
-                                    255,
-                                    231,
-                                    233
-                                )
-                            )
+                            "봄" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 255, 231, 233))
 
-                            "여름" -> binding.toolbarDetail.setBackgroundColor(
-                                Color.argb(
-                                    alpha,
-                                    223,
-                                    241,
-                                    255
-                                )
-                            )
+                            "여름" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 223, 241, 255))
 
-                            "가을" -> binding.toolbarDetail.setBackgroundColor(
-                                Color.argb(
-                                    alpha,
-                                    254,
-                                    234,
-                                    205
-                                )
-                            )
+                            "가을" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 254, 234, 205))
 
-                            "겨울" -> binding.toolbarDetail.setBackgroundColor(
-                                Color.argb(
-                                    alpha,
-                                    218,
-                                    250,
-                                    247
-                                )
-                            )
+                            "겨울" -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 218, 250, 247))
 
-                            else -> binding.toolbarDetail.setBackgroundColor(
-                                Color.argb(
-                                    alpha,
-                                    245,
-                                    245,
-                                    220
-                                )
-                            )
+                            else -> binding.toolbarDetail.setBackgroundColor(Color.argb(alpha, 245, 245, 220))
                         }
-                        binding.toolbarDetail.elevation = 10F
 
                         binding.ctlMenuDetail.title = if (collapseRatio > 0.7f) product.name else ""
                     }
@@ -153,7 +113,7 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
     }
 
     private fun handleUiEvent(event: MenuDetailUiEvent) = when (event) {
-        is MenuDetailUiEvent.SubmitComment ->{
+        is MenuDetailUiEvent.SubmitComment -> {
             binding.rvDetail.smoothScrollToPosition(0)
         }
 
@@ -166,19 +126,19 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
         }
 
         is MenuDetailUiEvent.UpdateComment -> {
-            Toast.makeText(requireContext(), "댓글을 수정했어용!", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_comment_update))
         }
 
         is MenuDetailUiEvent.UpdateCommentFail -> {
-            Toast.makeText(requireContext(), "댓글 수정에 실패했어용...", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_comment_update_fail))
         }
 
         is MenuDetailUiEvent.DeleteComment -> {
-            Toast.makeText(requireContext(), "댓글을 삭제했어용!", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_comment_delete))
         }
 
         is MenuDetailUiEvent.DeleteCommentFail -> {
-            Toast.makeText(requireContext(), "댓글 삭제에 실패했어용...", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_comment_delete_fail))
         }
     }
 }

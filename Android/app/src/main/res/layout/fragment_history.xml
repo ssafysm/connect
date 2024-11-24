@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
@@ -18,12 +20,11 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:backgroundCustomTheme="@{vm.appThemeName}"
             tools:context=".presentation.views.main.history.HistoryFragment">
 
             <androidx.constraintlayout.widget.Guideline
@@ -44,12 +45,39 @@
                 android:id="@+id/tv_title_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendardblack"
+                android:fontFamily="@font/pretendardbold"
                 android:text="@string/text_history"
                 android:textColor="@color/neutral_100"
                 android:textSize="@dimen/font_size_title"
                 app:layout_constraintStart_toEndOf="@id/gl_start_history"
                 app:layout_constraintTop_toBottomOf="@id/gl_top_history" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_empty_coupon"
+                android:visibility="@{(vm.orders6Months.isEmpty() == true) ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toTopOf="@id/tv_empty_history"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_history"
+                app:layout_constraintStart_toEndOf="@id/gl_start_history"
+                app:layout_constraintTop_toBottomOf="@id/gl_top_history"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_empty_history"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@string/text_history_nothing"
+                android:textAlignment="center"
+                android:textColor="@color/neutral_100"
+                android:textSize="@dimen/font_size_normal"
+                android:visibility="@{(vm.orders6Months.isEmpty() == true) ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toTopOf="@id/gl_bottom_history"
+                app:layout_constraintEnd_toStartOf="@id/gl_end_history"
+                app:layout_constraintStart_toEndOf="@id/gl_start_history"
+                app:layout_constraintTop_toBottomOf="@id/iv_history" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_page"
@@ -58,6 +86,7 @@
                 android:layout_marginTop="@dimen/margin_padding_normal"
                 android:adapter="@{adapter}"
                 android:orientation="vertical"
+                android:visibility="@{(vm.orders6Months.isEmpty() == true) ? View.GONE : View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toStartOf="@id/gl_end_history"
                 app:layout_constraintStart_toEndOf="@id/gl_start_history"

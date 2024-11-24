@@ -11,7 +11,7 @@ import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.databinding.FragmentOrderDetailBinding
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.dateFormat
-import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeCommaWon
+import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
 import dagger.hilt.android.AndroidEntryPoint
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,7 +45,7 @@ class OrderDetailFragment :
     private fun initViews() {
         viewModel.selectedOrder.value?.let { order ->
             binding.tvTotalPriceOrderDetail.text =
-                makeCommaWon(order.details.sumOf { it.quantity * it.unitPrice.toInt() })
+                makeComma(order.details.sumOf { it.quantity * it.unitPrice.toInt() })
             binding.tvDateOrderDetail.text = dateFormat(order.orderTime)
         }
     }

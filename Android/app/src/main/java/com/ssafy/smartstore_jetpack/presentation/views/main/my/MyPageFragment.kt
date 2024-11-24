@@ -2,17 +2,13 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.my
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentMypageBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
@@ -48,9 +44,7 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
 
         is MyPageUiEvent.GoToHistory -> {
             when (viewModel.user.value) {
-                null -> {
-                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
-                }
+                null -> showToastMessage(getString(R.string.message_need_to_login))
 
                 else -> findNavController().navigateSafely(R.id.action_my_page_to_history)
             }
@@ -58,9 +52,7 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
 
         is MyPageUiEvent.GoToInformation -> {
             when (viewModel.user.value) {
-                null -> {
-                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
-                }
+                null -> showToastMessage(getString(R.string.message_need_to_login))
 
                 else -> findNavController().navigateSafely(R.id.action_my_page_to_information)
             }
@@ -68,22 +60,14 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
 
         is MyPageUiEvent.GoToCoupon -> {
             when (viewModel.user.value) {
-                null -> {
-                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
-                }
+                null -> showToastMessage(getString(R.string.message_need_to_login))
 
                 else -> findNavController().navigateSafely(R.id.action_my_page_to_coupon)
             }
         }
 
         is MyPageUiEvent.GoToPay -> {
-            when (viewModel.user.value) {
-                null -> {
-                    Toast.makeText(requireContext(), "로그인이 필요해요!", Toast.LENGTH_SHORT).show()
-                }
-
-                else -> findNavController().navigateSafely(R.id.action_my_page_to_pay)
-            }
+            showToastMessage(getString(R.string.message_disabled_pay))
         }
     }
 }

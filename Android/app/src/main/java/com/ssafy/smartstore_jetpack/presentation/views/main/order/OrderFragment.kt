@@ -14,19 +14,15 @@ import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.databinding.FragmentOrderBinding
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding>(R.layout.fragment_order) {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var menuAdapter: MenuAdapter
     private lateinit var menuPageAdapter: MenuPageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Timber.d("onCreate")
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 300
@@ -39,8 +35,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(R.layout.fragment_order
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Timber.d("onViewCreated")
 
         binding.vm = viewModel
         initViewPager()

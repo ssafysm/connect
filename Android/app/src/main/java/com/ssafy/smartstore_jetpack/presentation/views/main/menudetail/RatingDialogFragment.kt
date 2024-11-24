@@ -25,6 +25,20 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingDialogBinding>(R.l
 
         binding.vm = viewModel
 
+        initViews()
+
+        lifecycleScope.launch {
+            viewModel.menuDetailUiEvent.collectLatest {
+                when (it) {
+                    is MenuDetailUiEvent.SubmitComment -> dismiss()
+
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun initViews() {
         binding.pbRatingDialog.setOnTouchListener { _, event ->
             val x = event.x
             val totalWidth = binding.pbRatingDialog.width
@@ -49,16 +63,6 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingDialogBinding>(R.l
                 }
             }
             true
-        }
-
-        lifecycleScope.launch {
-            viewModel.menuDetailUiEvent.collectLatest {
-                when (it) {
-                    is MenuDetailUiEvent.SubmitComment -> dismiss()
-
-                    else -> {}
-                }
-            }
         }
     }
 }

@@ -8,6 +8,7 @@
     <string name="text_no_orders">주문 내역이 없어요.\n 지금 메뉴를 골라보세요!</string>
     <string name="text_confirm">확인</string>
     <string name="text_cancel">취소</string>
+    <string name="message_location_permission_need">위치 권한이 필요해요.</string>
 
     <!-- Splash -->
     <string name="text_splash">카페에 입장중입니다…</string>
@@ -43,7 +44,10 @@
     <string name="text_need_join">회원가입을 해주세요.</string>
     <string name="text_confirm_join"> · 아이디는 영문, 숫자 혼합하여 2~12자리 이내로 입력하세요. \n· 비밀번호는 영문, 숫자 혼합하여 8~16자리 이내로 입력하세요. 특수문자는 꼭 1자 이상 포함하세요.\n· 아이디와 같은 비밀번호, 생일, 학번, 전화번호 등 개인정보와 관련된 숫자, 연속된 숫자, 동일하게 반복된 숫자 등 다른 사람이 쉽게 알아낼 수 있는 비밀번호는 유출 위험이 높아요.</string>
     <string name="message_login_success">로그인에 성공했어요.</string>
-    <string name="message_login_failed">로그인에 실패했어요ㅠㅠ</string>
+    <string name="message_login_failed">로그인에 실패했어요.</string>
+    <string name="message_join_id_duplicate">중복된 아이디에요.</string>
+    <string name="message_join_id_able">사용 가능한 아이디에요.</string>
+    <string name="message_join_fail">회원 가입에 실패했어요.</string>
 
     <!-- Store Event -->
     <string name="text_store_event">이용 알림</string>
@@ -83,10 +87,13 @@
     <string name="text_information_eng">Information</string>
     <string name="text_coupon_eng">Coupon</string>
     <string name="text_pay_eng">Pay</string>
+    <string name="message_need_to_login">로그인이 필요해요!</string>
+    <string name="message_disabled_pay">결제 기능은 준비중이에요.</string>
 
     <!-- Notice -->
     <string name="text_notices">알림함</string>
     <string name="text_notice_nothing">미확인된 알림이 없어요.</string>
+    <string name="message_notice_delete">알림을 삭제했어요.</string>
 
     <!-- Setting -->
     <string name="text_settings">환경설정</string>
@@ -99,9 +106,11 @@
     <string name="text_push_notification">푸시 알림</string>
     <string name="text_version">버전 정보</string>
     <string name="text_logout">로그아웃</string>
+    <string name="message_logout">로그아웃에 성공했어요.</string>
 
     <!-- History -->
     <string name="text_history">히스토리</string>
+    <string name="text_history_nothing">주문 내역이 없어요.</string>
 
     <!-- Information -->
     <string name="text_information">계정 설정</string>
@@ -119,6 +128,8 @@
     <string name="text_safe_password_description"> · 영문, 숫자 혼합하여 8~16자리 이내로 입력하세요. 특수문자는 꼭 1자 이상 포함하세요.\n
  · 아이디와 같은 비밀번호, 생일, 학번, 전화번호 등 개인정보와 관련된 숫자, 연속된 숫자, 동일하게 반복된 숫자 등 다른 사람이 쉽게 알아낼 수 있는 비밀번호는 유출 위험이 높아요.\n
  · 도용의 우려가 있으니, 가급적 새로운 비밀번호를 사용해 주세요.</string>
+    <string name="message_password_update">비밀번호를 성공적으로 변경했어요. 다시 로그인해주세요!</string>
+    <string name="message_password_update_fail">비밀번호 변경에 실패했어요…</string>
 
     <!-- Coupon -->
     <string name="text_coupon">쿠폰함</string>
@@ -130,12 +141,15 @@
     <string name="text_pay">결제 정보</string>
 
     <!-- Order -->
-    <string name="text_distance">매장과의 거리가 350m 입니다.</string>
     <string name="text_menu">메뉴</string>
 
     <!-- Order Detail -->
     <string name="text_order_detail">주문 내역</string>
     <string name="text_order_finish">주문완료</string>
+    <string name="message_comment_update">리뷰를 수정했어요.</string>
+    <string name="message_comment_update_fail">리뷰 수정에 실패했어요.</string>
+    <string name="message_comment_delete">리뷰를 삭제했어요.</string>
+    <string name="message_comment_delete_fail">리뷰 삭제에 실패했어요.</string>
 
     <!-- Rating Dialog -->
     <string name="text_select_rating">별점선택</string>
@@ -150,12 +164,18 @@
     <string name="text_cart_information"> · 장바구니에 담은 품목은 수량을 조절하거나 삭제할 수 있어요.\n
  · 매장 주문을 하기 위해서는 NFC 태깅이 필요해요.\n
  · Take Out 주문은 거리가 200m 이하에 있는 매장에서만 가능해요.</string>
+    <string name="message_order_success_start">주문에 성공했어요! 주문 번호는</string>
+    <string name="message_order_success_end">번이에요.</string>
+    <string name="message_order_fail">주문을 취소하셨거나, 주문에 실패하셨어요.</string>
 
     <!-- Shop Select -->
     <string name="text_shop_select">매장 선택</string>
     <string name="text_other_shop_select">다른 매장 찾기</string>
     <string name="text_try_order">주문하기</string>
     <string name="text_time">운영 시간</string>
+    <string name="text_search_shop_select">매장을 입력하세요.</string>
+    <string name="message_table_number_enroll">번 테이블 번호가 등록되었어요.</string>
+    <string name="message_nfc_fail">태깅 인식에 실패했어요.</string>
 
     <!-- Shopping Dialog -->
     <string name="text_table_nfc">주문 시 필요한 NFC를 태깅해주세요!</string>

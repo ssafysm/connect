@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_small"
             app:cardBackgroundColor="@color/neutral_white"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            app:cardCornerRadius="@dimen/card_view_small_radius"
+            app:cardElevation="@dimen/card_view_elevation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,8 +52,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_rating_comment"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/btn_cancel_size"
+                    android:layout_height="@dimen/btn_cancel_size"
                     android:layout_marginStart="@dimen/margin_padding_small"
                     android:layout_marginTop="@dimen/margin_padding_small"
                     android:src="@drawable/ic_comment"
@@ -97,7 +97,7 @@
                     android:background="@drawable/shape_comment_update"
                     android:fontFamily="@font/pretendardsemibold"
                     android:maxLines="1"
-                    android:padding="4dp"
+                    android:padding="@dimen/margin_padding_smaller"
                     android:text="@{comment.comment}"
                     android:textColor="@color/neutral_70"
                     android:textSize="@dimen/font_size_smaller"
@@ -110,8 +110,8 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_update_comment"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/btn_cancel_size"
+                    android:layout_height="@dimen/btn_cancel_size"
                     android:layout_marginEnd="@dimen/margin_padding_small"
                     android:background="@drawable/ic_save"
                     android:textColor="@color/coffee_dark_brown"
@@ -121,8 +121,8 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_cancel_comment"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/btn_cancel_size"
+                    android:layout_height="@dimen/btn_cancel_size"
                     android:layout_marginEnd="@dimen/margin_padding_small"
                     android:background="@android:drawable/ic_menu_close_clear_cancel"
                     android:backgroundTint="@color/coffee_dark_brown"
@@ -131,8 +131,8 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_modify_comment"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/btn_cancel_size"
+                    android:layout_height="@dimen/btn_cancel_size"
                     android:layout_marginEnd="@dimen/margin_padding_small"
                     android:background="@drawable/ic_modify"
                     android:textColor="@color/coffee_dark_brown"
@@ -141,8 +141,8 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_delete_comment"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/btn_cancel_size"
+                    android:layout_height="@dimen/btn_cancel_size"
                     android:layout_marginEnd="@dimen/margin_padding_small"
                     android:background="@drawable/ic_delete"
                     android:backgroundTint="@color/coffee_dark_brown"

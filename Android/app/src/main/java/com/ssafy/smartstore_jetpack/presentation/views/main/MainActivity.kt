@@ -21,8 +21,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -320,7 +318,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     @SuppressLint("ResourceAsColor")
     fun applyTheme(themeName: String) {
         when (themeName) {
-            "기본" -> window.statusBarColor = resources.getColor(R.color.background_sub, theme)
+            "기본" -> window.statusBarColor = resources.getColor(R.color.main_end, theme)
 
             "봄" -> window.statusBarColor = resources.getColor(R.color.spring_secondary, theme)
 
@@ -330,7 +328,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             "겨울" -> window.statusBarColor = resources.getColor(R.color.winter_secondary, theme)
 
-            else -> window.statusBarColor = resources.getColor(R.color.background_sub, theme)
+            else -> window.statusBarColor = resources.getColor(R.color.main_end, theme)
         }
     }
 
@@ -344,7 +342,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val token = task.result
             Log.d(TAG, "FCM 토큰: $token")
             // 토큰을 Toast로 표시
-            Toast.makeText(this, "FCM 토큰: $token", Toast.LENGTH_LONG).show()
+            // Toast.makeText(this, "FCM 토큰: $token", Toast.LENGTH_LONG).show()
             // 토큰을 서버로 업로드
             if (token != null) {
                 // 서버로 토큰을 업로드하는 로직을 여기에 추가하세요.

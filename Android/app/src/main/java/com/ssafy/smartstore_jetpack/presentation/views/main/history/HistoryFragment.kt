@@ -17,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_history) {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var orderListAdapter: OrderListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,8 +36,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(R.layout.fragment_h
     }
 
     private fun initAdapter() {
-        orderListAdapter = OrderListAdapter(viewModel)
-        binding.adapter = orderListAdapter
+        binding.adapter = OrderListAdapter(viewModel)
     }
 
     private fun initViews() {

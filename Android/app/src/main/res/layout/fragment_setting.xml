@@ -17,7 +17,6 @@
         android:id="@+id/fragment_setting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:backgroundCustomTheme="@{vm.appThemeName}"
         tools:context=".presentation.views.main.setting.SettingFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -38,7 +37,7 @@
             android:id="@+id/tv_title_setting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendardblack"
+            android:fontFamily="@font/pretendardbold"
             android:text="@string/text_settings"
             android:textColor="@color/neutral_100"
             android:textSize="@dimen/font_size_title"

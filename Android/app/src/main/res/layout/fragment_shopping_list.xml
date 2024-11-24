@@ -26,13 +26,11 @@
             android:id="@+id/nsv_shopping_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            app:nestedScrollViewCustomTheme="@{vm.appThemeName}">
+            android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:backgroundCustomTheme="@{vm.appThemeName}"
                 tools:context=".cart.CartFragment">
 
                 <androidx.constraintlayout.widget.Guideline
@@ -53,7 +51,7 @@
                     android:id="@+id/tv_title_cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardblack"
+                    android:fontFamily="@font/pretendardbold"
                     android:text="@string/text_cart"
                     android:textColor="@color/neutral_100"
                     android:textSize="@dimen/font_size_title"
@@ -119,7 +117,7 @@
                 <View
                     android:id="@+id/view_cart"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="@dimen/menu_image_size"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_cart"
                     app:layout_constraintStart_toEndOf="@id/gl_start_cart"
@@ -186,8 +184,8 @@
                 android:layout_marginEnd="@dimen/margin_padding_regular"
                 android:layout_marginBottom="@dimen/margin_padding_regular"
                 android:onClick="@{() -> vm.onClickShop()}"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@id/mcv_t_out_cart"
@@ -201,8 +199,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_shop_cart"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="@dimen/toolbar_button_big"
+                        android:layout_height="@dimen/toolbar_button_big"
                         android:src="@drawable/ic_deliver"
                         app:layout_constraintBottom_toTopOf="@id/tv_shop_cart"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -237,8 +235,8 @@
                 android:layout_marginEnd="@dimen/margin_padding_regular"
                 android:layout_marginBottom="@dimen/margin_padding_regular"
                 android:onClick="@{() -> vm.onClickTakeout()}"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -252,8 +250,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_t_out_cart"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="@dimen/toolbar_button_big"
+                        android:layout_height="@dimen/toolbar_button_big"
                         android:src="@drawable/ic_t_out"
                         app:layout_constraintBottom_toTopOf="@id/tv_t_out_cart"
                         app:layout_constraintEnd_toEndOf="parent"

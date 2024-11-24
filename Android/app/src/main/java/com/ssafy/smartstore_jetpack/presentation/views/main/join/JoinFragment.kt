@@ -3,7 +3,6 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.join
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -103,19 +102,19 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
                 false -> {
                     binding.etPwJoin.requestFocus()
                     showKeyboard(binding.etPwJoin)
-                    Toast.makeText(requireContext(), "사용 가능한 ID라네요!", Toast.LENGTH_SHORT).show()
+                    showToastMessage(getString(R.string.message_join_id_duplicate))
                 }
 
                 else -> {
                     binding.etIdJoin.requestFocus()
                     showKeyboard(binding.etIdJoin)
-                    Toast.makeText(requireContext(), "이미 사용중인 ID거나, 다른 오류가 있습니다!", Toast.LENGTH_SHORT).show()
+                    showToastMessage(getString(R.string.message_join_id_able))
                 }
             }
         }
 
         is JoinUiEvent.JoinFail -> {
-            Toast.makeText(requireContext(), "회원 가입에 실패했습니다!", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_join_fail))
         }
 
         is JoinUiEvent.GoToLogin -> {
@@ -125,7 +124,6 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
                 NavOptions.Builder()
                     .setPopUpTo(R.id.fragment_join, true)
                     .build())
-            // findNavController().navigateSafely(R.id.action_join_to_login)
         }
     }
 }

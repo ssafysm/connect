@@ -16,8 +16,8 @@
         android:id="@+id/cl_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/neutral_white"
         android:fitsSystemWindows="true"
-        app:coordinatorCustomTheme="@{vm.appThemeName}"
         tools:context=".presentation.views.main.MainActivity">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

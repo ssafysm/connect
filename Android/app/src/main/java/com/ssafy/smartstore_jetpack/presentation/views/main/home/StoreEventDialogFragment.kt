@@ -20,8 +20,6 @@ class StoreEventDialogFragment :
 
         binding.vm = viewModel
 
-        binding.tvConfirmStoreEvent.setOnClickListener {
-            dismiss()
-        }
+        binding.tvConfirmStoreEvent.setOnClickListener { dismiss() }
     }
 }

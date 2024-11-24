@@ -79,7 +79,7 @@ abstract class BaseDialogFragment<T : ViewDataBinding>(private val layoutId: Int
     }
 
     protected fun showToastMessage(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     fun NavController.navigateSafely(

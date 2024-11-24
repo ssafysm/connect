@@ -20,7 +20,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:backgroundCustomTheme="@{vm.appThemeName}"
         tools:context=".presentation.views.main.coupon.CouponFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -41,7 +40,7 @@
             android:id="@+id/tv_title_coupon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendardblack"
+            android:fontFamily="@font/pretendardbold"
             android:text="@string/text_coupon"
             android:textColor="@color/neutral_100"
             android:textSize="@dimen/font_size_title"

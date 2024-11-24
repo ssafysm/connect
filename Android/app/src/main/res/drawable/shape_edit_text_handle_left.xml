@@ -6,7 +6,7 @@
 
     <!-- 둥근 모서리와 오른쪽 위 뾰족 -->
     <path
-        android:fillColor="@color/background_main"
+        android:fillColor="@color/main_start"
         android:pathData="M2,12
                          C2,6.48 6.48,2 12,2
                          L22,2 L22,12
@@ -15,7 +15,7 @@
 
     <!-- 오른쪽 위 뾰족한 삼각형 -->
     <path
-        android:fillColor="@color/background_main"
+        android:fillColor="@color/main_start"
         android:pathData="M12,2
                          L22,2
                          L22,12

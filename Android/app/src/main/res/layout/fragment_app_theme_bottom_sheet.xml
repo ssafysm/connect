@@ -35,7 +35,7 @@
             android:id="@+id/tv_title_app_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendardblack"
+            android:fontFamily="@font/pretendardbold"
             android:text="@string/text_theme"
             android:textColor="@color/neutral_100"
             android:textSize="@dimen/font_size_subtitle"

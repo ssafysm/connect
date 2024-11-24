@@ -17,13 +17,13 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_coupon_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:backgroundCustomTheme="@{vm.appThemeName}"
+                android:layout_height="wrap_content"
                 tools:context=".presentation.views.main.coupondetail.CouponDetailFragment">
 
                 <androidx.constraintlayout.widget.Guideline
@@ -44,7 +44,7 @@
                     android:id="@+id/tv_title_coupon_detail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardblack"
+                    android:fontFamily="@font/pretendardbold"
                     android:text="@string/text_title_coupon_detail"
                     android:textColor="@color/neutral_100"
                     android:textSize="@dimen/font_size_title"
@@ -147,8 +147,8 @@
                     android:layout_marginEnd="@dimen/margin_padding_small"
                     android:enabled="@{(vm.selectedCouponMenu == null) ? false : true}"
                     android:onClick="@{() -> vm.onClickShopCoupon()}"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
+                    app:cardCornerRadius="@dimen/card_view_radius"
+                    app:cardElevation="@dimen/card_view_elevation"
                     app:layout_constraintBottom_toTopOf="@id/gl_bottom_coupon_detail"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@id/mcv_t_out_coupon_detail"
@@ -162,8 +162,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_shop_coupon_detail"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/toolbar_button_big"
+                            android:layout_height="@dimen/toolbar_button_big"
                             android:src="@drawable/ic_deliver"
                             app:layout_constraintBottom_toTopOf="@id/tv_shop_coupon_detail"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -196,8 +196,8 @@
                     android:layout_marginStart="@dimen/margin_padding_small"
                     android:enabled="@{(vm.selectedCouponMenu == null) ? false : true}"
                     android:onClick="@{() -> vm.onClickTakeoutCoupon()}"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
+                    app:cardCornerRadius="@dimen/card_view_radius"
+                    app:cardElevation="@dimen/card_view_elevation"
                     app:layout_constraintBottom_toTopOf="@id/gl_bottom_coupon_detail"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@id/gl_end_coupon_detail"
@@ -210,8 +210,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_t_out_coupon_detail"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/toolbar_button_big"
+                            android:layout_height="@dimen/toolbar_button_big"
                             android:src="@drawable/ic_t_out"
                             app:layout_constraintBottom_toTopOf="@id/tv_t_out_coupon_detail"
                             app:layout_constraintEnd_toEndOf="parent"

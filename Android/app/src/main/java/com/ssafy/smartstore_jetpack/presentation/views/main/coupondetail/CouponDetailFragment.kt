@@ -2,7 +2,6 @@ package com.ssafy.smartstore_jetpack.presentation.views.main.coupondetail
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
@@ -39,17 +38,15 @@ class CouponDetailFragment :
         }
 
         is CouponDetailUiEvent.FinishCouponOrder -> {
-            Toast.makeText(
-                requireContext(),
-                "주문에 성공했어요! 주문 번호는 ${event.orderId}번이에요.",
-                Toast.LENGTH_SHORT
-            ).show()
+            showToastMessage("${getString(R.string.message_order_success_start)} ${event.orderId}${getString(
+                R.string.message_order_success_end
+            )}")
             requireActivity().supportFragmentManager.popBackStack()
             clearBlur(binding.fragmentCouponDetail)
         }
 
         is CouponDetailUiEvent.CouponOrderFail -> {
-            Toast.makeText(requireContext(), "주문에 실패했어요ㅠㅠ", Toast.LENGTH_SHORT).show()
+            showToastMessage(getString(R.string.message_order_fail))
             clearBlur(binding.fragmentCouponDetail)
         }
 
