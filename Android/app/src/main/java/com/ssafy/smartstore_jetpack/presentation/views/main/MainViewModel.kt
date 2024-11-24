@@ -40,6 +40,7 @@ import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validateId
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.validatePassword
 import com.ssafy.smartstore_jetpack.presentation.util.DuplicateState
 import com.ssafy.smartstore_jetpack.presentation.util.EmptyState
+import com.ssafy.smartstore_jetpack.presentation.util.IdState
 import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
 import com.ssafy.smartstore_jetpack.presentation.util.PasswordState
 import com.ssafy.smartstore_jetpack.presentation.util.SelectState
@@ -849,12 +850,15 @@ class MainViewModel @Inject constructor(
 
     override fun onClickMyPageSignUp() {
         viewModelScope.launch {
+            initJoinInfo()
             _myPageUiEvent.emit(MyPageUiEvent.GoToJoin)
         }
     }
 
     override fun onClickMyPageLogin() {
         viewModelScope.launch {
+            _userId.value = ""
+            _userPass.value = ""
             _myPageUiEvent.emit(MyPageUiEvent.GoToLogin)
         }
     }
@@ -960,6 +964,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _newPassword.value = ""
             _newPasswordConfirm.value = ""
+            validateNewPasswords()
             _informationUiEvent.emit(InformationUiEvent.GoToPassword)
         }
     }
@@ -1206,7 +1211,7 @@ class MainViewModel @Inject constructor(
         _joinName.value = ""
         _joinUiState.update {
             it.copy(
-                joinIdValidState = InputValidState.NONE,
+                joinIdValidState = IdState.INIT,
                 joinIdDuplicateState = DuplicateState.DUPLICATE,
                 joinPassValidState = PasswordState.INIT,
                 joinPassConfirmValidState = PasswordState.INIT,
@@ -1293,7 +1298,7 @@ class MainViewModel @Inject constructor(
                             _joinName.value = ""
                             _joinUiState.update {
                                 it.copy(
-                                    joinIdValidState = InputValidState.NONE,
+                                    joinIdValidState = IdState.INIT,
                                     joinPassValidState = PasswordState.INIT,
                                     joinPassConfirmValidState = PasswordState.INIT,
                                     joinNameValidState = InputValidState.NONE,
@@ -1452,10 +1457,17 @@ class MainViewModel @Inject constructor(
     fun initStates() {
         setTheme()
         getProducts()
+        _ordersMonth.value = listOf()
+        _orders6Months.value = listOf()
+        _shoppingList.value = listOf()
+        _coupons.value = listOf()
+        _alarms.value = listOf()
     }
 
     fun setFabState(flag: Boolean) {
-        _fabState.value = flag
+        if (_user.value != null) {
+            _fabState.value = flag
+        }
     }
 
     fun setBnvState(flag: Boolean) {
@@ -1671,17 +1683,17 @@ class MainViewModel @Inject constructor(
     fun validateJoinId(id: CharSequence) {
         _joinUiState.update { it.copy(joinIdDuplicateState = DuplicateState.DUPLICATE) }
         if (id.isBlank()) {
-            _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
+            _joinUiState.update { it.copy(joinIdValidState = IdState.NONE) }
             return
         }
 
         when (validateId(id)) {
             true -> {
-                _joinUiState.update { it.copy(joinIdValidState = InputValidState.VALID) }
+                _joinUiState.update { it.copy(joinIdValidState = IdState.VALID) }
             }
 
             else -> {
-                _joinUiState.update { it.copy(joinIdValidState = InputValidState.NONE) }
+                _joinUiState.update { it.copy(joinIdValidState = IdState.NONE) }
             }
         }
     }
@@ -1689,16 +1701,29 @@ class MainViewModel @Inject constructor(
     fun validateJoinPass(pass: CharSequence) {
         if (pass.isBlank()) {
             _joinUiState.update { it.copy(joinPassValidState = PasswordState.INIT) }
-            return
+        } else {
+            when (validatePassword(pass)) {
+                true -> {
+                    _joinUiState.update { it.copy(joinPassValidState = PasswordState.VALID) }
+                }
+
+                else -> {
+                    _joinUiState.update { it.copy(joinPassValidState = PasswordState.NONE) }
+                }
+            }
         }
 
-        when (validatePassword(pass)) {
-            true -> {
-                _joinUiState.update { it.copy(joinPassValidState = PasswordState.VALID) }
-            }
+        if (_joinPassConfirm.value.isBlank()) {
+            _joinUiState.update { it.copy(joinPassConfirmValidState = PasswordState.INIT) }
+        } else {
+            when (_joinPassConfirm.value == pass) {
+                true -> {
+                    _joinUiState.update { it.copy(joinPassConfirmValidState = PasswordState.VALID) }
+                }
 
-            else -> {
-                _joinUiState.update { it.copy(joinPassValidState = PasswordState.NONE) }
+                else -> {
+                    _joinUiState.update { it.copy(joinPassConfirmValidState = PasswordState.NONE) }
+                }
             }
         }
     }
@@ -1739,16 +1764,29 @@ class MainViewModel @Inject constructor(
     fun validateNewPassword(password: CharSequence) {
         if (password.isBlank()) {
             _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.INIT) }
-            return
+        } else {
+            when (validatePassword(password)) {
+                true -> {
+                    _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.VALID) }
+                }
+
+                else -> {
+                    _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.NONE) }
+                }
+            }
         }
 
-        when (validatePassword(password)) {
-            true -> {
-                _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.VALID) }
-            }
+        if (_newPasswordConfirm.value.isBlank()) {
+            _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.INIT) }
+        } else {
+            when (_newPasswordConfirm.value == password) {
+                true -> {
+                    _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.VALID) }
+                }
 
-            else -> {
-                _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.NONE) }
+                else -> {
+                    _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.NONE) }
+                }
             }
         }
     }
@@ -1772,7 +1810,7 @@ class MainViewModel @Inject constructor(
 
     private fun validateNewPasswords() {
         if (_newPassword.value.isBlank()) {
-            _passwordUiState.update { it.copy(newPasswordConfirmValidState = PasswordState.INIT) }
+            _passwordUiState.update { it.copy(newPasswordValidState = PasswordState.INIT) }
         } else {
             when (validatePassword(_newPassword.value)) {
                 true -> {

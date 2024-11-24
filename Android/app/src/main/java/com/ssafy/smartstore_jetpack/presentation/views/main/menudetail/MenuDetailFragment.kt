@@ -60,9 +60,13 @@ class MenuDetailFragment : BaseFragment<FragmentMenuDetailBinding>(R.layout.frag
     private fun initViews() {
         binding.nsvMenuDetail.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY && binding.clBottomMenuDetail.visibility == View.VISIBLE) {
-                hideBottomLayout(binding.clBottomMenuDetail)
+                if (viewModel.user.value != null) {
+                    hideBottomLayout(binding.clBottomMenuDetail)
+                }
             } else if (scrollY < oldScrollY && binding.clBottomMenuDetail.visibility == View.GONE) {
-                showBottomLayout(binding.clBottomMenuDetail)
+                if (viewModel.user.value != null) {
+                    showBottomLayout(binding.clBottomMenuDetail)
+                }
             }
         }
 

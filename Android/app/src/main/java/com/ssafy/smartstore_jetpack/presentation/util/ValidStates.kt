@@ -16,6 +16,10 @@ enum class SelectState {
     SELECT, NONE
 }
 
+enum class IdState {
+    VALID, INIT, NONE
+}
+
 enum class PasswordState {
     INIT, VALID, NONE
 }

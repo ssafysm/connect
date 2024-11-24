@@ -105,6 +105,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.11.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
+
     // Coil
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-gif:2.4.0")

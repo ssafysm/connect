@@ -34,7 +34,6 @@
     <!-- notification 전송 permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-
     <application
         android:name="com.ssafy.smartstore_jetpack.app.ApplicationClass"
         android:allowBackup="true"
@@ -53,9 +52,13 @@
         <service
             android:name=".service.MyFirebaseMessagingService"
             android:exported="true">
+
             <intent-filter>
+
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+
             </intent-filter>
+
         </service>
 
         <activity
@@ -68,9 +71,13 @@
 
             <!-- NFC 인텐트 필터 추가 -->
             <intent-filter>
+
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
+
             </intent-filter>
 
         </activity>

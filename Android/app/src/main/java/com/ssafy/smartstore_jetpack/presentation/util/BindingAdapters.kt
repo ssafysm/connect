@@ -573,25 +573,55 @@ fun TextInputLayout.bindNewId(joinUiState: JoinUiState, appThemeName: String) {
         else -> ContextCompat.getColor(context, R.color.main_end)
     }
 
-    when (joinUiState.joinPassValidState) {
-        PasswordState.VALID -> {
-            helperText = "사용해도 좋은 아이디에요."
-            defaultHintTextColor = ColorStateList.valueOf(hintColor)
-        }
+    when (joinUiState.joinIdDuplicateState) {
+        DuplicateState.NONE -> {
+            when (joinUiState.joinIdValidState) {
+                IdState.VALID -> {
+                    helperText = "사용해도 좋은 아이디에요."
+                    defaultHintTextColor = ColorStateList.valueOf(hintColor)
+                }
 
-        PasswordState.INIT -> {
-            helperText = ""
-            error = ""
-            defaultHintTextColor = ColorStateList.valueOf(
-                ContextCompat.getColor(context, R.color.neutral_70)
-            )
+                IdState.INIT -> {
+                    helperText = ""
+                    error = ""
+                    defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.neutral_70)
+                    )
+                }
+
+                IdState.NONE -> {
+                    error = "생성 불가능한 아이디에요."
+                    defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.sub_alert)
+                    )
+                }
+            }
         }
 
         else -> {
-            error = "생성 불가능한 아이디에요."
-            defaultHintTextColor = ColorStateList.valueOf(
-                ContextCompat.getColor(context, R.color.sub_alert)
-            )
+            when (joinUiState.joinIdValidState) {
+                IdState.VALID -> {
+                    error = "사용해도 좋지만 중복된 아이디에요."
+                    defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.sub_alert)
+                    )
+                }
+
+                IdState.INIT -> {
+                    helperText = ""
+                    error = ""
+                    defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.neutral_70)
+                    )
+                }
+
+                IdState.NONE -> {
+                    error = "생성 불가능한 아이디에요."
+                    defaultHintTextColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.sub_alert)
+                    )
+                }
+            }
         }
     }
 
@@ -694,8 +724,8 @@ fun TextInputLayout.bindNewPassword(joinUiState: JoinUiState, appThemeName: Stri
         }
 
         PasswordState.INIT -> {
-            helperText = ""
-            error = ""
+            helperText = null
+            error = null
             defaultHintTextColor = ColorStateList.valueOf(
                 ContextCompat.getColor(context, R.color.neutral_70)
             )
@@ -740,7 +770,7 @@ fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeNam
 
     when (joinUiState.joinPassConfirmValidState) {
         PasswordState.VALID -> {
-            helperText = "사용해도 좋은 비밀번호에요."
+            helperText = "비밀번호가 일치해요."
             defaultHintTextColor = ColorStateList.valueOf(hintColor)
         }
 
@@ -753,7 +783,7 @@ fun TextInputLayout.bindNewPasswordConfirm(joinUiState: JoinUiState, appThemeNam
         }
 
         else -> {
-            error = "유효한 비밀번호가 아니에요."
+            error = "비밀번호가 일치하지 않아요."
             defaultHintTextColor = ColorStateList.valueOf(
                 ContextCompat.getColor(context, R.color.sub_alert)
             )
@@ -791,22 +821,25 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
 
     when (passwordUiState.newPasswordValidState) {
         PasswordState.VALID -> {
+            Timber.d("가능한 비번")
             helperText = "사용해도 좋은 비밀번호에요."
             defaultHintTextColor = ColorStateList.valueOf(hintColor)
         }
 
-        PasswordState.INIT -> {
-            helperText = ""
-            error = ""
+        PasswordState.NONE -> {
+            Timber.d("비번 안")
+            error = "유효한 비밀번호가 아니에요."
             defaultHintTextColor = ColorStateList.valueOf(
-                ContextCompat.getColor(context, R.color.neutral_70)
+                ContextCompat.getColor(context, R.color.sub_alert)
             )
         }
 
         else -> {
-            error = "유효한 비밀번호가 아니에요."
+            Timber.d("비번 없음")
+            helperText = ""
+            error = ""
             defaultHintTextColor = ColorStateList.valueOf(
-                ContextCompat.getColor(context, R.color.sub_alert)
+                ContextCompat.getColor(context, R.color.neutral_70)
             )
         }
     }

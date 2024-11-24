@@ -1,6 +1,7 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.join
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels

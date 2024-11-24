@@ -40,6 +40,7 @@ import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.Identifier
 import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -318,8 +319,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     @SuppressLint("ResourceAsColor")
     fun applyTheme(themeName: String) {
         when (themeName) {
-            "기본" -> window.statusBarColor = resources.getColor(R.color.main_end, theme)
-
             "봄" -> window.statusBarColor = resources.getColor(R.color.spring_secondary, theme)
 
             "여름" -> window.statusBarColor = resources.getColor(R.color.summer_secondary, theme)
@@ -335,12 +334,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun initFCM() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w(TAG, "FCM 등록 토큰 가져오기 실패", task.exception)
+                Timber.w(task.exception, "FCM 등록 토큰 가져오기 실패")
                 return@addOnCompleteListener
             }
             // 새로운 FCM 등록 토큰 획득
             val token = task.result
-            Log.d(TAG, "FCM 토큰: $token")
+            Timber.d("FCM 토큰: " + token)
             // 토큰을 Toast로 표시
             // Toast.makeText(this, "FCM 토큰: $token", Toast.LENGTH_LONG).show()
             // 토큰을 서버로 업로드
