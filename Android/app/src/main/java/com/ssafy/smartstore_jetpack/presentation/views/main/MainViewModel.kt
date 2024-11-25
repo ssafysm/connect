@@ -225,6 +225,7 @@ class MainViewModel @Inject constructor(
     private val _textPlan = MutableStateFlow<String>("")
     val textPlan = _textPlan
 
+    /*** Chatting ***/
     override fun onClickVisibleChatting() {
         viewModelScope.launch {
             when (_chattingUiState.value.isFourButtonsVisible) {
@@ -235,10 +236,35 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    /*** Chatting ***/
     override fun onClickMenuChatting() {
         viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToMenu)
+            val response = getProductUseCase.getProductTop5()
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    Timber.d("성공")
+                    addMessage(
+                        ChatMessage(
+                            text = response.data ?: "",
+                            imageUri = null,
+                            isSender = false,
+                            senderName = "GPT-4"
+                        )
+                    )
+                }
+
+                else -> {
+                    Timber.d("실패")
+                    addMessage(
+                        ChatMessage(
+                            text = "오류가 있습니다.",
+                            imageUri = null,
+                            isSender = false,
+                            senderName = "GPT-4"
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -296,7 +322,12 @@ class MainViewModel @Inject constructor(
     override fun onClickPlanTextChatting() {
         viewModelScope.launch {
             _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.VALID) }
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlanText)
+        }
+    }
+
+    override fun onClickPlanTextChattingCancel() {
+        viewModelScope.launch {
+            _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.NONE) }
         }
     }
 
@@ -559,6 +590,18 @@ class MainViewModel @Inject constructor(
 
     override fun onClickChatting() {
         viewModelScope.launch {
+            _chatMessage.value = ""
+            _chatImageUri.value = null
+            _planGrade.value = 0
+            _imagePlan.value = null
+            _textPlan.value = ""
+            _chattingUiState.update { it.copy(
+                chatMessageValidState = InputValidState.NONE,
+                isSendValidState = InputValidState.VALID,
+                chatImageValidState = InputValidState.NONE,
+                buttonsValidateState = InputValidState.NONE,
+                planSecondTextMode = InputValidState.NONE
+            ) }
             _homeUiEvent.emit(HomeUiEvent.GoToChatting)
         }
     }
@@ -1108,6 +1151,7 @@ class MainViewModel @Inject constructor(
     override fun onClickPrimaryTheme() {
         viewModelScope.launch {
             _appThemeName.value = "기본"
+            updateAppTheme(_user.value?.user?.id ?: "")
             setAppThemeUseCase.setAppTheme("기본")
             _settingUiEvent.emit(SettingUiEvent.SubmitAppTheme("기본"))
         }
@@ -1116,6 +1160,7 @@ class MainViewModel @Inject constructor(
     override fun onClickSpringTheme() {
         viewModelScope.launch {
             _appThemeName.value = "봄"
+            updateAppTheme(_user.value?.user?.id ?: "")
             setAppThemeUseCase.setAppTheme("봄")
             _settingUiEvent.emit(SettingUiEvent.SubmitAppTheme("봄"))
         }
@@ -1124,6 +1169,7 @@ class MainViewModel @Inject constructor(
     override fun onClickSummerTheme() {
         viewModelScope.launch {
             _appThemeName.value = "여름"
+            updateAppTheme(_user.value?.user?.id ?: "")
             setAppThemeUseCase.setAppTheme("여름")
             _settingUiEvent.emit(SettingUiEvent.SubmitAppTheme("여름"))
         }
@@ -1132,6 +1178,7 @@ class MainViewModel @Inject constructor(
     override fun onClickAutumnTheme() {
         viewModelScope.launch {
             _appThemeName.value = "가을"
+            updateAppTheme(_user.value?.user?.id ?: "")
             setAppThemeUseCase.setAppTheme("가을")
             _settingUiEvent.emit(SettingUiEvent.SubmitAppTheme("가을"))
         }
@@ -1140,6 +1187,7 @@ class MainViewModel @Inject constructor(
     override fun onClickWinterTheme() {
         viewModelScope.launch {
             _appThemeName.value = "겨울"
+            updateAppTheme(_user.value?.user?.id ?: "")
             setAppThemeUseCase.setAppTheme("겨울")
             _settingUiEvent.emit(SettingUiEvent.SubmitAppTheme("겨울"))
         }

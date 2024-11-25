@@ -6,13 +6,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentChattingBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment_chatting) {
@@ -33,9 +36,7 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
 
         collectLatestFlow(viewModel.chattingUiEvent) { handleUiEvent(it) }
 
-        // 추가적으로 생각해야 할 것
-        // 1. 채팅 올라올 때마다 스크롤 내리기
-        // 2. 키보드 동작 관리
+        // 채팅 올라올 때마다 스크롤 내리기
     }
 
     override fun onResume() {
@@ -45,15 +46,8 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
     }
 
     private fun initRecyclerView() {
-        binding.adapter = ChatAdapter()
-        binding.rvChatting.apply {
-
-            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-                if ((binding.adapter as ChatAdapter).itemCount > 0) {
-                    scrollToPosition((binding.adapter as ChatAdapter).itemCount - 1)
-                }
-            }
-        }
+        binding.rvChatting.adapter = ChatAdapter()
+        binding.rvChatting.setHasFixedSize(true)
     }
 
     private fun setEditText() {

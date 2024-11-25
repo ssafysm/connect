@@ -16,4 +16,8 @@ class GetProductUseCase @Inject constructor(
     suspend fun getProductWithComment(productId: Int): Result<Product> {
         return productRepository.getProductWithComment(productId)
     }
+
+    suspend fun getProductTop5(): Result<String> {
+        return productRepository.getProductTop5()
+    }
 }

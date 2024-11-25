@@ -8,4 +8,6 @@ interface ProductRemoteDataSource {
     suspend fun getProducts(): Response<List<ProductEntity>>
 
     suspend fun getProductWithComment(productId: Int): Response<ProductEntity>
+
+    suspend fun getProductTop5(): Response<String>
 }

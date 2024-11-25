@@ -20,7 +20,5 @@ sealed class ChattingUiEvent {
 
     data object GoToPlanImage : ChattingUiEvent()
 
-    data object GoToPlanText : ChattingUiEvent()
-
     data object SubmitPlanFinish : ChattingUiEvent()
 }

@@ -14,4 +14,7 @@ interface ProductApi {
     suspend fun getProductWithComments(
         @Path("productId") productId: Int
     ): Response<ProductEntity>
+
+    @GET("rest/product/gpt-summary")
+    suspend fun getProductTop5(): Response<String>
 }

@@ -27,4 +27,6 @@ interface ChattingClickListener {
     fun onClickPlanImageChatting()
 
     fun onClickPlanTextChatting()
+
+    fun onClickPlanTextChattingCancel()
 }

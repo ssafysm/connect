@@ -10,296 +10,321 @@
             name="vm"
             type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
 
-        <variable
-            name="adapter"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChatAdapter" />
-
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_chatting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start_chatting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_top_chatting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
+
+        <TextView
+            android:id="@+id/tv_title_greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@string/text_greeting"
+            android:textSize="@dimen/font_size_regular"
+            app:layout_constraintEnd_toStartOf="@id/tv_title_name_greeting"
+            app:layout_constraintStart_toEndOf="@id/gl_start_chatting"
+            app:layout_constraintTop_toBottomOf="@id/gl_top_chatting" />
+
+        <TextView
+            android:id="@+id/tv_title_name_greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_smaller"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@{vm.user.user.name}"
+            android:textSize="@dimen/font_size_regular"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_greeting"
+            app:layout_constraintEnd_toStartOf="@id/tv_title_end_greeting"
+            app:layout_constraintStart_toEndOf="@id/tv_title_greeting"
+            app:layout_constraintTop_toTopOf="@id/tv_title_greeting" />
+
+        <TextView
+            android:id="@+id/tv_title_end_greeting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@string/text_name_end"
+            android:textSize="@dimen/font_size_regular"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_greeting"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_chatting"
+            app:layout_constraintStart_toEndOf="@id/tv_title_name_greeting"
+            app:layout_constraintTop_toTopOf="@id/tv_title_greeting" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chatting"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_padding_small"
+            android:layout_marginBottom="@dimen/margin_padding_small"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/cl_bottom_chatting"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_chatting"
+            app:layout_constraintStart_toEndOf="@id/gl_start_chatting"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_greeting"
+            app:stackFromEnd="true"
+            app:submitDataChatting="@{vm.chattings}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_chatting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/cl_bottom_chatting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_padding_regular"
+            app:bottomSheetCustomTheme="@{vm.appThemeName}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/tv_title_greeting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendardsemibold"
-                android:text="@string/text_greeting"
-                android:textSize="@dimen/font_size_regular"
-                app:layout_constraintEnd_toStartOf="@id/tv_title_name_greeting"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_set_chat"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="@dimen/margin_padding_smaller"
+                android:onClick="@{() -> vm.onClickVisibleChatting()}"
+                android:src="@{(vm.chattingUiState.isFourButtonsVisible == true) ? @drawable/ic_down : @drawable/ic_up}"
+                app:layout_constraintBottom_toTopOf="@id/btn_menu_chat"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_title_name_greeting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendardsemibold"
-                android:text="@{vm.user.user.name}"
-                android:textSize="@dimen/font_size_regular"
-                app:layout_constraintEnd_toStartOf="@id/tv_title_end_greeting"
-                app:layout_constraintStart_toEndOf="@id/tv_title_greeting"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_title_end_greeting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendardsemibold"
-                android:text="@string/text_name_end"
-                android:textSize="@dimen/font_size_regular"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_title_name_greeting"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_chatting"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_menu_chat"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="@dimen/margin_padding_small"
-                android:adapter="@{adapter}"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@id/cl_bottom_chatting"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/margin_padding_smaller"
+                android:layout_marginBottom="@dimen/margin_padding_regular"
+                android:onClick="@{() -> vm.onClickMenuChatting()}"
+                android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toTopOf="@id/et_chatting"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/btn_order_chat"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_greeting"
-                app:submitData="@{vm.chattings}" />
+                app:layout_constraintTop_toBottomOf="@id/iv_set_chat">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_bottom_chatting"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="인기 메뉴"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_order_chat"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_padding_smaller"
+                android:layout_marginEnd="@dimen/margin_padding_smaller"
+                android:onClick="@{() -> vm.onClickOrderChatting()}"
+                android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/btn_shop_chat"
+                app:layout_constraintStart_toEndOf="@id/btn_menu_chat"
+                app:layout_constraintTop_toTopOf="@id/btn_menu_chat">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="최근 주문"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_shop_chat"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_padding_smaller"
+                android:layout_marginEnd="@dimen/margin_padding_smaller"
+                android:onClick="@{() -> vm.onClickShopChatting()}"
+                android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/btn_plan_chat"
+                app:layout_constraintStart_toEndOf="@id/btn_order_chat"
+                app:layout_constraintTop_toTopOf="@id/btn_menu_chat">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="근처 매장"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_plan_chat"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_padding_smaller"
+                android:onClick="@{() -> vm.onClickPlanChatting()}"
+                android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_shop_chat"
+                app:layout_constraintTop_toTopOf="@id/btn_menu_chat">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="플랜 체크"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_chatting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_padding_regular"
-                app:bottomSheetCustomTheme="@{vm.appThemeName}"
+                android:layout_marginEnd="@dimen/margin_padding_small"
+                android:background="@drawable/shape_comment"
+                android:enabled="@{vm.chattingUiState.isEditTextEnable}"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionSend"
+                android:inputType="text"
+                android:onTextChanged="@{(chatMessage, s, b, c) -> vm.validateChatMessage(chatMessage)}"
+                android:text="@={vm.chatMessage}"
+                android:textColor="@color/neutral_70"
+                android:textSize="@dimen/font_size_regular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintEnd_toStartOf="@id/iv_chatting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:normalEditText="@{vm.appThemeName}" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_set_chat"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="@dimen/margin_padding_smaller"
-                    android:onClick="@{() -> vm.onClickVisibleChatting()}"
-                    android:src="@{(vm.chattingUiState.isFourButtonsVisible == true) ? @drawable/ic_down : @drawable/ic_up}"
-                    app:layout_constraintBottom_toTopOf="@id/btn_menu_chat"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_chatting"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="이미지 업로드"
+                android:onClick="@{() -> vm.onClickImageChatting()}"
+                android:src="@drawable/chatbot"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_submit_chatting"
+                app:layout_constraintStart_toEndOf="@id/et_chatting" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_menu_chat"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="@dimen/margin_padding_smaller"
-                    android:layout_marginBottom="@dimen/margin_padding_regular"
-                    android:onClick="@{() -> vm.onClickMenuChatting()}"
-                    android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
-                    app:cardCornerRadius="@dimen/card_view_radius"
-                    app:cardElevation="@dimen/card_view_elevation"
-                    app:layout_constraintBottom_toTopOf="@id/et_chatting"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@id/btn_order_chat"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_set_chat">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:backgroundCustomTheme="@{vm.appThemeName}">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_padding_small"
-                            android:fontFamily="@font/pretendardsemibold"
-                            android:text="인기 메뉴"
-                            android:textColor="@color/neutral_100"
-                            android:textSize="@dimen/font_size_regular"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_order_chat"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/margin_padding_smaller"
-                    android:layout_marginEnd="@dimen/margin_padding_smaller"
-                    android:onClick="@{() -> vm.onClickOrderChatting()}"
-                    android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
-                    app:cardCornerRadius="@dimen/card_view_radius"
-                    app:cardElevation="@dimen/card_view_elevation"
-                    app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@id/btn_shop_chat"
-                    app:layout_constraintStart_toEndOf="@id/btn_menu_chat"
-                    app:layout_constraintTop_toTopOf="@id/btn_menu_chat">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:backgroundCustomTheme="@{vm.appThemeName}">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_padding_small"
-                            android:fontFamily="@font/pretendardsemibold"
-                            android:text="최근 주문"
-                            android:textColor="@color/neutral_100"
-                            android:textSize="@dimen/font_size_regular"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_shop_chat"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/margin_padding_smaller"
-                    android:layout_marginEnd="@dimen/margin_padding_smaller"
-                    android:onClick="@{() -> vm.onClickShopChatting()}"
-                    android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
-                    app:cardCornerRadius="@dimen/card_view_radius"
-                    app:cardElevation="@dimen/card_view_elevation"
-                    app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@id/btn_plan_chat"
-                    app:layout_constraintStart_toEndOf="@id/btn_order_chat"
-                    app:layout_constraintTop_toTopOf="@id/btn_menu_chat">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:backgroundCustomTheme="@{vm.appThemeName}">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_padding_small"
-                            android:fontFamily="@font/pretendardsemibold"
-                            android:text="근처 매장"
-                            android:textColor="@color/neutral_100"
-                            android:textSize="@dimen/font_size_regular"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btn_plan_chat"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/margin_padding_smaller"
-                    android:onClick="@{() -> vm.onClickPlanChatting()}"
-                    android:visibility="@{(vm.chattingUiState.isFourButtonsVisible == true) ? View.VISIBLE : View.GONE}"
-                    app:cardCornerRadius="@dimen/card_view_radius"
-                    app:cardElevation="@dimen/card_view_elevation"
-                    app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btn_shop_chat"
-                    app:layout_constraintTop_toTopOf="@id/btn_menu_chat">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:backgroundCustomTheme="@{vm.appThemeName}">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_padding_small"
-                            android:fontFamily="@font/pretendardsemibold"
-                            android:text="플랜 체크"
-                            android:textColor="@color/neutral_100"
-                            android:textSize="@dimen/font_size_regular"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_chatting"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_padding_small"
-                    android:background="@drawable/shape_comment"
-                    android:enabled="@{vm.chattingUiState.isEditTextEnable}"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:imeOptions="actionSend"
-                    android:inputType="text"
-                    android:onTextChanged="@{(chatMessage, s, b, c) -> vm.validateChatMessage(chatMessage)}"
-                    android:text="@={vm.chatMessage}"
-                    android:textColor="@color/neutral_70"
-                    android:textSize="@dimen/font_size_regular"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/iv_chatting"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:normalEditText="@{vm.appThemeName}" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_chatting"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="이미지 업로드"
-                    android:onClick="@{() -> vm.onClickImageChatting()}"
-                    android:src="@drawable/chatbot"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_submit_chatting"
-                    app:layout_constraintStart_toEndOf="@id/et_chatting" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_submit_chatting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_padding_small"
-                    android:enabled="@{vm.chattingUiState.isSubmitBtnEnable}"
-                    android:fontFamily="@font/pretendardsemibold"
-                    android:onClick="@{() -> vm.onClickSendChatting()}"
-                    android:text="전송"
-                    android:textColor="@{(vm.chattingUiState.isSubmitBtnEnable == true) ? @color/neutral_white : @color/neutral_100}"
-                    android:textSize="@dimen/font_size_regular"
-                    app:enableChatting="@{vm.chattingUiState}"
-                    app:enableChattingCustomTheme="@{vm.appThemeName}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_chatting" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_submit_chatting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_small"
+                android:enabled="@{vm.chattingUiState.isSubmitBtnEnable}"
+                android:fontFamily="@font/pretendardsemibold"
+                android:onClick="@{() -> vm.onClickSendChatting()}"
+                android:text="전송"
+                android:textColor="@{(vm.chattingUiState.isSubmitBtnEnable == true) ? @color/neutral_white : @color/neutral_100}"
+                android:textSize="@dimen/font_size_regular"
+                app:enableChatting="@{vm.chattingUiState}"
+                app:enableChattingCustomTheme="@{vm.appThemeName}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_chatting" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end_chatting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_bottom_chatting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

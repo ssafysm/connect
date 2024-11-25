@@ -13,4 +13,7 @@ class ProductRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getProductWithComment(productId: Int): Response<ProductEntity> =
         productApi.getProductWithComments(productId)
+
+    override suspend fun getProductTop5(): Response<String> =
+        productApi.getProductTop5()
 }

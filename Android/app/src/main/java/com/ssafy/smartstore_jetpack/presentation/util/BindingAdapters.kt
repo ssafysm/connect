@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -930,6 +931,24 @@ fun RecyclerView.bindAdapter(adapter: RecyclerView.Adapter<*>?) {
 fun <T> RecyclerView.submitData(items: List<T>?) {
     val adapter = this.adapter as? ListAdapter<T, *> ?: return
     adapter.submitList(items ?: emptyList())
+}
+
+@BindingAdapter("submitDataChatting")
+fun <T> RecyclerView.submitDataChatting(items: List<T>?) {
+    val adapter = this.adapter as? ListAdapter<T, *> ?: return
+    adapter.submitList(items ?: emptyList()).apply {
+        if (!items.isNullOrEmpty() && adapter.itemCount > 0) {
+            post {
+                viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        scrollToPosition(adapter.itemCount - 1)
+                        Timber.d("Scroll Position: ${this@submitDataChatting.scrollState}")
+                        this@submitDataChatting.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
+            }
+        }
+    }
 }
 
 @BindingAdapter("submitDataWithMap")
