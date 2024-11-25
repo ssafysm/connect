@@ -27,4 +27,31 @@
         order by d.d_id ASC;
     </select>
 	
+	<!-- 평점을 기준으로 상위 메뉴를 가져오는 쿼리 -->
+    <resultMap id="ProductWithCommentResultMap" type="com.ssafy.cafe.model.dto.ProductWithComment">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="price" column="price"/>
+        <result property="img" column="img"/>
+        <result property="description" column="description"/>
+        <result property="mode" column="mode"/>
+        <result property="averageStars" column="averageRating"/>
+        <result property="commentCount" column="commentCount"/>
+    </resultMap>
+	<!-- 평점 -> 판매량 -> 최근 등록 순으로 정렬 -->
+	<select id="selectTopProductsByRating" parameterType="int" resultMap="ProductWithCommentResultMap">
+	    SELECT 
+	        p.*,
+	        COALESCE(AVG(c.rating), 0) AS averageRating,
+	        COUNT(c.id) AS commentCount,
+	        COALESCE(SUM(od.quantity), 0) AS totalSells
+	    FROM t_product p
+	    LEFT JOIN t_comment c ON p.id = c.product_id
+	    LEFT JOIN t_order_detail od ON p.id = od.product_id
+	    GROUP BY p.id
+	    ORDER BY averageRating DESC, totalSells DESC, p.id DESC
+	    LIMIT #{limit}
+	</select>
+    
 </mapper>

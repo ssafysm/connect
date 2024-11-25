@@ -43,5 +43,15 @@ public class ProductServiceImpl implements ProductService{
     	
         return productWithComment;
     }
+    
+    @Override
+    public List<ProductWithComment> getTopProductsWithComments(int limit) {
+        List<ProductWithComment> topProducts = pDao.selectTopProductsByRating(limit);
+        for (ProductWithComment product : topProducts) {
+            List<CommentWithInfo> comments = cDao.selectByProduct(product.getId());
+            product.setComments(comments);
+        }
+        return topProducts;
+    }
 
 }

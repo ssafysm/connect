@@ -20,4 +20,11 @@ public interface ProductService {
      */
     ProductWithComment selectWithComment(Integer productId);
     
+    /**
+     * 평점을 기준으로 상위 메뉴와 해당 메뉴의 댓글을 가져온다.
+     * @param limit 가져올 메뉴의 수
+     * @return 상위 메뉴와 댓글 목록
+     */
+    List<ProductWithComment> getTopProductsWithComments(int limit);
+    
 }

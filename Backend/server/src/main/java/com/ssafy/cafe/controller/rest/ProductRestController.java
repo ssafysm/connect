@@ -34,4 +34,10 @@ public class ProductRestController {
         return ResponseEntity.ok(product);
     }
 
+    @Operation(summary = "평점을 기준으로 상위 5개의 메뉴와 해당 메뉴의 댓글을 반환한다.")
+    @GetMapping("/top5")
+    public ResponseEntity<?> getTop5Products() {
+        List<ProductWithComment> topProducts = ps.getTopProductsWithComments(5);
+        return ResponseEntity.ok(topProducts);
+    }
 }

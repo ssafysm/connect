@@ -22,4 +22,11 @@ public interface ProductDao {
     ProductWithComment selectWithInfo(Integer productId);
     
     int getQuantity(Integer productId);
+    
+    /**
+     * 평점을 기준으로 상위 메뉴를 가져온다.
+     * @param limit 가져올 메뉴의 수
+     * @return 상위 메뉴 목록
+     */
+    List<ProductWithComment> selectTopProductsByRating(int limit);
 }
