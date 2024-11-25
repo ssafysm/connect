@@ -1,6 +1,10 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main
 
+import android.content.Context
 import android.location.Location
+import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.smartstore_jetpack.domain.model.Alarm
@@ -51,6 +55,11 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectUiSta
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiState
+import com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChatApi
+import com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChatMessage
+import com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingClickListener
+import com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingUiEvent
+import com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.coupon.CouponUiState
@@ -124,7 +133,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
     InformationClickListener, PasswordClickListener, CouponClickListener,
-    CouponDetailClickListener {
+    CouponDetailClickListener, ChattingClickListener {
 
     /****** Edit Text ******/
     /*** Login ***/
@@ -191,6 +200,101 @@ class MainViewModel @Inject constructor(
     private val _alarms = MutableStateFlow<List<Alarm>>(emptyList())
     val alarms = _alarms.asStateFlow()
 
+    /*** Chatting ***/
+    private val _chatMessage = MutableStateFlow<String>("")
+    val chatMessage = _chatMessage
+
+    private val _chatList = MutableLiveData<MutableList<ChatMessage>>(mutableListOf())
+    val chatList: LiveData<MutableList<ChatMessage>> = _chatList
+
+    private val _chattings = MutableStateFlow<List<ChatMessage>>(listOf())
+    val chattings = _chattings.asStateFlow()
+
+    private val _imageUri = MutableLiveData<Uri?>(null)
+    val imageUri: LiveData<Uri?> = _imageUri
+
+    private val _chatImageUri = MutableStateFlow<Uri?>(null)
+    val chatImageUri = _chatImageUri.asStateFlow()
+
+    override fun onClickMenuChatting() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickOrderChatting() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickShopChatting() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickPlanChatting() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickSendChatting() {
+        viewModelScope.launch {
+            when (_chatMessage.value.isBlank() && _imageUri.value == null) {
+                true -> _chattingUiEvent.emit(ChattingUiEvent.SendMessageFail)
+
+                else -> _chattingUiEvent.emit(ChattingUiEvent.SendMessage)
+            }
+        }
+    }
+
+    override fun onClickImageChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.SelectImage)
+        }
+    }
+
+    fun validateChatMessage(chatMessage: String) {
+        when (chatMessage.isBlank()) {
+            true -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.NONE) }
+
+            else -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.VALID) }
+        }
+    }
+
+    fun setImageUri(uri: Uri?) {
+        _imageUri.value = uri
+    }
+
+    fun sendMessage(context: Context) {
+        viewModelScope.launch {
+            val newMessage = ChatMessage(
+                text = _chatMessage.value,
+                imageUri = _chatImageUri.value,
+                isSender = true,
+                senderName = _user.value?.user?.name ?: ""
+            )
+            addMessage(newMessage)
+
+            try {
+                val response = ChatApi.sendMessage(context, _chatMessage.value, _chatImageUri.value, _user.value?.user?.name ?: "")
+                addMessage(response)
+                _chatMessage.value = ""
+                _chatImageUri.value = null
+                _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.NONE) }
+            } catch (e: Exception) {
+                addMessage(
+                    ChatMessage(
+                        text = "Error: ${e.message}",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "System"
+                    )
+                )
+            }
+        }
+    }
+
+    private fun addMessage(message: ChatMessage) {
+        _chattings.value = _chattings.value.toMutableList().apply {
+            add(message)
+        }
+    }
+
     /*** Coupon ***/
     private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
     val selectedCoupon = _selectedCoupon.asStateFlow()
@@ -238,6 +342,8 @@ class MainViewModel @Inject constructor(
     val myPosition = _myPosition.asStateFlow()
 
     /****** Ui State ******/
+    private val _chattingUiState = MutableStateFlow<ChattingUiState>(ChattingUiState())
+    val chattingUiState = _chattingUiState.asStateFlow()
 
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState())
     val loginUiState = _loginUiState.asStateFlow()
@@ -296,6 +402,9 @@ class MainViewModel @Inject constructor(
     /****** Ui Event ******/
     private val _homeUiEvent = MutableSharedFlow<HomeUiEvent>()
     val homeUiEvent = _homeUiEvent.asSharedFlow()
+
+    private val _chattingUiEvent = MutableSharedFlow<ChattingUiEvent>()
+    val chattingUiEvent = _chattingUiEvent.asSharedFlow()
 
     private val _loginUiEvent = MutableSharedFlow<LoginUiEvent>()
     val loginUiEvent = _loginUiEvent.asSharedFlow()

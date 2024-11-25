@@ -13,6 +13,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 object ChatApi {
+
 	private const val API_URL = "https://api.openai.com/v1/chat/completions"
 	private const val API_KEY = "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"
 

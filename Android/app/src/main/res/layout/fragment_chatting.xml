@@ -3,72 +3,158 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
-            name="viewModel"
-            type="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingViewModel" />
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChatAdapter" />
+
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rootLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/welcomeMessage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="안녕하세요, 유저님!"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_chatting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chatRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="8dp"
-            app:layout_constraintTop_toBottomOf="@id/welcomeMessage"
-            app:layout_constraintBottom_toTopOf="@id/inputContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/inputContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <EditText
-                android:id="@+id/chatInput"
+            <TextView
+                android:id="@+id/tv_title_greeting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionSend"
-                android:hint="메시지를 입력하세요..."
-                android:padding="8dp" />
+                android:fontFamily="@font/pretendardsemibold"
+                android:padding="@dimen/margin_padding_regular"
+                android:textSize="@dimen/font_size_regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageUpload"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:contentDescription="이미지 업로드"
-                android:src="@drawable/coffee1" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_chatting"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:adapter="@{adapter}"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/cl_bottom_chatting"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_greeting"
+                app:submitData="@{vm.chattings}" />
 
-            <Button
-                android:id="@+id/sendButton"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_bottom_chatting"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="전송" />
-        </LinearLayout>
+                android:padding="@dimen/margin_padding_regular"
+                app:bottomSheetCustomTheme="@{vm.appThemeName}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_menu_chat"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/margin_padding_smaller"
+                    android:layout_marginBottom="@dimen/margin_padding_regular"
+                    app:layout_constraintBottom_toTopOf="@id/et_chatting"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/btn_order_chat"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_order_chat"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/margin_padding_smaller"
+                    android:layout_marginEnd="@dimen/margin_padding_smaller"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/btn_shop_chat"
+                    app:layout_constraintStart_toEndOf="@id/btn_menu_chat"
+                    app:layout_constraintTop_toTopOf="@id/btn_menu_chat" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_shop_chat"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/margin_padding_smaller"
+                    android:layout_marginEnd="@dimen/margin_padding_smaller"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toStartOf="@id/btn_plan_chat"
+                    app:layout_constraintStart_toEndOf="@id/btn_order_chat"
+                    app:layout_constraintTop_toTopOf="@id/btn_menu_chat" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_plan_chat"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/margin_padding_smaller"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_menu_chat"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_shop_chat"
+                    app:layout_constraintTop_toTopOf="@id/btn_menu_chat" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_chatting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_padding_small"
+                    android:background="@drawable/shape_comment"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:imeOptions="actionSend"
+                    android:inputType="text"
+                    android:onTextChanged="@{(chatMessage, s, b, c) -> vm.validateChatMessage(chatMessage)}"
+                    android:text="@={vm.chatMessage}"
+                    android:textColor="@color/neutral_70"
+                    android:textSize="@dimen/font_size_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_chatting"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_chatting"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="이미지 업로드"
+                    android:src="@drawable/chatbot"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_submit_chatting"
+                    app:layout_constraintStart_toEndOf="@id/et_chatting" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_submit_chatting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_small"
+                    android:enabled="@{vm.chattingUiState.isSubmitBtnEnable}"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:onClick="@{() -> vm.onClickSendChatting()}"
+                    android:text="전송"
+                    android:textColor="@color/neutral_100"
+                    android:textSize="@dimen/font_size_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_chatting" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </layout>
