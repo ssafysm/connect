@@ -62,9 +62,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.vpTodayEventHome.adapter = EventAdapter()
         binding.vpTodayEventHome.offscreenPageLimit = 5
         binding.vpTodayEventHome.setPageTransformer { page, position ->
-            val scaleFactor = 0.85F + (1 - abs(position)) * 0.15F
-            page.scaleX = scaleFactor
-            page.scaleY = scaleFactor
+//            val scaleFactor = 0.85F + (1 - abs(position)) * 0.15F
+//            page.scaleX = scaleFactor
+//            page.scaleY = scaleFactor
+            page.scaleY = if (position == 0f) 1f else 0.85f
+            page.scaleX = if (position == 0f) 1f else 0.85f
             page.alpha = 0.8F + (1 - abs(position)) * 0.2F
         }
         pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {

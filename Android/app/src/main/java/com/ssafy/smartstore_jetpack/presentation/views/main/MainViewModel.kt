@@ -1023,7 +1023,7 @@ class MainViewModel @Inject constructor(
             _selectedCoupon.value = null
             _selectedCoupon.value = coupon
             _selectedCouponMenu.value = null
-            val response = getProductUseCase.getProductWithComment(coupon.menuCount.toInt())
+            val response = getProductUseCase.getProductWithComment(coupon.menuId.toInt())
 
             when (response.status) {
                 Status.SUCCESS -> {
