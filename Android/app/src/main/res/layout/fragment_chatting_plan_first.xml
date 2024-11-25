@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundCustomSubTheme="@{vm.appThemeName}"
+            tools:context=".presentation.views.main.chatting.ChattingPlanFirstFragment">
+
+            <TextView
+                android:id="@+id/tv_title_chatting_plan_first"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_regular"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="플랜 체크 강도를 선택하세요."
+                android:textColor="@color/neutral_100"
+                android:textSize="@dimen/font_size_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_chatting_plan_first"
+                android:layout_width="@dimen/btn_cancel_size"
+                android:layout_height="@dimen/btn_cancel_size"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:src="@drawable/ic_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcv_first_chatting_plan_first"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_padding_regular"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_small"
+                android:layout_marginBottom="@dimen/margin_padding_regular"
+                android:onClick="@{() -> vm.onClickPlanGradeFirstChatting()}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/mcv_second_chatting_plan_first"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_chatting_plan_first">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="알람 필요 없음"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcv_second_chatting_plan_first"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_padding_small"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_small"
+                android:layout_marginBottom="@dimen/margin_padding_regular"
+                android:onClick="@{() -> vm.onClickPlanGradeSecondChatting()}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/mcv_third_chatting_plan_first"
+                app:layout_constraintStart_toEndOf="@id/mcv_first_chatting_plan_first"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_chatting_plan_first">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="1시간"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcv_third_chatting_plan_first"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_padding_small"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:layout_marginBottom="@dimen/margin_padding_regular"
+                android:onClick="@{() -> vm.onClickPlanGradeThirdChatting()}"
+                app:cardCornerRadius="@dimen/card_view_radius"
+                app:cardElevation="@dimen/card_view_elevation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/mcv_second_chatting_plan_first"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_chatting_plan_first">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backgroundCustomTheme="@{vm.appThemeName}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_padding_small"
+                        android:fontFamily="@font/pretendardsemibold"
+                        android:text="30분"
+                        android:textAlignment="center"
+                        android:textColor="@color/neutral_100"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

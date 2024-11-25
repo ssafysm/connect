@@ -39,7 +39,9 @@
         android:label="Chatting"
         tools:layout="@layout/fragment_chatting">
 
-
+        <action
+            android:id="@+id/action_chatting_to_plan_first"
+            app:destination="@id/fragment_chatting_plan_first" />
 
     </fragment>
 
@@ -248,7 +250,7 @@
         android:id="@+id/fragment_shop_select_bottom_sheet_dialog"
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectBottomSheetDialogFragment"
         android:label="Shop Select"
-        tools:layout="@layout/fragment_shop_select_bottom_sheet_dialog" >
+        tools:layout="@layout/fragment_shop_select_bottom_sheet_dialog">
 
         <action
             android:id="@+id/action_shop_select_to_shop_dialog"
@@ -277,5 +279,23 @@
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.RatingDialogFragment"
         android:label="Rating Dialog"
         tools:layout="@layout/fragment_rating_dialog" />
+
+    <dialog
+        android:id="@+id/fragment_chatting_plan_first"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingPlanFirstFragment"
+        android:label="Chatting Plan First"
+        tools:layout="@layout/fragment_chatting_plan_first">
+
+        <action
+            android:id="@+id/action_plan_first_to_second"
+            app:destination="@id/fragment_chatting_plan_second" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/fragment_chatting_plan_second"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingPlanSecondFragment"
+        android:label="Chatting Plan Second"
+        tools:layout="@layout/fragment_chatting_plan_second" />
 
 </navigation>

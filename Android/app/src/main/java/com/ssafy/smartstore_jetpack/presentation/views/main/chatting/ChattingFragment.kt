@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentChattingBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
@@ -15,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment_chatting) {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let { viewModel.setImageUri(it) }
@@ -33,8 +35,7 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
 
         // 추가적으로 생각해야 할 것
         // 1. 채팅 올라올 때마다 스크롤 내리기
-        // 2. 아이디에 따른 인사 메시지 변경
-        // 3. 키보드 동작 관리
+        // 2. 키보드 동작 관리
     }
 
     override fun onResume() {
@@ -48,8 +49,8 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
         binding.rvChatting.apply {
 
             addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-                if (binding.adapter.itemCount > 0) {
-                    scrollToPosition(binding.adapter.itemCount - 1)
+                if ((binding.adapter as ChatAdapter).itemCount > 0) {
+                    scrollToPosition((binding.adapter as ChatAdapter).itemCount - 1)
                 }
             }
         }
@@ -80,5 +81,23 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
         is ChattingUiEvent.SendMessage -> {
             viewModel.sendMessage(requireContext())
         }
+
+        is ChattingUiEvent.GoToMenu -> {
+            showToastMessage("준비중인 메뉴에요.")
+        }
+
+        is ChattingUiEvent.GoToOrder -> {
+            showToastMessage("준비중인 메뉴에요.")
+        }
+
+        is ChattingUiEvent.GoToShop -> {
+            showToastMessage("준비중인 메뉴에요.")
+        }
+
+        is ChattingUiEvent.GoToPlan -> {
+            findNavController().navigateSafely(R.id.action_chatting_to_plan_first)
+        }
+
+        else -> {}
     }
 }

@@ -190,5 +190,7 @@
     <string name="text_title_coupon_detail">쿠폰 상세 정보</string>
     <string name="text_iat_coupon_detail">부터</string>
     <string name="text_exp_coupon_detail">까지</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.ApplicationClass
 import com.ssafy.smartstore_jetpack.domain.model.Grade
+import com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiState
@@ -437,6 +438,30 @@ fun Button.bindEnableCustomThemeInMenuDetail(
     appThemeName: String
 ) {
     when (menuDetailUiState.isEnrollBtnEnable) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+                "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+                "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+                "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+                else -> setBackgroundResource(R.drawable.shape_background_sub)
+            }
+        }
+
+        else -> setBackgroundResource(R.drawable.button_disabled)
+    }
+}
+
+@BindingAdapter("app:enableChatting", "app:enableChattingCustomTheme")
+fun Button.bindEnableCustomThemeInChatting(
+    chattingUiState: ChattingUiState,
+    appThemeName: String
+) {
+    when (chattingUiState.isSubmitBtnEnable) {
         true -> {
             when (appThemeName) {
                 "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)

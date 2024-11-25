@@ -216,20 +216,88 @@ class MainViewModel @Inject constructor(
     private val _chatImageUri = MutableStateFlow<Uri?>(null)
     val chatImageUri = _chatImageUri.asStateFlow()
 
+    private val _planGrade = MutableStateFlow<Int>(0)
+    val planGrade = _planGrade.asStateFlow()
+
+    private val _imagePlan = MutableStateFlow<Uri?>(null)
+    val imagePlan = _imagePlan.asStateFlow()
+
+    private val _textPlan = MutableStateFlow<String>("")
+    val textPlan = _textPlan
+
+    override fun onClickVisibleChatting() {
+        viewModelScope.launch {
+            when (_chattingUiState.value.isFourButtonsVisible) {
+                true -> _chattingUiState.update { it.copy(buttonsValidateState = InputValidState.NONE) }
+
+                else -> _chattingUiState.update { it.copy(buttonsValidateState = InputValidState.VALID) }
+            }
+        }
+    }
+
+    /*** Chatting ***/
     override fun onClickMenuChatting() {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToMenu)
+        }
     }
 
     override fun onClickOrderChatting() {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToOrder)
+        }
     }
 
     override fun onClickShopChatting() {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToShop)
+        }
     }
 
     override fun onClickPlanChatting() {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan)
+        }
+    }
+
+    override fun onClickPlanGradeFirstChatting() {
+        viewModelScope.launch {
+            _planGrade.value = 0
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlanGradeSecondChatting() {
+        viewModelScope.launch {
+            _planGrade.value = 1
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlanGradeThirdChatting() {
+        viewModelScope.launch {
+            _planGrade.value = 2
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlan2Chatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlanImageChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlanImage)
+        }
+    }
+
+    override fun onClickPlanTextChatting() {
+        viewModelScope.launch {
+            _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.VALID) }
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlanText)
+        }
     }
 
     override fun onClickSendChatting() {
@@ -237,7 +305,10 @@ class MainViewModel @Inject constructor(
             when (_chatMessage.value.isBlank() && _imageUri.value == null) {
                 true -> _chattingUiEvent.emit(ChattingUiEvent.SendMessageFail)
 
-                else -> _chattingUiEvent.emit(ChattingUiEvent.SendMessage)
+                else -> {
+                    _chattingUiState.update { it.copy(isSendValidState = InputValidState.NONE) }
+                    _chattingUiEvent.emit(ChattingUiEvent.SendMessage)
+                }
             }
         }
     }
@@ -248,7 +319,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun validateChatMessage(chatMessage: String) {
+    fun validateChatMessage(chatMessage: CharSequence) {
         when (chatMessage.isBlank()) {
             true -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.NONE) }
 
@@ -257,7 +328,11 @@ class MainViewModel @Inject constructor(
     }
 
     fun setImageUri(uri: Uri?) {
-        _imageUri.value = uri
+        _chatImageUri.value = uri
+    }
+
+    fun setImagePlanUri(uri: Uri?) {
+        _imagePlan.value = uri
     }
 
     fun sendMessage(context: Context) {
@@ -271,11 +346,21 @@ class MainViewModel @Inject constructor(
             addMessage(newMessage)
 
             try {
-                val response = ChatApi.sendMessage(context, _chatMessage.value, _chatImageUri.value, _user.value?.user?.name ?: "")
+                val response = ChatApi.sendMessage(
+                    context,
+                    _chatMessage.value,
+                    _chatImageUri.value,
+                    _user.value?.user?.name ?: ""
+                )
                 addMessage(response)
                 _chatMessage.value = ""
                 _chatImageUri.value = null
-                _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.NONE) }
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID
+                    )
+                }
             } catch (e: Exception) {
                 addMessage(
                     ChatMessage(
@@ -1634,7 +1719,8 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun getAlarmReceiveMode(): Flow<Boolean> = flow {
-        val alarmReceiveMode = getAlarmReceiveModeUseCase.getAlarmReceiveMode().firstOrNull() ?: false
+        val alarmReceiveMode =
+            getAlarmReceiveModeUseCase.getAlarmReceiveMode().firstOrNull() ?: false
         emit(alarmReceiveMode)
     }
 

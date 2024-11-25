@@ -7,4 +7,20 @@ sealed class ChattingUiEvent {
     data object SendMessageFail : ChattingUiEvent()
 
     data object SendMessage : ChattingUiEvent()
+
+    data object GoToMenu : ChattingUiEvent()
+
+    data object GoToOrder : ChattingUiEvent()
+
+    data object GoToShop : ChattingUiEvent()
+
+    data object GoToPlan : ChattingUiEvent()
+
+    data object GoToPlan2 : ChattingUiEvent()
+
+    data object GoToPlanImage : ChattingUiEvent()
+
+    data object GoToPlanText : ChattingUiEvent()
+
+    data object SubmitPlanFinish : ChattingUiEvent()
 }

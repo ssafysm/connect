@@ -13,7 +13,7 @@ import com.ssafy.smartstore_jetpack.databinding.ItemChatUserBinding
 
 class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) {
 
-	inner class UserViewHolder(private val binding: ItemChatUserBinding) :
+	class UserViewHolder(private val binding: ItemChatUserBinding) :
 		RecyclerView.ViewHolder(binding.root) {
 
 		fun bind(chat: ChatMessage) {
@@ -34,7 +34,7 @@ class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) 
 		}
 	}
 
-	inner class GptViewHolder(private val binding: ItemChatGptBinding) :
+	class GptViewHolder(private val binding: ItemChatGptBinding) :
 		RecyclerView.ViewHolder(binding.root) {
 
 		fun bind(chat: ChatMessage) {
