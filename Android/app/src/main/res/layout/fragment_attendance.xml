@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendardbold"
-            android:text="출석"
+            android:text="@string/text_attendance"
             android:textColor="@color/neutral_100"
             android:textSize="@dimen/font_size_title"
             app:layout_constraintEnd_toStartOf="@id/gl_end_attendance"

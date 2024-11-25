@@ -3,10 +3,13 @@ package com.ssafy.smartstore_jetpack.app
 import android.Manifest
 import android.app.Application
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @HiltAndroidApp
 class ApplicationClass : Application() {
 
@@ -17,7 +20,6 @@ class ApplicationClass : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Firebase 초기화
         FirebaseApp.initializeApp(this)
 
         sharedPreferencesUtil = SharedPreferencesUtil(myContext())
@@ -27,7 +29,7 @@ class ApplicationClass : Application() {
 
     companion object {
 
-//        const val SERVER_URL = "http://mobile-pjt.sample.ssafy.io/"
+        // const val SERVER_URL = "http://mobile-pjt.sample.ssafy.io/"
 
         // JW 서버 주소
         // const val SERVER_URL = "http://192.168.33.129:9987/"

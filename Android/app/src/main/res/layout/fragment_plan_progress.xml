@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundCustomSubTheme="@{vm.appThemeName}"
+            tools:context=".presentation.views.main.chatting.PlanProgressFragment">
+
+            <TextView
+                android:id="@+id/tv_title_chatting_plan_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_regular"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:fontFamily="@font/pretendardsemibold"
+                android:text="@string/text_need_plan_progress"
+                android:textColor="@color/neutral_100"
+                android:textSize="@dimen/font_size_normal"
+                app:layout_constraintEnd_toStartOf="@id/iv_chatting_plan_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_chatting_plan_progress"
+                android:layout_width="@dimen/btn_cancel_size"
+                android:layout_height="@dimen/btn_cancel_size"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:src="@drawable/ic_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_chatting_plan_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_padding_regular"
+                android:layout_marginTop="@dimen/margin_padding_less_larger"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:background="@drawable/shape_comment"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionSend"
+                android:inputType="text"
+                android:onTextChanged="@{(textPlanProgress, s, b, c) -> vm.validateTextPlanProgress(textPlanProgress)}"
+                android:text="@={vm.textPlanProgress}"
+                android:textColor="@color/neutral_70"
+                android:textSize="@dimen/font_size_regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_chatting_plan_progress"
+                app:normalEditText="@{vm.appThemeName}" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_submit_chatting_plan_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_regular"
+                android:layout_marginEnd="@dimen/margin_padding_regular"
+                android:layout_marginBottom="@dimen/margin_padding_regular"
+                android:enabled="@{vm.chattingUiState.isPlanProgressBtnEnable}"
+                android:fontFamily="@font/pretendardsemibold"
+                android:onClick="@{() -> vm.onClickPlanProgressSubmitChatting()}"
+                android:text="@string/text_send"
+                android:textColor="@color/neutral_100"
+                android:textSize="@dimen/font_size_regular"
+                app:enablePlanProgress="@{vm.chattingUiState}"
+                app:enablePlanProgressCustomTheme="@{vm.appThemeName}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_chatting_plan_progress" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

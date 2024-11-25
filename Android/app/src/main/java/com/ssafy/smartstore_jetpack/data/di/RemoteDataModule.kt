@@ -2,6 +2,7 @@ package com.ssafy.smartstore_jetpack.data.di
 
 import com.ssafy.smartstore_jetpack.data.api.AlarmApi
 import com.ssafy.smartstore_jetpack.data.api.AttendanceApi
+import com.ssafy.smartstore_jetpack.data.api.ChatApi
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
 import com.ssafy.smartstore_jetpack.data.api.CouponApi
 import com.ssafy.smartstore_jetpack.data.api.EventApi
@@ -13,6 +14,8 @@ import com.ssafy.smartstore_jetpack.data.repository.alarm.AlarmRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.alarm.AlarmRemoteDataSourceImpl
 import com.ssafy.smartstore_jetpack.data.repository.attendance.AttendanceRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.attendance.AttendanceRemoteDataSourceImpl
+import com.ssafy.smartstore_jetpack.data.repository.chat.ChatRemoteDataSource
+import com.ssafy.smartstore_jetpack.data.repository.chat.ChatRemoteDataSourceImpl
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSource
 import com.ssafy.smartstore_jetpack.data.repository.comment.CommentRemoteDataSourceImpl
 import com.ssafy.smartstore_jetpack.data.repository.coupon.CouponRemoteDataSource
@@ -83,6 +86,12 @@ object RemoteDataModule {
     @Singleton
     fun provideAlarmRemoteDataSource(couponApi: AlarmApi): AlarmRemoteDataSource {
         return AlarmRemoteDataSourceImpl(couponApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatRemoteDataSource(chatApi: ChatApi): ChatRemoteDataSource {
+        return ChatRemoteDataSourceImpl(chatApi)
     }
 
     @Provides

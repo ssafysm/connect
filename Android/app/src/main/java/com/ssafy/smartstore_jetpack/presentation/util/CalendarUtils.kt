@@ -1,16 +1,17 @@
 package com.ssafy.smartstore_jetpack.presentation.util
 
+import android.os.Build
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.app.ApplicationClass
 import java.util.Calendar
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 object CalendarUtils {
 
     const val DAYS_PER_WEEK = 7
     const val WEEKS_PER_MONTH = 6 + 1
-
-    private val dateFormatConverter = DateFormatConverter()
 
     fun getDaysOfMonth(year: Int, month: Int, attendances: List<Boolean>): List<Pair<Int, Boolean>> {
         val result = MutableList(42) { Pair(-1, false) }

@@ -28,5 +28,11 @@ interface ChattingClickListener {
 
     fun onClickPlanTextChatting()
 
+    fun onClickPlanImageSubmitChatting()
+
+    fun onClickPlanTextSubmitChatting()
+
     fun onClickPlanTextChattingCancel()
+
+    fun onClickPlanProgressSubmitChatting()
 }

@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.databinding.DataBindingUtil
@@ -76,6 +78,11 @@ abstract class BaseDialogFragment<T : ViewDataBinding>(private val layoutId: Int
 
             window?.setLayout(x, y)
         }
+    }
+
+    protected fun showKeyboard(editText: EditText) {
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
     }
 
     protected fun showToastMessage(message: String) {

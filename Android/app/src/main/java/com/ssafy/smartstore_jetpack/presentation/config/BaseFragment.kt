@@ -81,6 +81,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
 
     private fun setBackPressedCallback() {
         onBackPressedCallback = object : OnBackPressedCallback(true) {
+
             override fun handleOnBackPressed() {
                 requireActivity().supportFragmentManager.popBackStack()
             }

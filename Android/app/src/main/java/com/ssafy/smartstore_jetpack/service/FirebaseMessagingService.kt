@@ -21,23 +21,22 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-
-    private val TAG = "MyFirebaseMessagingService"
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+
         Timber.d("새 FCM 토큰: $token")
 
         // 필요 시 서버에 토큰 업로드
         uploadTokenToServer(token)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
@@ -72,14 +71,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "fcm_channel"
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "FCM 알림",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(
+            channelId,
+            "FCM 알림",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationManager.createNotificationChannel(channel)
 
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -92,7 +89,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(message)
-            .setSmallIcon(R.drawable.cookie) // 알림 아이콘 설정
+            .setSmallIcon(R.drawable.ic_logo) // 알림 아이콘 설정
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()

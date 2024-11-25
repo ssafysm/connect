@@ -29,6 +29,7 @@
     <dimen name="toolbar_button_big">48dp</dimen>
     <dimen name="height_my_page_toolbar">80dp</dimen>
     <dimen name="menu_image_size">100dp</dimen>
+    <dimen name="profile_image_size">200dp</dimen>
 
     <!-- Radius -->
     <dimen name="card_view_small_radius">12dp</dimen>

@@ -63,7 +63,7 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
         }
 
         is ChattingUiEvent.SendMessageFail -> {
-            showToastMessage("메시지나 이미지를 입력하세요.")
+            showToastMessage(getString(R.string.message_need_message_or_image))
         }
 
         is ChattingUiEvent.SendMessage -> {
@@ -71,15 +71,15 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
         }
 
         is ChattingUiEvent.GoToMenu -> {
-            showToastMessage("준비중인 메뉴에요.")
+            showToastMessage(getString(R.string.message_preparing_menu))
         }
 
         is ChattingUiEvent.GoToOrder -> {
-            showToastMessage("준비중인 메뉴에요.")
+            showToastMessage(getString(R.string.message_preparing_menu))
         }
 
         is ChattingUiEvent.GoToShop -> {
-            showToastMessage("준비중인 메뉴에요.")
+            findNavController().navigateSafely(R.id.action_chatting_to_plan_progress)
         }
 
         is ChattingUiEvent.GoToPlan -> {

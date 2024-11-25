@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="@dimen/margin_padding_small">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,10 +37,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardregular"
-                android:paddingStart="12dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="24dp"
+                android:paddingStart="@dimen/margin_padding_less_smaller"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:paddingEnd="@dimen/margin_padding_less_smaller"
+                android:paddingBottom="@dimen/margin_padding_normal"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/neutral_70"
                 android:textSize="@dimen/font_size_small"
@@ -48,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/chatImage"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="@dimen/profile_image_size"
+                android:layout_height="@dimen/profile_image_size"
                 android:scaleType="centerCrop"
                 android:visibility="gone" />
 
@@ -57,9 +57,9 @@
 
         <ImageView
             android:id="@+id/chatIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/toolbar_button_big"
+            android:layout_height="@dimen/toolbar_button_big"
+            android:layout_marginStart="@dimen/margin_padding_small"
             android:src="@drawable/ic_profile" />
 
     </LinearLayout>

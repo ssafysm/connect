@@ -43,6 +43,10 @@
             android:id="@+id/action_chatting_to_plan_first"
             app:destination="@id/fragment_chatting_plan_first" />
 
+        <action
+            android:id="@+id/action_chatting_to_plan_progress"
+            app:destination="@id/fragment_chatting_plan_progress" />
+
     </fragment>
 
     <fragment
@@ -307,5 +311,11 @@
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.ChattingPlanSecondFragment"
         android:label="Chatting Plan Second"
         tools:layout="@layout/fragment_chatting_plan_second" />
+
+    <dialog
+        android:id="@+id/fragment_chatting_plan_progress"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.chatting.PlanProgressFragment"
+        android:label="Plan Progress"
+        tools:layout="@layout/fragment_plan_progress" />
 
 </navigation>

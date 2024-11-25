@@ -68,7 +68,15 @@ object ChatApi {
 
 				val response = client.newCall(request).execute()
 				if (!response.isSuccessful) {
-					throw Exception("API Error: ${response.code}")
+					when (response.code) {
+						429 -> {
+							throw Exception("API 한도 초과입니다.")
+						}
+
+						else -> {
+							throw Exception("오류가 있습니다.")
+						}
+					}
 				}
 
 				val responseBody = response.body?.string() ?: throw Exception("Empty response")
@@ -87,7 +95,7 @@ object ChatApi {
 			} catch (e: Exception) {
 				e.printStackTrace()
 				ChatMessage(
-					text = "Error: ${e.message}",
+					text = e.message.toString(),
 					imageUri = null,
 					isSender = false,
 					senderName = "System"
@@ -96,10 +104,11 @@ object ChatApi {
 		}
 	}
 
-	private fun encodeImageToBase64(context: Context, imageUri: Uri): String {
+	fun encodeImageToBase64(context: Context, imageUri: Uri): String {
 		val inputStream = context.contentResolver.openInputStream(imageUri)
 		val bytes = inputStream?.readBytes() ?: ByteArray(0)
 		inputStream?.close()
+
 		return "data:image/jpeg;base64,${Base64.encodeToString(bytes, Base64.NO_WRAP)}"
 	}
 }

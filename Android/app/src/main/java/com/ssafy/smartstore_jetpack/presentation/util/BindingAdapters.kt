@@ -2,12 +2,12 @@ package com.ssafy.smartstore_jetpack.presentation.util
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -15,10 +15,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -37,40 +35,10 @@ import com.ssafy.smartstore_jetpack.presentation.views.main.join.JoinUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.login.LoginUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.menudetail.MenuDetailUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.password.PasswordUiState
-import timber.log.Timber
 
+/*** ConstraintLayout ***/
 @BindingAdapter("app:backgroundCustomTheme")
 fun ConstraintLayout.bindBackgroundColor(appThemeName: String) {
-    when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
-
-        "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
-
-        "여름" -> setBackgroundColor(resources.getColor(R.color.summer_primary, context.theme))
-
-        "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
-
-        "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
-    }
-}
-
-@BindingAdapter("app:nestedScrollViewCustomTheme")
-fun NestedScrollView.bindNestedScrollViewBackgroundColor(appThemeName: String) {
-    when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
-
-        "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
-
-        "여름" -> setBackgroundColor(resources.getColor(R.color.summer_primary, context.theme))
-
-        "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
-
-        "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
-    }
-}
-
-@BindingAdapter("app:frameLayoutCustomTheme")
-fun FrameLayout.bindFrameLayoutBackgroundColor(appThemeName: String) {
     when (appThemeName) {
         "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
 
@@ -99,6 +67,29 @@ fun ConstraintLayout.bindSubBackgroundColor(appThemeName: String?) {
     }
 }
 
+@BindingAdapter("app:chattingMenuButtonCustomTheme", "app:enabledCardView")
+fun ConstraintLayout.bindChattingMenuButton(appThemeName: String?, isEnabled: Boolean) {
+    when (isEnabled) {
+        true -> {
+            when (appThemeName) {
+                "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
+
+                "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
+
+                "여름" -> setBackgroundColor(resources.getColor(R.color.summer_primary, context.theme))
+
+                "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
+
+                "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
+            }
+        }
+
+        else -> {
+            setBackgroundResource(R.drawable.button_disabled)
+        }
+    }
+}
+
 @BindingAdapter("app:bottomSheetCustomTheme")
 fun ConstraintLayout.bindBottomSheetCustomTheme(appThemeName: String) {
     when (appThemeName) {
@@ -114,6 +105,7 @@ fun ConstraintLayout.bindBottomSheetCustomTheme(appThemeName: String) {
     }
 }
 
+/*** ImageView ***/
 @BindingAdapter("app:noticeCustomTheme")
 fun ImageView.bindNoticeBackground(appThemeName: String) {
     when (appThemeName) {
@@ -157,6 +149,68 @@ fun ImageView.bindGradeAsTitle(title: String?) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@BindingAdapter("app:photoUrl")
+fun ImageView.bindImage(src: String?) {
+    if (!src.isNullOrEmpty()) {
+        load("${ApplicationClass.MENU_IMGS_URL}$src") {
+            transformations(RoundedCornersTransformation(15F))
+        }
+    } else {
+        this.setImageResource(R.drawable.logo)
+    }
+}
+
+@BindingAdapter("app:eventImage")
+fun ImageView.bindEventImage(src: String?) {
+    if (!src.isNullOrEmpty()) {
+        load(src) {
+            transformations(RoundedCornersTransformation(20F))
+        }
+    } else {
+        this.setImageResource(R.drawable.logo)
+    }
+    scaleType = ImageView.ScaleType.CENTER_CROP
+}
+
+@BindingAdapter("app:chatImage")
+fun ImageView.bindChatImage(uri: Uri?) {
+    if (uri != null) {
+        load(uri) {
+            transformations(RoundedCornersTransformation(15F))
+        }
+    } else {
+        this.setImageResource(R.drawable.ic_picker)
+    }
+    scaleType = ImageView.ScaleType.CENTER_CROP
+}
+
+@BindingAdapter("app:homeBanner")
+fun ImageView.bindHomeBanner(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> load(R.drawable.home_banner_spring) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        "여름" -> load(R.drawable.home_banner_summer) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        "가을" -> load(R.drawable.home_banner_autumn) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        "겨울" -> load(R.drawable.home_banner_winter) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+
+        else -> load(R.drawable.home_banner_main) {
+            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
+        }
+    }
+}
+
+/*** TextView ***/
 @BindingAdapter("app:myMessage9Patch")
 fun TextView.bingMyMessage(appThemeName: String?) {
     when (appThemeName) {
@@ -187,6 +241,22 @@ fun TextView.bingOtherMessage(appThemeName: String?) {
     }
 }
 
+@BindingAdapter("app:homeBannerText")
+fun TextView.bindHomeBannerText(appThemeName: String) {
+    when (appThemeName) {
+        "봄" -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
+
+        "여름" -> setTextColor(resources.getColor(R.color.neutral_100, context.theme))
+
+        "가을" -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
+
+        "겨울" -> setTextColor(resources.getColor(R.color.neutral_100, context.theme))
+
+        else -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
+    }
+}
+
+/*** ProgressBar ***/
 @SuppressLint("UseCompatLoadingForDrawables")
 @BindingAdapter("app:progressAsTitle")
 fun ProgressBar.bindProgressAsTitle(grade: Grade?) {
@@ -228,21 +298,7 @@ fun ProgressBar.bindProgressAsTheme(appThemeName: String) {
     drawable?.let { progressDrawable = it }
 }
 
-@BindingAdapter("app:coordinatorCustomTheme")
-fun CoordinatorLayout.bindCoordinatorBackgroundColor(appThemeName: String) {
-    when (appThemeName) {
-        "기본" -> setBackgroundColor(resources.getColor(R.color.main_start, context.theme))
-
-        "봄" -> setBackgroundColor(resources.getColor(R.color.spring_primary, context.theme))
-
-        "여름" -> setBackgroundColor(resources.getColor(R.color.summer_primary, context.theme))
-
-        "가을" -> setBackgroundColor(resources.getColor(R.color.autumn_primary, context.theme))
-
-        "겨울" -> setBackgroundColor(resources.getColor(R.color.winter_primary, context.theme))
-    }
-}
-
+/*** SwitchCompat ***/
 @SuppressLint("UseCompatLoadingForDrawables")
 @BindingAdapter("app:switchCustomTheme")
 fun SwitchCompat.bindSwitchCustomTheme(appThemeName: String) {
@@ -274,6 +330,7 @@ fun SwitchCompat.bindSwitchCustomTheme(appThemeName: String) {
     }
 }
 
+/*** TabLayout ***/
 @BindingAdapter("app:selectTextColor")
 fun TabLayout.bindTextColor(appThemeName: String) {
     val normalTextColor = resources.getColor(R.color.neutral_70, context.theme)
@@ -292,6 +349,7 @@ fun TabLayout.bindTextColor(appThemeName: String) {
     setTabTextColors(normalTextColor, selectedTextColor)
 }
 
+/*** BottomAppBar ***/
 @BindingAdapter("app:bottomNavigationBarCustomTheme")
 fun BottomAppBar.bindBottomBackgroundColor(appThemeName: String) {
     when (appThemeName) {
@@ -312,6 +370,7 @@ fun BottomAppBar.bindBottomBackgroundColor(appThemeName: String) {
     }
 }
 
+/*** FloatingActionButton ***/
 @BindingAdapter("app:fabCustomTheme")
 fun FloatingActionButton.bindFloatingActionButtonBackgroundColor(appThemeName: String) {
     when (appThemeName) {
@@ -332,54 +391,7 @@ fun FloatingActionButton.bindFloatingActionButtonBackgroundColor(appThemeName: S
     }
 }
 
-@BindingAdapter("app:photoUrl")
-fun ImageView.bindImage(src: String?) {
-    if (!src.isNullOrEmpty()) {
-        load("${ApplicationClass.MENU_IMGS_URL}$src") {
-            transformations(RoundedCornersTransformation(15F))
-        }
-    } else {
-        this.setImageResource(R.drawable.logo)
-    }
-}
-
-@BindingAdapter("app:eventImage")
-fun ImageView.bindEventImage(src: String?) {
-    if (!src.isNullOrEmpty()) {
-        load(src) {
-            transformations(RoundedCornersTransformation(20F))
-        }
-    } else {
-        this.setImageResource(R.drawable.logo)
-    }
-    scaleType = ImageView.ScaleType.CENTER_CROP
-}
-
-@BindingAdapter("app:homeBanner")
-fun ImageView.bindHomeBanner(appThemeName: String) {
-    when (appThemeName) {
-        "봄" -> load(R.drawable.home_banner_spring) {
-            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
-        }
-
-        "여름" -> load(R.drawable.home_banner_summer) {
-            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
-        }
-
-        "가을" -> load(R.drawable.home_banner_autumn) {
-            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
-        }
-
-        "겨울" -> load(R.drawable.home_banner_winter) {
-            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
-        }
-
-        else -> load(R.drawable.home_banner_main) {
-            transformations(RoundedCornersTransformation(0F, 0F, 20F, 20F))
-        }
-    }
-}
-
+/*** CardView ***/
 @BindingAdapter("app:homeBannerBackground")
 fun CardView.bindHomeBannerBackground(appThemeName: String) {
     when (appThemeName) {
@@ -395,36 +407,7 @@ fun CardView.bindHomeBannerBackground(appThemeName: String) {
     }
 }
 
-@BindingAdapter("app:countBackground")
-fun CardView.bindCountBackground(appThemeName: String) {
-    when (appThemeName) {
-        "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
-
-        "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
-
-        "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
-
-        "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
-
-        else -> setBackgroundResource(R.drawable.shape_background_sub)
-    }
-}
-
-@BindingAdapter("app:homeBannerText")
-fun TextView.bindHomeBannerText(appThemeName: String) {
-    when (appThemeName) {
-        "봄" -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
-
-        "여름" -> setTextColor(resources.getColor(R.color.neutral_100, context.theme))
-
-        "가을" -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
-
-        "겨울" -> setTextColor(resources.getColor(R.color.neutral_100, context.theme))
-
-        else -> setTextColor(resources.getColor(R.color.neutral_white, context.theme))
-    }
-}
-
+/*** Button ***/
 @BindingAdapter("app:buttonCustomTheme")
 fun Button.bindButtonBackground(appThemeName: String) {
     when (appThemeName) {
@@ -509,6 +492,54 @@ fun Button.bindEnableCustomThemeInChatting(
     }
 }
 
+@BindingAdapter("app:enablePlanText", "app:enablePlanTextCustomTheme")
+fun Button.bindEnableCustomThemeInPlanText(
+    chattingUiState: ChattingUiState,
+    appThemeName: String
+) {
+    when (chattingUiState.isPlanTextBtnEnable) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+                "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+                "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+                "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+                else -> setBackgroundResource(R.drawable.shape_background_sub)
+            }
+        }
+
+        else -> setBackgroundResource(R.drawable.button_disabled)
+    }
+}
+
+@BindingAdapter("app:enablePlanProgress", "app:enablePlanProgressCustomTheme")
+fun Button.bindEnableCustomThemeInPlanProgress(
+    chattingUiState: ChattingUiState,
+    appThemeName: String
+) {
+    when (chattingUiState.isPlanProgressBtnEnable) {
+        true -> {
+            when (appThemeName) {
+                "봄" -> setBackgroundResource(R.drawable.shape_background_spring_sub)
+
+                "여름" -> setBackgroundResource(R.drawable.shape_background_summer_sub)
+
+                "가을" -> setBackgroundResource(R.drawable.shape_background_autumn_sub)
+
+                "겨울" -> setBackgroundResource(R.drawable.shape_background_winter_sub)
+
+                else -> setBackgroundResource(R.drawable.shape_background_sub)
+            }
+        }
+
+        else -> setBackgroundResource(R.drawable.button_disabled)
+    }
+}
+
 @BindingAdapter("app:enableJoin", "app:enableJoinCustomTheme")
 fun Button.bindEnableJoinCustomTheme(joinUiState: JoinUiState, appThemeName: String) {
     when (joinUiState.isJoinBtnEnable) {
@@ -530,6 +561,7 @@ fun Button.bindEnableJoinCustomTheme(joinUiState: JoinUiState, appThemeName: Str
     }
 }
 
+/*** EditText ***/
 @RequiresApi(Build.VERSION_CODES.Q)
 @BindingAdapter("app:normalEditText")
 fun EditText.bindEditTextCustomTheme(appThemeName: String) {
@@ -599,6 +631,7 @@ fun EditText.bindEditTextCustomTheme(appThemeName: String) {
     }
 }
 
+/*** TextInputLayout ***/
 @RequiresApi(Build.VERSION_CODES.Q)
 @SuppressLint("ResourceType")
 @BindingAdapter("app:validateNewId", "app:idCustomTheme")
@@ -875,13 +908,11 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
 
     when (passwordUiState.newPasswordValidState) {
         PasswordState.VALID -> {
-            Timber.d("가능한 비번")
             helperText = "사용해도 좋은 비밀번호에요."
             defaultHintTextColor = ColorStateList.valueOf(hintColor)
         }
 
         PasswordState.NONE -> {
-            Timber.d("비번 안")
             error = "유효한 비밀번호가 아니에요."
             defaultHintTextColor = ColorStateList.valueOf(
                 ContextCompat.getColor(context, R.color.sub_alert)
@@ -889,7 +920,6 @@ fun TextInputLayout.bindPassword(passwordUiState: PasswordUiState, appThemeName:
         }
 
         else -> {
-            Timber.d("비번 없음")
             helperText = ""
             error = ""
             defaultHintTextColor = ColorStateList.valueOf(
@@ -950,6 +980,7 @@ fun TextInputLayout.bindPasswordConfirm(passwordUiState: PasswordUiState, appThe
     }
 }
 
+/*** RecyclerView ***/
 @BindingAdapter("adapter")
 fun RecyclerView.bindAdapter(adapter: RecyclerView.Adapter<*>?) {
     this.adapter = adapter
@@ -970,7 +1001,6 @@ fun <T> RecyclerView.submitDataChatting(items: List<T>?) {
                 viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
                         scrollToPosition(adapter.itemCount - 1)
-                        Timber.d("Scroll Position: ${this@submitDataChatting.scrollState}")
                         this@submitDataChatting.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 })
@@ -988,9 +1018,9 @@ fun <K, V> RecyclerView.submitData(data: HashMap<K, V>?) {
     adapter.submitList(items)
 }
 
+/*** ViewPager2 ***/
 @BindingAdapter("submitDataViewPager")
 fun <T> ViewPager2.submitData(items: List<T>?) {
-    Timber.d("Data submitted: ${items?.size ?: 0}")
     val adapter = this.adapter as? ListAdapter<T, *>
     adapter?.submitList(items ?: emptyList())
 }

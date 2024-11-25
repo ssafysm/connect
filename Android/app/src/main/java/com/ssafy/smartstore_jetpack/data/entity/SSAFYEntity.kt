@@ -276,3 +276,12 @@ data class GPTMenuEntity(
     @Json(name = "success")
     val success: Boolean?
 )
+
+@JsonClass(generateAdapter = true)
+data class GPTPlanEntity(
+    @Json(name = "answer")
+    val answer: String?,
+
+    @Json(name = "success")
+    val success: Boolean?
+)

@@ -17,8 +17,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import kotlin.math.abs
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -104,7 +102,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 val itemCount = viewPager.adapter?.itemCount ?: 1
 
                 if (itemCount > 1) {
-                    Timber.d("Current Event: $currentItem")
                     when (currentItem) {
                         itemCount - 2 -> viewPager.setCurrentItem(1, true)
 

@@ -3,13 +3,12 @@ package com.ssafy.smartstore_jetpack.presentation.views.main
 import android.content.Context
 import android.location.Location
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.smartstore_jetpack.domain.model.Alarm
+import com.ssafy.smartstore_jetpack.domain.model.ChatImageRequest
+import com.ssafy.smartstore_jetpack.domain.model.ChatProgressRequest
+import com.ssafy.smartstore_jetpack.domain.model.ChatTextRequest
 import com.ssafy.smartstore_jetpack.domain.model.Comment
 import com.ssafy.smartstore_jetpack.domain.model.Coupon
 import com.ssafy.smartstore_jetpack.domain.model.Event
@@ -18,7 +17,6 @@ import com.ssafy.smartstore_jetpack.domain.model.OrderDetail
 import com.ssafy.smartstore_jetpack.domain.model.Product
 import com.ssafy.smartstore_jetpack.domain.model.Shop
 import com.ssafy.smartstore_jetpack.domain.model.ShoppingCart
-import com.ssafy.smartstore_jetpack.domain.model.Stamp
 import com.ssafy.smartstore_jetpack.domain.model.Status
 import com.ssafy.smartstore_jetpack.domain.model.User
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
@@ -31,7 +29,6 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCouponUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetEventUseCase
-import com.ssafy.smartstore_jetpack.domain.usecase.GetNoticesUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetOrderUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetProductUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetShopUseCase
@@ -39,8 +36,8 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetUserIdUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetUserUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetAlarmReceiveModeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetAppThemeUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.SetChatUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetCookieUseCase
-import com.ssafy.smartstore_jetpack.domain.usecase.SetNoticesUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetUserIdUseCase
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.deleteComma
 import com.ssafy.smartstore_jetpack.presentation.util.CommonUtils.makeComma
@@ -122,6 +119,7 @@ class MainViewModel @Inject constructor(
     private val getEventUseCase: GetEventUseCase,
     private val getCouponUseCase: GetCouponUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,
+    private val setChatUseCase: SetChatUseCase,
     private val getAttendanceUseCase: GetAttendanceUseCase,
     private val addFcmTokenUseCase: AddFcmTokenUseCase,
     private val getUserIdUseCase: GetUserIdUseCase,
@@ -131,10 +129,7 @@ class MainViewModel @Inject constructor(
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val setAppThemeUseCase: SetAppThemeUseCase,
     private val getAlarmReceiveModeUseCase: GetAlarmReceiveModeUseCase,
-    private val setAlarmReceiveModeUseCase: SetAlarmReceiveModeUseCase,
-    private val getNoticesUseCase: GetNoticesUseCase,
-    private val setNoticesUseCase: SetNoticesUseCase
-
+    private val setAlarmReceiveModeUseCase: SetAlarmReceiveModeUseCase
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
     InformationClickListener, PasswordClickListener, CouponClickListener,
@@ -176,13 +171,22 @@ class MainViewModel @Inject constructor(
     private val _shopSearchKeyword = MutableStateFlow<String>("")
     val shopSearchKeyword = _shopSearchKeyword
 
+    /*** Chatting ***/
+    private val _chatMessage = MutableStateFlow<String>("")
+    val chatMessage = _chatMessage
+
+    private val _textPlan = MutableStateFlow<String>("")
+    val textPlan = _textPlan
+
+    private val _textPlanProgress = MutableStateFlow<String>("")
+    val textPlanProgress = _textPlanProgress
+
     /****** Data ******/
     /*** Init ***/
     private val _user = MutableStateFlow<UserInfo?>(null)
     val user = _user.asStateFlow()
 
     private val _originalProducts = MutableStateFlow<List<List<Product>>>(emptyList())
-    val originalProducts = _originalProducts.asStateFlow()
 
     private val _products = MutableStateFlow<List<List<Product>>>(emptyList())
     val products = _products.asStateFlow()
@@ -194,7 +198,6 @@ class MainViewModel @Inject constructor(
     val orders6Months = _orders6Months.asStateFlow()
 
     private val _shops = MutableStateFlow<List<Shop>>(emptyList())
-    val shops = _shops.asStateFlow()
 
     private val _events = MutableStateFlow<List<Event>>(emptyList())
     val events = _events.asStateFlow()
@@ -214,288 +217,22 @@ class MainViewModel @Inject constructor(
     private val _day = MutableStateFlow<Int>(0)
     val day = _day.asStateFlow()
 
+    private val _chats = MutableStateFlow<List<ChatMessage>>(listOf())
+    val chats = _chats.asStateFlow()
+
     private val _attendances = MutableStateFlow<List<Boolean>>(listOf())
     val attendances = _attendances.asStateFlow()
 
     private val _successiveAttendances = MutableStateFlow<String>("마지막으로 0일 연속 출석중이에요.")
     val successiveAttendances = _successiveAttendances.asStateFlow()
 
-    private fun makeAttendanceMark() {
-        viewModelScope.launch {
-            val today = LocalDateTime.now()
-            _year.value = today.year
-            _month.value = today.monthValue
-            _day.value = today.dayOfMonth
-            getAttendanceUseCase.postAttendanceMark(_user.value?.user?.id ?: "", _year.value, _month.value, _day.value)
-        }
-    }
-
-    private fun getAttendances() {
-        viewModelScope.launch {
-            val response = getAttendanceUseCase.getAttendances(_user.value?.user?.id ?: "", _year.value, _month.value)
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    response.data?.let { attendances ->
-                        _attendances.value = attendances
-                        var successive = 0
-                        for (d in _day.value downTo 1) {
-                            when (_attendances.value[d - 1]) {
-                                true -> successive++
-
-                                else -> break
-                            }
-                        }
-                        _successiveAttendances.value = "마지막으로 ${successive}일 연속 출석중이에요."
-                    }
-                }
-
-                else -> {}
-            }
-        }
-    }
-
     /*** Chatting ***/
-    private val _chatMessage = MutableStateFlow<String>("")
-    val chatMessage = _chatMessage
-
-    private val _chatList = MutableLiveData<MutableList<ChatMessage>>(mutableListOf())
-    val chatList: LiveData<MutableList<ChatMessage>> = _chatList
-
-    private val _chattings = MutableStateFlow<List<ChatMessage>>(listOf())
-    val chattings = _chattings.asStateFlow()
-
-    private val _imageUri = MutableLiveData<Uri?>(null)
-    val imageUri: LiveData<Uri?> = _imageUri
-
     private val _chatImageUri = MutableStateFlow<Uri?>(null)
     val chatImageUri = _chatImageUri.asStateFlow()
 
     private val _planGrade = MutableStateFlow<Int>(0)
-    val planGrade = _planGrade.asStateFlow()
 
     private val _imagePlan = MutableStateFlow<Uri?>(null)
-    val imagePlan = _imagePlan.asStateFlow()
-
-    private val _textPlan = MutableStateFlow<String>("")
-    val textPlan = _textPlan
-
-    /*** Chatting ***/
-    override fun onClickVisibleChatting() {
-        viewModelScope.launch {
-            when (_chattingUiState.value.isFourButtonsVisible) {
-                true -> _chattingUiState.update { it.copy(buttonsValidateState = InputValidState.NONE) }
-
-                else -> _chattingUiState.update { it.copy(buttonsValidateState = InputValidState.VALID) }
-            }
-        }
-    }
-
-    override fun onClickMenuChatting() {
-        viewModelScope.launch {
-            _chattingUiState.update { it.copy(
-                isSendValidState = InputValidState.NONE,
-                chatImageValidState = InputValidState.NONE,
-                buttonsEnableState = InputValidState.NONE
-            ) }
-            addMessage(
-                ChatMessage(
-                    text = "인기 메뉴가 뭔가요?",
-                    imageUri = null,
-                    isSender = true,
-                    senderName = _user.value?.user?.name ?: ""
-                )
-            )
-            val response = getProductUseCase.getProductTop5()
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    Timber.d("성공")
-                    addMessage(
-                        ChatMessage(
-                            text = response.data?.summary ?: "",
-                            imageUri = null,
-                            isSender = false,
-                            senderName = "GPT-4"
-                        )
-                    )
-                    _chattingUiState.update { it.copy(
-                        chatImageValidState = InputValidState.VALID,
-                        buttonsEnableState = InputValidState.VALID,
-                        isSendValidState = when (_chatMessage.value.isBlank()) {
-                            true -> InputValidState.NONE
-
-                            else -> InputValidState.VALID
-                        }
-                    ) }
-                }
-
-                else -> {
-                    Timber.d("실패")
-                    addMessage(
-                        ChatMessage(
-                            text = "오류가 있습니다.",
-                            imageUri = null,
-                            isSender = false,
-                            senderName = "GPT-4"
-                        )
-                    )
-                    _chattingUiState.update { it.copy(
-                        chatImageValidState = InputValidState.VALID,
-                        buttonsEnableState = InputValidState.VALID,
-                        isSendValidState = when (_chatMessage.value.isBlank()) {
-                            true -> InputValidState.NONE
-
-                            else -> InputValidState.VALID
-                        }
-                    ) }
-                }
-            }
-        }
-    }
-
-    override fun onClickOrderChatting() {
-        viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToOrder)
-        }
-    }
-
-    override fun onClickShopChatting() {
-        viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToShop)
-        }
-    }
-
-    override fun onClickPlanChatting() {
-        viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan)
-        }
-    }
-
-    override fun onClickPlanGradeFirstChatting() {
-        viewModelScope.launch {
-            _planGrade.value = 0
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
-        }
-    }
-
-    override fun onClickPlanGradeSecondChatting() {
-        viewModelScope.launch {
-            _planGrade.value = 1
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
-        }
-    }
-
-    override fun onClickPlanGradeThirdChatting() {
-        viewModelScope.launch {
-            _planGrade.value = 2
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
-        }
-    }
-
-    override fun onClickPlan2Chatting() {
-        viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
-        }
-    }
-
-    override fun onClickPlanImageChatting() {
-        viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToPlanImage)
-        }
-    }
-
-    override fun onClickPlanTextChatting() {
-        viewModelScope.launch {
-            _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.VALID) }
-        }
-    }
-
-    override fun onClickPlanTextChattingCancel() {
-        viewModelScope.launch {
-            _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.NONE) }
-        }
-    }
-
-    override fun onClickSendChatting() {
-        viewModelScope.launch {
-            when (_chatMessage.value.isBlank() && _imageUri.value == null) {
-                true -> _chattingUiEvent.emit(ChattingUiEvent.SendMessageFail)
-
-                else -> {
-                    _chattingUiState.update { it.copy(isSendValidState = InputValidState.NONE) }
-                    _chattingUiEvent.emit(ChattingUiEvent.SendMessage)
-                }
-            }
-        }
-    }
-
-    override fun onClickImageChatting() {
-        viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.SelectImage)
-        }
-    }
-
-    fun validateChatMessage(chatMessage: CharSequence) {
-        when (chatMessage.isBlank()) {
-            true -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.NONE) }
-
-            else -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.VALID) }
-        }
-    }
-
-    fun setImageUri(uri: Uri?) {
-        _chatImageUri.value = uri
-    }
-
-    fun setImagePlanUri(uri: Uri?) {
-        _imagePlan.value = uri
-    }
-
-    fun sendMessage(context: Context) {
-        viewModelScope.launch {
-            val newMessage = ChatMessage(
-                text = _chatMessage.value,
-                imageUri = _chatImageUri.value,
-                isSender = true,
-                senderName = _user.value?.user?.name ?: ""
-            )
-            addMessage(newMessage)
-
-            try {
-                val response = ChatApi.sendMessage(
-                    context,
-                    _chatMessage.value,
-                    _chatImageUri.value,
-                    _user.value?.user?.name ?: ""
-                )
-                addMessage(response)
-                _chatMessage.value = ""
-                _chatImageUri.value = null
-                _chattingUiState.update {
-                    it.copy(
-                        chatMessageValidState = InputValidState.NONE,
-                        isSendValidState = InputValidState.VALID
-                    )
-                }
-            } catch (e: Exception) {
-                addMessage(
-                    ChatMessage(
-                        text = "Error: ${e.message}",
-                        imageUri = null,
-                        isSender = false,
-                        senderName = "System"
-                    )
-                )
-            }
-        }
-    }
-
-    private fun addMessage(message: ChatMessage) {
-        _chattings.value = _chattings.value.toMutableList().apply {
-            add(message)
-        }
-    }
 
     /*** Coupon ***/
     private val _selectedCoupon = MutableStateFlow<Coupon?>(null)
@@ -509,7 +246,6 @@ class MainViewModel @Inject constructor(
     val shoppingList = _shoppingList.asStateFlow()
 
     private val _totalOrder = MutableStateFlow<String>("0")
-    val totalOrder = _totalOrder.asStateFlow()
 
     private val _totalPrice = MutableStateFlow<String>("0원")
     val totalPrice = _totalPrice.asStateFlow()
@@ -518,7 +254,6 @@ class MainViewModel @Inject constructor(
     val selectedOrder = _selectedOrder.asStateFlow()
 
     private val _selectedOrderDetails = MutableStateFlow<List<OrderDetail>>(emptyList())
-    val selectedOrderDetails = _selectedOrderDetails.asStateFlow()
 
     /*** Product Detail ***/
     private val _selectedProduct = MutableStateFlow<Product?>(null)
@@ -531,7 +266,6 @@ class MainViewModel @Inject constructor(
     val selectProductCount = _selectProductCount.asStateFlow()
 
     private val _selectProductRating = MutableStateFlow<Float>(5F)
-    val selectProductRating = _selectProductRating.asStateFlow()
 
     /*** Shop ***/
     private val _searchedShops = MutableStateFlow<HashMap<String, Shop>>(hashMapOf())
@@ -541,7 +275,6 @@ class MainViewModel @Inject constructor(
     val selectShop = _selectShop.asStateFlow()
 
     private val _myPosition = MutableStateFlow<Location?>(null)
-    val myPosition = _myPosition.asStateFlow()
 
     /****** Ui State ******/
     private val _chattingUiState = MutableStateFlow<ChattingUiState>(ChattingUiState())
@@ -560,13 +293,10 @@ class MainViewModel @Inject constructor(
     val menuDetailUiState = _menuDetailUiState.asStateFlow()
 
     private val _shoppingListUiState = MutableStateFlow<ShoppingListUiState>(ShoppingListUiState())
-    val shoppingListUiState = _shoppingListUiState.asStateFlow()
 
     private val _myPageUiState = MutableStateFlow<MyPageUiState>(MyPageUiState())
-    val myPageUiState = _myPageUiState.asStateFlow()
 
     private val _couponUiState = MutableStateFlow<CouponUiState>(CouponUiState())
-    val couponUiState = _couponUiState.asStateFlow()
 
     private val _passwordUiState = MutableStateFlow<PasswordUiState>(PasswordUiState())
     val passwordUiState = _passwordUiState.asStateFlow()
@@ -593,10 +323,8 @@ class MainViewModel @Inject constructor(
     val isMapMode = _isMapMode.asStateFlow()
 
     private val _nfcMode = MutableStateFlow<Boolean>(true)
-    val nfcMode = _nfcMode.asStateFlow()
 
     private val _tableNumber = MutableStateFlow<Int>(0)
-    val tableNumber = _tableNumber.asStateFlow()
 
     private val _isIcedMode = MutableStateFlow<Boolean>(false)
     val isIcedMode = _isIcedMode.asStateFlow()
@@ -685,7 +413,7 @@ class MainViewModel @Inject constructor(
                 it.copy(
                     chatMessageValidState = InputValidState.NONE,
                     isSendValidState = InputValidState.VALID,
-                    chatImageValidState = InputValidState.NONE,
+                    chatImageValidState = InputValidState.VALID,
                     buttonsValidateState = InputValidState.NONE,
                     planSecondTextMode = InputValidState.NONE
                 )
@@ -751,6 +479,251 @@ class MainViewModel @Inject constructor(
             }.toList()
             validateShoppingList()
             _homeUiEvent.emit(HomeUiEvent.GoToOrderDetail)
+        }
+    }
+
+    /*** Chatting ***/
+    override fun onClickVisibleChatting() {
+        viewModelScope.launch {
+            when (_chattingUiState.value.isFourButtonsVisible) {
+                true -> _chattingUiState.update { it.copy(buttonsValidateState = InputValidState.NONE) }
+
+                else -> _chattingUiState.update { it.copy(buttonsValidateState = InputValidState.VALID) }
+            }
+        }
+    }
+
+    override fun onClickMenuChatting() {
+        viewModelScope.launch {
+            _chattingUiState.update {
+                it.copy(
+                    isSendValidState = InputValidState.NONE,
+                    chatImageValidState = InputValidState.NONE,
+                    buttonsEnableState = InputValidState.NONE
+                )
+            }
+            addMessage(
+                ChatMessage(
+                    text = "인기 메뉴가 뭔가요?",
+                    imageUri = null,
+                    isSender = true,
+                    senderName = _user.value?.user?.name ?: ""
+                )
+            )
+            addMessage(
+                ChatMessage(
+                    text = "정보를 불러오는 중입니다.",
+                    imageUri = null,
+                    isSender = false,
+                    senderName = "GPT-4"
+                )
+            )
+            val response = getProductUseCase.getProductTop5()
+            _chats.value = _chats.value.toMutableList().apply { removeLast() }.toList()
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    addMessage(
+                        ChatMessage(
+                            text = response.data?.summary ?: "",
+                            imageUri = null,
+                            isSender = false,
+                            senderName = "GPT-4"
+                        )
+                    )
+                    _chattingUiState.update {
+                        it.copy(
+                            chatImageValidState = InputValidState.VALID,
+                            buttonsEnableState = InputValidState.VALID,
+                            isSendValidState = InputValidState.VALID
+                        )
+                    }
+                }
+
+                else -> {
+                    addMessage(
+                        ChatMessage(
+                            text = "오류가 있습니다.",
+                            imageUri = null,
+                            isSender = false,
+                            senderName = "GPT-4"
+                        )
+                    )
+                    _chattingUiState.update {
+                        it.copy(
+                            chatImageValidState = InputValidState.VALID,
+                            buttonsEnableState = InputValidState.VALID,
+                            isSendValidState = InputValidState.VALID
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onClickOrderChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToOrder)
+        }
+    }
+
+    override fun onClickShopChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToShop)
+        }
+    }
+
+    override fun onClickPlanChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan)
+        }
+    }
+
+    override fun onClickPlanGradeFirstChatting() {
+        viewModelScope.launch {
+            _planGrade.value = 0
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlanGradeSecondChatting() {
+        viewModelScope.launch {
+            _planGrade.value = 1
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlanGradeThirdChatting() {
+        viewModelScope.launch {
+            _planGrade.value = 2
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlan2Chatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlan2)
+        }
+    }
+
+    override fun onClickPlanImageChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.GoToPlanImage)
+        }
+    }
+
+    override fun onClickPlanTextChatting() {
+        viewModelScope.launch {
+            _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.VALID) }
+        }
+    }
+
+    override fun onClickPlanImageSubmitChatting() {
+        viewModelScope.launch {
+
+        }
+    }
+
+    override fun onClickPlanTextSubmitChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.SubmitPlanText)
+        }
+    }
+
+    override fun onClickPlanTextChattingCancel() {
+        viewModelScope.launch {
+            _chattingUiState.update { it.copy(planSecondTextMode = InputValidState.NONE) }
+        }
+    }
+
+    override fun onClickSendChatting() {
+        viewModelScope.launch {
+            when (_chatMessage.value.isBlank() && _chatImageUri.value == null) {
+                true -> _chattingUiEvent.emit(ChattingUiEvent.SendMessageFail)
+
+                else -> {
+                    _chattingUiState.update { it.copy(isSendValidState = InputValidState.NONE) }
+                    _chattingUiEvent.emit(ChattingUiEvent.SendMessage)
+                }
+            }
+        }
+    }
+
+    override fun onClickImageChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.SelectImage)
+        }
+    }
+
+    override fun onClickPlanProgressSubmitChatting() {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.SubmitPlanProgress)
+            _chattingUiState.update {
+                it.copy(
+                    isSendValidState = InputValidState.NONE,
+                    chatImageValidState = InputValidState.NONE,
+                    buttonsEnableState = InputValidState.NONE
+                )
+            }
+            addMessage(
+                ChatMessage(
+                    text = "플랜 현황을 보고할게요.",
+                    imageUri = null,
+                    isSender = true,
+                    senderName = _user.value?.user?.name ?: ""
+                )
+            )
+            addMessage(
+                ChatMessage(
+                    text = "플랜 현황을 분석하는 중이에요.",
+                    imageUri = null,
+                    isSender = false,
+                    senderName = "GPT-4"
+                )
+            )
+            try {
+                val response = setChatUseCase.submitProgress(
+                    _user.value?.user?.id ?: "",
+                    ChatProgressRequest(progress = _textPlanProgress.value)
+                )
+                _chats.value = _chats.value.toMutableList().apply { removeLast() }.toList()
+                addMessage(
+                    ChatMessage(
+                        text = response.data?.summary ?: "분석 내용이 존재하지 않아요.",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "GPT-4"
+                    )
+                )
+                _textPlanProgress.value = ""
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                        planProgressValidState = InputValidState.NONE
+                    )
+                }
+                _chattingUiEvent.emit(ChattingUiEvent.SubmitPlanFinish)
+            } catch (e: Exception) {
+                addMessage(
+                    ChatMessage(
+                        text = "Error: ${e.message}",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "System"
+                    )
+                )
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                    )
+                }
+            }
         }
     }
 
@@ -1545,9 +1518,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
 
-                else -> {
-                    Timber.d("${response.data}")
-                }
+                else -> {}
             }
         }
     }
@@ -1565,6 +1536,35 @@ class MainViewModel @Inject constructor(
                 else -> {}
             }
             validateNoticeState()
+        }
+    }
+
+    private fun getAttendances() {
+        viewModelScope.launch {
+            val response = getAttendanceUseCase.getAttendances(
+                _user.value?.user?.id ?: "",
+                _year.value,
+                _month.value
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { attendances ->
+                        _attendances.value = attendances
+                        var successive = 0
+                        for (d in _day.value downTo 1) {
+                            when (_attendances.value[d - 1]) {
+                                true -> successive++
+
+                                else -> break
+                            }
+                        }
+                        _successiveAttendances.value = "마지막으로 ${successive}일 연속 출석중이에요."
+                    }
+                }
+
+                else -> {}
+            }
         }
     }
 
@@ -1631,8 +1631,7 @@ class MainViewModel @Inject constructor(
                 }
             )
 
-            val response = getUserUseCase.updateAppTheme(newUser)
-            Timber.d("테마 바뀌었나요?: ${response.data}")
+            getUserUseCase.updateAppTheme(newUser)
         }
     }
 
@@ -1640,12 +1639,8 @@ class MainViewModel @Inject constructor(
     private fun getUserBody(
         id: String,
         name: String,
-        password: String,
-        stamps: String,
-        stampList: List<Stamp>,
-        alarmMode: Boolean,
-        appTheme: Int
-    ): User = User(id, name, password, stamps, stampList, alarmMode, appTheme)
+        password: String
+    ): User = User(id, name, password, "0", emptyList(), false, 0)
 
     /*** Use Case ***/
     private fun login() {
@@ -1654,11 +1649,7 @@ class MainViewModel @Inject constructor(
                 getUserBody(
                     _userId.value,
                     "",
-                    _userPass.value,
-                    "0",
-                    emptyList(),
-                    false,
-                    0
+                    _userPass.value
                 )
             )
 
@@ -1692,11 +1683,7 @@ class MainViewModel @Inject constructor(
                 getUserBody(
                     _joinId.value,
                     _joinName.value,
-                    _joinPass.value,
-                    "0",
-                    emptyList(),
-                    false,
-                    0
+                    _joinPass.value
                 )
             )
 
@@ -1743,6 +1730,101 @@ class MainViewModel @Inject constructor(
         }
 
         return (abs(shopLocation.distanceTo(myPosition)) >= 200F)
+    }
+
+    private fun makeAttendanceMark() {
+        viewModelScope.launch {
+            val today = LocalDateTime.now()
+            _year.value = today.year
+            _month.value = today.monthValue
+            _day.value = today.dayOfMonth
+            getAttendanceUseCase.postAttendanceMark(
+                _user.value?.user?.id ?: "",
+                _year.value,
+                _month.value,
+                _day.value
+            )
+        }
+    }
+
+    private fun submitPlanImage(uri: Uri, context: Context) {
+        viewModelScope.launch {
+            _chattingUiEvent.emit(ChattingUiEvent.SubmitPlanImage)
+            _chattingUiState.update {
+                it.copy(
+                    isSendValidState = InputValidState.NONE,
+                    chatImageValidState = InputValidState.NONE,
+                    buttonsEnableState = InputValidState.NONE
+                )
+            }
+            addMessage(
+                ChatMessage(
+                    text = "손글씨로 작성한 계획을 세울게요.",
+                    imageUri = uri,
+                    isSender = true,
+                    senderName = _user.value?.user?.name ?: ""
+                )
+            )
+            addMessage(
+                ChatMessage(
+                    text = "계획을 분석하는 중이에요.",
+                    imageUri = null,
+                    isSender = false,
+                    senderName = "GPT-4"
+                )
+            )
+
+            try {
+                val response = setChatUseCase.submitChatImage(
+                    ChatImageRequest(
+                        userId = _user.value?.user?.id ?: "",
+                        level = _planGrade.value,
+                        base64Image = ChatApi.encodeImageToBase64(context, uri)
+                    )
+                )
+                _chats.value = _chats.value.toMutableList().apply { removeLast() }.toList()
+                addMessage(
+                    ChatMessage(
+                        text = response.data?.summary ?: "분석 내용이 존재하지 않아요.",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "GPT-4"
+                    )
+                )
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                    )
+                }
+                _chattingUiEvent.emit(ChattingUiEvent.SubmitPlanFinish)
+            } catch (e: Exception) {
+                addMessage(
+                    ChatMessage(
+                        text = "Error: ${e.message}",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "System"
+                    )
+                )
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun addMessage(message: ChatMessage) {
+        _chats.value = _chats.value.toMutableList().apply {
+            add(message)
+        }
     }
 
     /*** Validate Ui State ***/
@@ -1850,11 +1932,6 @@ class MainViewModel @Inject constructor(
     private suspend fun getCookies(): Flow<Set<String>> = flow {
         val cookies = getCookieUseCase.getLoginCookie().firstOrNull() ?: emptySet()
         emit(cookies)
-    }
-
-    private suspend fun getNotices(): Flow<List<String>> = flow {
-        val notices = getNoticesUseCase.getNotices().firstOrNull() ?: emptyList()
-        emit(notices)
     }
 
     private suspend fun getAlarmReceiveMode(): Flow<Boolean> = flow {
@@ -2086,6 +2163,157 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun submitPlanText() {
+        viewModelScope.launch {
+            _chattingUiState.update {
+                it.copy(
+                    isSendValidState = InputValidState.NONE,
+                    chatImageValidState = InputValidState.NONE,
+                    buttonsEnableState = InputValidState.NONE
+                )
+            }
+            addMessage(
+                ChatMessage(
+                    text = "${_textPlan.value} 계획을 세울게요.",
+                    imageUri = null,
+                    isSender = true,
+                    senderName = _user.value?.user?.name ?: ""
+                )
+            )
+            addMessage(
+                ChatMessage(
+                    text = "계획을 분석하는 중이에요.",
+                    imageUri = null,
+                    isSender = false,
+                    senderName = "GPT-4"
+                )
+            )
+
+            try {
+                val response = setChatUseCase.submitChatText(
+                    ChatTextRequest(
+                        userId = _user.value?.user?.id ?: "",
+                        level = _planGrade.value,
+                        plan = _textPlan.value
+                    )
+                )
+                _chats.value = _chats.value.toMutableList().apply { removeLast() }.toList()
+                addMessage(
+                    ChatMessage(
+                        text = response.data?.summary ?: "분석 내용이 존재하지 않아요.",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "GPT-4"
+                    )
+                )
+                _textPlan.value = ""
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                        planTextValidState = InputValidState.NONE
+                    )
+                }
+                _chattingUiEvent.emit(ChattingUiEvent.SubmitPlanFinish)
+            } catch (e: Exception) {
+                addMessage(
+                    ChatMessage(
+                        text = "Error: ${e.message}",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "System"
+                    )
+                )
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                    )
+                }
+            }
+        }
+    }
+
+    fun sendMessage(context: Context) {
+        viewModelScope.launch {
+            _chattingUiState.update {
+                it.copy(
+                    isSendValidState = InputValidState.NONE,
+                    chatImageValidState = InputValidState.NONE,
+                    buttonsEnableState = InputValidState.NONE
+                )
+            }
+            addMessage(
+                ChatMessage(
+                    text = _chatMessage.value,
+                    imageUri = _chatImageUri.value,
+                    isSender = true,
+                    senderName = _user.value?.user?.name ?: ""
+                )
+            )
+            addMessage(
+                ChatMessage(
+                    text = "정보를 불러오는 중입니다.",
+                    imageUri = null,
+                    isSender = false,
+                    senderName = "GPT-4"
+                )
+            )
+
+            try {
+                val response = ChatApi.sendMessage(
+                    context,
+                    _chatMessage.value,
+                    _chatImageUri.value,
+                    _user.value?.user?.name ?: ""
+                )
+                _chats.value = _chats.value.toMutableList().apply { removeLast() }.toList()
+                addMessage(response)
+                _chatMessage.value = ""
+                _chatImageUri.value = null
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                    )
+                }
+            } catch (e: Exception) {
+                addMessage(
+                    ChatMessage(
+                        text = "Error: ${e.message}",
+                        imageUri = null,
+                        isSender = false,
+                        senderName = "System"
+                    )
+                )
+                _chattingUiState.update {
+                    it.copy(
+                        chatMessageValidState = InputValidState.NONE,
+                        isSendValidState = InputValidState.VALID,
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                    )
+                }
+            }
+        }
+    }
+
+    fun setImageUri(uri: Uri?) {
+        _chatImageUri.value = uri
+    }
+
+    fun setImagePlanUri(uri: Uri?, context: Context) {
+        _imagePlan.value = uri
+        _imagePlan.value?.let { submitPlanImage(it, context) }
+    }
+
+    /*** Data Binding OnTextChanged ***/
     fun validateUserId(id: CharSequence) {
         when (id.isNotBlank()) {
             true -> _loginUiState.update { it.copy(userIdValidState = InputValidState.VALID) }
@@ -2275,6 +2503,30 @@ class MainViewModel @Inject constructor(
         }
 
         _searchedShops.value = newSearchedShops.associateBy { it.id }.toMap(HashMap())
+    }
+
+    fun validateChatMessage(chatMessage: CharSequence) {
+        when (chatMessage.isBlank()) {
+            true -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.NONE) }
+
+            else -> _chattingUiState.update { it.copy(chatMessageValidState = InputValidState.VALID) }
+        }
+    }
+
+    fun validateTextPlan(textPlan: CharSequence) {
+        when (textPlan.isBlank()) {
+            true -> _chattingUiState.update { it.copy(planTextValidState = InputValidState.NONE) }
+
+            else -> _chattingUiState.update { it.copy(planTextValidState = InputValidState.VALID) }
+        }
+    }
+
+    fun validateTextPlanProgress(textPlanProgress: CharSequence) {
+        when (textPlanProgress.isBlank()) {
+            true -> _chattingUiState.update { it.copy(planProgressValidState = InputValidState.NONE) }
+
+            else -> _chattingUiState.update { it.copy(planProgressValidState = InputValidState.VALID) }
+        }
     }
 
     // FCM 토큰 업로드 메서드 추가

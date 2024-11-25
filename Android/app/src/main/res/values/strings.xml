@@ -26,6 +26,29 @@
     <string name="text_welcome">오늘도 좋은 하루 되세요.</string>
     <string name="text_today_event">오늘의 이벤트</string>
 
+    <!-- Chatting -->
+    <string name="text_menu_chatting">인기\n메뉴</string>
+    <string name="text_order_chatting">최근\n주문</string>
+    <string name="text_shop_chatting">플랜 현황\n보고</string>
+    <string name="text_plan_chatting">플랜\n체크</string>
+    <string name="description_image_upload">이미지 업로드</string>
+    <string name="text_send">전송</string>
+    <string name="text_question">궁금한 사항을 질문해주세요!</string>
+    <string name="text_hint_chatting">어떤 게 궁금하세요?</string>
+    <string name="message_need_message_or_image">메시지나 이미지를 입력하세요.</string>
+    <string name="message_preparing_menu">준비중인 메뉴에요.</string>
+    <string name="text_select_plan_grade">플랜 체크 강도를 선택하세요.</string>
+    <string name="text_plan_grade_zero">알람 필요 없음</string>
+    <string name="text_plan_grade_one">1시간</string>
+    <string name="text_plan_grade_two">30분</string>
+    <string name="text_need_plan_check">플랜 체크 방법을 선택하세요.</string>
+    <string name="text_plan_image">손글씨 업로드</string>
+    <string name="text_plan_text">텍스트로 입력</string>
+    <string name="text_need_plan_text">플랜 체크 텍스트를 입력하세요.</string>
+    <string name="text_need_plan_progress">플랜 현황을 입력하세요.</string>
+    <string name="message_plan_submit">플랜 전송을 완료했어요.</string>
+    <string name="message_plan_progress_submit">플랜 현황 전송을 완료했어요.</string>
+
     <!-- Login, Join -->
     <string name="text_login">로그인</string>
     <string name="text_hint_id">ID</string>
@@ -86,7 +109,7 @@
     <string name="text_history_eng">History</string>
     <string name="text_information_eng">Information</string>
     <string name="text_coupon_eng">Coupon</string>
-    <string name="text_pay_eng">Pay</string>
+    <string name="text_attendance_eng">Attendance</string>
     <string name="message_need_to_login">로그인이 필요해요!</string>
     <string name="message_disabled_pay">결제 기능은 준비중이에요.</string>
 
@@ -150,6 +173,7 @@
     <string name="text_thursday">목</string>
     <string name="text_friday">금</string>
     <string name="text_saturday">토</string>
+    <string name="text_attendance">출석</string>
 
     <!-- Order -->
     <string name="text_menu">메뉴</string>
@@ -201,7 +225,5 @@
     <string name="text_title_coupon_detail">쿠폰 상세 정보</string>
     <string name="text_iat_coupon_detail">부터</string>
     <string name="text_exp_coupon_detail">까지</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

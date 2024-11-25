@@ -17,10 +17,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -42,10 +42,9 @@ import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
 import timber.log.Timber
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-
-    private val TAG = "MainActivity_TAG"
 
     private lateinit var beaconManager: BeaconManager
     private lateinit var bluetoothManager: BluetoothManager
@@ -136,13 +135,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         initFCM()
     }
 
-    private fun setNdef() {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        if (nfcAdapter == null) {
-            Toast.makeText(this, "NFC를 지원하지 않는 기기입니다.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         // NFC 인텐트 수신 설정
@@ -159,13 +151,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onPause() {
         super.onPause()
+
         // NFC 인텐트 수신 해제
         nfcAdapter?.disableForegroundDispatch(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        isScanning = false
+        stopScan()
+        handler.removeCallbacks(scanRunnable)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         handleIntent(intent)
+    }
+
+    private fun setNdef() {
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        if (nfcAdapter == null) {
+            Toast.makeText(this, "NFC를 지원하지 않는 기기입니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun handleIntent(intent: Intent?) {
@@ -278,22 +286,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         isScanning = false
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        isScanning = false
-        stopScan()
-        handler.removeCallbacks(scanRunnable)
-    }
-
     private fun createNotificationChannel(id: String, name: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(id, name, importance)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(id, name, importance)
 
-            val notificationManager: NotificationManager =
-                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        val notificationManager: NotificationManager =
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun checkPermissions() {
@@ -339,7 +338,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             // 새로운 FCM 등록 토큰 획득
             val token = task.result
-            Timber.d("FCM 토큰: " + token)
+            Timber.d("FCM 토큰: $token")
             // 토큰을 Toast로 표시
             // Toast.makeText(this, "FCM 토큰: $token", Toast.LENGTH_LONG).show()
             // 토큰을 서버로 업로드

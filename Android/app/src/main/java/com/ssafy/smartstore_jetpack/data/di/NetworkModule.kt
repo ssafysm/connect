@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.smartstore_jetpack.data.api.AlarmApi
 import com.ssafy.smartstore_jetpack.data.api.AttendanceApi
+import com.ssafy.smartstore_jetpack.data.api.ChatApi
 import com.ssafy.smartstore_jetpack.data.base.AddCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.base.ReceivedCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
@@ -30,7 +31,7 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
-//    private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
+    // private const val BASE_URL = "http://mobile-pjt.sample.ssafy.io/"
 
     // JW 서버 주소
     // private const val BASE_URL = "http://192.168.33.129:9987/"
@@ -61,8 +62,8 @@ object NetworkModule {
         receivedCookiesInterceptor: ReceivedCookiesInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .readTimeout(10000, TimeUnit.MILLISECONDS)
-            .connectTimeout(10000, TimeUnit.MILLISECONDS)
+            .readTimeout(20000, TimeUnit.MILLISECONDS)
+            .connectTimeout(20000, TimeUnit.MILLISECONDS)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addInterceptor(addCookiesInterceptor)
             .addInterceptor(receivedCookiesInterceptor).build()
@@ -131,6 +132,12 @@ object NetworkModule {
     @Singleton
     fun provideFcmApiService(@Named("SSAFY") retrofit: Retrofit): FcmApi {
         return retrofit.create(FcmApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatApiService(@Named("SSAFY") retrofit: Retrofit): ChatApi {
+        return retrofit.create(ChatApi::class.java)
     }
 
     @Provides
