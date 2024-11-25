@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.cafe.model.dao.ChatDao">
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="ChatResultMap" type="com.ssafy.cafe.model.dto.Chat">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="level" column="level" />
+        <result property="plan" column="plan" />
+        <result property="progress" column="progress" />
+        <result property="alertIntervalMinutes" column="alert_interval_minutes" />
+        <result property="nextAlarmTime" column="next_alarm_time" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <!-- 데이터 삽입 -->
+    <insert id="insert" parameterType="com.ssafy.cafe.model.dto.Chat" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_chat (user_id, level, plan, progress, alert_interval_minutes, next_alarm_time)
+        VALUES (#{userId}, #{level}, #{plan}, #{progress}, #{alertIntervalMinutes}, #{nextAlarmTime});
+    </insert>
+
+    <!-- 데이터 업데이트 -->
+    <update id="update" parameterType="com.ssafy.cafe.model.dto.Chat">
+        UPDATE t_chat
+        SET
+            level = #{level},
+            plan = #{plan},
+            progress = #{progress},
+            alert_interval_minutes = #{alertIntervalMinutes},
+            next_alarm_time = #{nextAlarmTime},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = #{userId};
+    </update>
+
+    <!-- ID로 데이터 조회 -->
+    <select id="selectById" parameterType="int" resultMap="ChatResultMap">
+        SELECT * FROM t_chat WHERE id = #{id};
+    </select>
+
+    <!-- userId로 데이터 조회 -->
+    <select id="selectByUserId" parameterType="String" resultMap="ChatResultMap">
+        SELECT * FROM t_chat WHERE user_id = #{userId};
+    </select>
+
+    <!-- 모든 데이터 조회 -->
+    <select id="selectAll" resultMap="ChatResultMap">
+        SELECT * FROM t_chat;
+    </select>
+
+    <!-- 알람 시간이 지난 데이터 조회 -->
+    <select id="selectPendingAlarms" resultMap="ChatResultMap">
+        SELECT * FROM t_chat WHERE next_alarm_time IS NOT NULL AND next_alarm_time &lt;= NOW();
+    </select>
+
+    <!-- 데이터 삭제 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM t_chat WHERE id = #{id};
+    </delete>
+
+    <!-- userId로 데이터 삭제 -->
+    <delete id="deleteByUserId" parameterType="String">
+        DELETE FROM t_chat WHERE user_id = #{userId};
+    </delete>
+
+</mapper>

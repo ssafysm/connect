@@ -24,7 +24,7 @@ public class ChatGptService {
         // 요청 바디 생성
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         JSONObject jsonBody = new JSONObject();
-        jsonBody.put("model", "gpt-3.5-turbo"); // 사용하고자 하는 모델명
+        jsonBody.put("model", "gpt-4o-mini"); // 사용하고자 하는 모델명
         JSONArray messages = new JSONArray();
         JSONObject message = new JSONObject();
         message.put("role", "user");

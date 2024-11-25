@@ -150,6 +150,20 @@ CREATE TABLE t_attendance (
     CONSTRAINT fk_attendance_user FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE
 );
 
+-- t_chat 테이블 생성
+CREATE TABLE t_chat (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    level TINYINT NOT NULL,
+    plan TEXT NOT NULL,
+    progress TEXT,
+    alert_interval_minutes INT DEFAULT NULL,
+    next_alarm_time TIMESTAMP DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE
+);
+
 -- t_user 데이터 삽입
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id01', 'name01', 'pass01', 4);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id02', 'name02', 'pass02', 1);
