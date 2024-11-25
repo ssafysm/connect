@@ -11,8 +11,13 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ssafy.smartstore_jetpack.R
+import com.ssafy.smartstore_jetpack.domain.repository.DataStoreRepository
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,6 +25,9 @@ import javax.inject.Inject
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val TAG = "MyFirebaseMessagingService"
+
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -32,22 +40,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        var messageTitle = ""
-        var messageContent = ""
 
-        // 알림 페이로드가 있는 경우
-        if (remoteMessage.notification != null) {
-            Timber.d("FCM 메시지 수신: " + remoteMessage.data)
-            val title = remoteMessage.notification?.title ?: "새 알림"
-            val message = remoteMessage.notification?.body ?: "알림 내용이 없습니다."
-            sendNotification(title, message)
+        CoroutineScope(Dispatchers.IO).launch {
+            val isAlarmReceive = dataStoreRepository.getAlarmReceiveMode().first()
+            if (!isAlarmReceive) {
+                return@launch
+            }
 
-        } else {
-            // 데이터 페이로드 처리
-            val title = remoteMessage.data["myTitle"] ?: "새 알림"
-            val message = remoteMessage.data["myBody"] ?: "알림 내용이 없습니다."
-            Timber.d("FCM 메시지 수신: title=$title, body=$message")
-            sendNotification(title, message)
+            var messageTitle = ""
+            var messageContent = ""
+
+            // 알림 페이로드가 있는 경우
+            if (remoteMessage.notification != null) {
+                Timber.d("FCM 메시지 수신: " + remoteMessage.data)
+                val title = remoteMessage.notification?.title ?: "새 알림"
+                val message = remoteMessage.notification?.body ?: "알림 내용이 없습니다."
+                sendNotification(title, message)
+
+            } else {
+                // 데이터 페이로드 처리
+                val title = remoteMessage.data["myTitle"] ?: "새 알림"
+                val message = remoteMessage.data["myBody"] ?: "알림 내용이 없습니다."
+                Timber.d("FCM 메시지 수신: title=$title, body=$message")
+                sendNotification(title, message)
+            }
         }
     }
 

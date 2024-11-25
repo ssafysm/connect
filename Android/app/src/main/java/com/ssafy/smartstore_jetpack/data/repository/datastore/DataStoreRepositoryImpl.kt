@@ -3,6 +3,7 @@ package com.ssafy.smartstore_jetpack.data.repository.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -104,11 +105,31 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun setAlarmReceiveMode(flag: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[ALARM_RECEIVE_MODE] = flag
+        }
+    }
+
+    override fun getAlarmReceiveMode(): Flow<Boolean> {
+        return dataStore.data.catch {
+            if (it is IOException) {
+                it.printStackTrace()
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }.map { preferences ->
+            preferences[ALARM_RECEIVE_MODE] ?: false
+        }
+    }
+
     companion object {
 
         private val USER_ID = stringPreferencesKey("user_id")
         private val COOKIE_INFO = stringSetPreferencesKey("cookie_info")
         private val THEME_NAME = stringPreferencesKey("theme_name")
         private val NOTICE_INFO = stringSetPreferencesKey("notice_info")
+        private val ALARM_RECEIVE_MODE = booleanPreferencesKey("alarm_receive_mode")
     }
 }

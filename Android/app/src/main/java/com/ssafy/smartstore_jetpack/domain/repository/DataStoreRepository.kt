@@ -21,4 +21,8 @@ interface DataStoreRepository {
     suspend fun setNotices(notices: HashSet<String>)
 
     fun getNotices(): Flow<List<String>>
+
+    suspend fun setAlarmReceiveMode(flag: Boolean)
+
+    fun getAlarmReceiveMode(): Flow<Boolean>
 }

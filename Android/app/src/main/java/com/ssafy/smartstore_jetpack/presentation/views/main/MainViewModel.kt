@@ -17,6 +17,7 @@ import com.ssafy.smartstore_jetpack.domain.model.Status
 import com.ssafy.smartstore_jetpack.domain.model.User
 import com.ssafy.smartstore_jetpack.domain.model.UserInfo
 import com.ssafy.smartstore_jetpack.domain.usecase.AddFcmTokenUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetAlarmReceiveModeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAlarmUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
@@ -29,6 +30,7 @@ import com.ssafy.smartstore_jetpack.domain.usecase.GetProductUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetShopUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetUserIdUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetUserUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.SetAlarmReceiveModeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetAppThemeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.SetNoticesUseCase
@@ -113,6 +115,8 @@ class MainViewModel @Inject constructor(
     private val setCookieUseCase: SetCookieUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val setAppThemeUseCase: SetAppThemeUseCase,
+    private val getAlarmReceiveModeUseCase: GetAlarmReceiveModeUseCase,
+    private val setAlarmReceiveModeUseCase: SetAlarmReceiveModeUseCase,
     private val getNoticesUseCase: GetNoticesUseCase,
     private val setNoticesUseCase: SetNoticesUseCase,
     private val addFcmTokenUseCase: AddFcmTokenUseCase
@@ -1067,6 +1071,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun setAlarmReceiveMode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val alarmReceiveMode = getAlarmReceiveMode().first()
+            _isPushReceiving.value = alarmReceiveMode
+        }
+    }
+
     private fun setEvents() {
         viewModelScope.launch {
             val response = getEventUseCase.getEvents()
@@ -1444,9 +1455,15 @@ class MainViewModel @Inject constructor(
         emit(notices)
     }
 
+    private suspend fun getAlarmReceiveMode(): Flow<Boolean> = flow {
+        val alarmReceiveMode = getAlarmReceiveModeUseCase.getAlarmReceiveMode().firstOrNull() ?: false
+        emit(alarmReceiveMode)
+    }
+
     /*** Public Methods ***/
     fun initStatesWithLogin() {
         setTheme()
+        setAlarmReceiveMode()
         getShop()
         getUser()
         getLastMonthOrders()
@@ -1481,6 +1498,7 @@ class MainViewModel @Inject constructor(
     fun setPushReceiving(isPushReceiving: Boolean) {
         viewModelScope.launch {
             _isPushReceiving.value = isPushReceiving
+            setAlarmReceiveModeUseCase.setAlarmReceiveMode(_isPushReceiving.value)
         }
     }
 
