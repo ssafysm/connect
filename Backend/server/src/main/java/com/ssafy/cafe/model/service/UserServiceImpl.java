@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String id, String pass) {
-        return userDao.selectByUser(new User(id, "", pass, 0));
+        return userDao.selectByUser(new User(id, "", pass, 0, false, 0));
     }
 
     @Override
@@ -42,4 +42,15 @@ public class UserServiceImpl implements UserService {
     public int updatePassword(User user) {
     	return userDao.updatePassword(user);
     }
+
+	@Override
+	public int updateAlarmMode(User user) {
+		return userDao.updateAlarmMode(user);
+	}
+
+	@Override
+	public int updateAppTheme(User user) {
+		return userDao.updateAppTheme(user);
+	}
+    
 }

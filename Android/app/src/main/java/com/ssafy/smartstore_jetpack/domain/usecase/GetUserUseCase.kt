@@ -33,4 +33,12 @@ class GetUserUseCase @Inject constructor(
     suspend fun updatePassword(user: User): Result<Boolean> {
         return userRepository.putPassword(user)
     }
+
+    suspend fun updateAlarmMode(user: User): Result<Boolean> {
+        return userRepository.putAlarmMode(user)
+    }
+
+    suspend fun updateAppTheme(user: User): Result<Boolean> {
+        return userRepository.putAppTheme(user)
+    }
 }

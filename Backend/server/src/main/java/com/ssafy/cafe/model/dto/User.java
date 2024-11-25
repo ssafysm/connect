@@ -9,16 +9,19 @@ public class User {
     private String pass;
     private Integer stamps;
     private List<Stamp> stampList = new ArrayList<>();
+    private boolean alarmMode;
+    private Integer appTheme;
 
-    public User(String id, String name, String pass, Integer stamps) {
+    public User(String id, String name, String pass, Integer stamps, boolean alarmMode, Integer appTheme) {
         this.id = id;
         this.name = name;
         this.pass = pass;
         this.stamps = stamps;
+        this.alarmMode = alarmMode;
+        this.appTheme = appTheme;
     }
 
-    public User() {
-    }
+    public User() {}
 
     public String getId() {
         return id;
@@ -60,10 +63,26 @@ public class User {
         this.stampList = stampList;
     }
 
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", name=" + name + ", pass=" + pass + ", stamps=" + stamps + ", stampList="
-                + stampList + "]";
-    }
+	public boolean isAlarmMode() {
+		return alarmMode;
+	}
+
+	public void setAlarmMode(boolean alarmMode) {
+		this.alarmMode = alarmMode;
+	}
+
+	public Integer getAppTheme() {
+		return appTheme;
+	}
+
+	public void setAppTheme(Integer appTheme) {
+		this.appTheme = appTheme;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", pass=" + pass + ", stamps=" + stamps + ", stampList="
+				+ stampList + ", alarmMode=" + alarmMode + ", appTheme=" + appTheme + "]";
+	}
 
 }

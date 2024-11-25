@@ -49,7 +49,7 @@ public class UserRestController {
     @PostMapping("")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
-            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0);
+            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0, user.isAlarmMode(), user.getAppTheme());
             int result = userService.join(newUser);
 
             if (result == 1) {
@@ -69,7 +69,7 @@ public class UserRestController {
     @PutMapping("/password")
     public ResponseEntity<?> updatePassword(@RequestBody User user) {
     	try {
-            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0);
+            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0, user.isAlarmMode(), user.getAppTheme());
             int result = userService.updatePassword(newUser);
 
             if (result == 1) {
@@ -158,6 +158,42 @@ public class UserRestController {
     public ResponseEntity<?> isUsed(@RequestParam String id) {
         boolean result = userService.isUsedId(id);
         return ResponseEntity.ok(result);
+    }
+    
+    @Operation(summary = "사용자의 푸시 알림 여부 정보를 저장한다.")
+    @PutMapping("/alarmMode")
+    public ResponseEntity<?> putAlarmMode(@RequestBody User user) {
+    	try {
+            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0, user.isAlarmMode(), user.getAppTheme());
+            int result = userService.updateAlarmMode(newUser);
+
+            if (result == 1) {
+                return ResponseEntity.ok(true);
+            } else {
+                return ResponseEntity.ok(false);
+            }
+        } catch (Exception e) {
+            log.error("사용자 등록 오류: ", e);
+            return ResponseEntity.ok(false);
+        }
+    }
+    
+    @Operation(summary = "사용자의 테마 정보를 저장한다.")
+    @PutMapping("/appTheme")
+    public ResponseEntity<?> putAppTheme(@RequestBody User user) {
+    	try {
+            User newUser = new User(user.getId(), user.getName(), user.getPass(), 0, user.isAlarmMode(), user.getAppTheme());
+            int result = userService.updateAppTheme(newUser);
+
+            if (result == 1) {
+                return ResponseEntity.ok(true);
+            } else {
+                return ResponseEntity.ok(false);
+            }
+        } catch (Exception e) {
+            log.error("사용자 등록 오류: ", e);
+            return ResponseEntity.ok(false);
+        }
     }
 
     private Grade calculateGrade(int stamps) {

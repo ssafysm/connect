@@ -14,7 +14,9 @@ CREATE TABLE t_user(
     id VARCHAR(100) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     pass VARCHAR(100) NOT NULL,
-    stamps INTEGER DEFAULT 0
+    stamps INTEGER DEFAULT 0,
+    alarm_mode BOOLEAN DEFAULT FALSE,
+    app_theme INTEGER DEFAULT 0
 );
 
 -- t_product 테이블 생성

@@ -335,12 +335,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatImageView
+                android:scaleType="fitCenter"
                 android:id="@+id/btn_temp_home"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_margin="@dimen/margin_padding_regular"
-                android:background="@color/neutral_white"
+                android:src="@drawable/chatbot"
                 android:onClick="@{() -> vm.onClickChatting()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

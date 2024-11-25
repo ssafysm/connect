@@ -25,7 +25,9 @@ object UserMapper {
             name = userEntity.name,
             pass = userEntity.pass,
             stamps = userEntity.stamps.toString(),
-            stampList = newStamps
+            stampList = newStamps,
+            alarmMode = userEntity.alarmMode,
+            appTheme = userEntity.appTheme
         )
     }
 }

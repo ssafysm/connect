@@ -67,7 +67,9 @@ object UserInfoMapper {
                 name = userInfoEntity.user.name,
                 pass = userInfoEntity.user.pass,
                 stamps = userInfoEntity.user.stamps.toString(),
-                stampList = newStamps.toList()
+                stampList = newStamps.toList(),
+                alarmMode = userInfoEntity.user.alarmMode,
+                appTheme = userInfoEntity.user.appTheme
             ),
             orders = newOrders.toList()
         )

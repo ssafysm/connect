@@ -32,4 +32,8 @@ public interface UserDao {
     User selectByUser(User user);
     
     int updatePassword(User user);
+    
+    int updateAlarmMode(User user);
+    
+    int updateAppTheme(User user);
 }

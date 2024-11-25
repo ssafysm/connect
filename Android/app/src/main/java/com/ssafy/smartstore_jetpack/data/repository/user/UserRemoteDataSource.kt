@@ -18,4 +18,8 @@ interface UserRemoteDataSource {
     suspend fun postUserForLogin(user: User): Response<UserEntity>
 
     suspend fun putPassword(user: User): Response<Boolean>
+
+    suspend fun putAlarmMode(user: User): Response<Boolean>
+
+    suspend fun putAppTheme(user: User): Response<Boolean>
 }

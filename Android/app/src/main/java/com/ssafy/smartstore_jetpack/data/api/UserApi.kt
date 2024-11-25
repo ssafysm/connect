@@ -41,4 +41,14 @@ interface UserApi {
     suspend fun putPassword(
         @Body body: User
     ): Response<Boolean>
+
+    @PUT("rest/user/alarmMode")
+    suspend fun putAlarmMode(
+        @Body body: User
+    ): Response<Boolean>
+
+    @PUT("rest/user/appTheme")
+    suspend fun putAppTheme(
+        @Body body: User
+    ): Response<Boolean>
 }

@@ -39,4 +39,8 @@ public interface UserService {
     public User selectUser(String id);
 
     public int updatePassword(User user);
+    
+    public int updateAlarmMode(User user);
+    
+    public int updateAppTheme(User user);
 }

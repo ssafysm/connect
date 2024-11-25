@@ -5,5 +5,7 @@ data class User(
     val name: String,
     val pass: String,
     val stamps: String,
-    val stampList: List<Stamp>
+    val stampList: List<Stamp>,
+    val alarmMode: Boolean,
+    val appTheme: Int
 )

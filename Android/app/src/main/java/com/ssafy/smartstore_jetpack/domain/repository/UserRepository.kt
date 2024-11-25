@@ -17,4 +17,8 @@ interface UserRepository {
     suspend fun postUserForLogin(user: User): Result<User>
 
     suspend fun putPassword(user: User): Result<Boolean>
+
+    suspend fun putAlarmMode(user: User): Result<Boolean>
+
+    suspend fun putAppTheme(user: User): Result<Boolean>
 }

@@ -35,7 +35,6 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         val splashImage = findViewById<ImageView>(R.id.iv_splash_image)
-        val splashText = findViewById<TextView>(R.id.tv_splash_image)
 
         lifecycleScope.launch {
             viewModel.appThemeName.collectLatest { themeName ->
@@ -72,7 +71,7 @@ class SplashActivity : AppCompatActivity() {
             viewModel.splashUiEvent.collectLatest { uiEvent ->
                 when (uiEvent) {
                     is SplashUiEvent.LoginSuccess -> {
-                        delay(2000L)
+                        delay(1300L)
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java).apply {
                             putExtra("login_success", true)
                         })
@@ -80,7 +79,7 @@ class SplashActivity : AppCompatActivity() {
                     }
 
                     is SplashUiEvent.LoginFailed -> {
-                        delay(2000L)
+                        delay(1300L)
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java).apply {
                             putExtra("login_success", false)
                         })

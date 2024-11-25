@@ -881,6 +881,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickCoupon() {
         viewModelScope.launch {
+            user.value?.user?.let { getCoupons(it.id) }
             _myPageUiEvent.emit(MyPageUiEvent.GoToCoupon)
         }
     }
@@ -894,6 +895,8 @@ class MainViewModel @Inject constructor(
     /*** Setting Click ***/
     override fun onClickLogout() {
         viewModelScope.launch {
+            updateAlarmMode(_user.value?.user?.id ?: "")
+            updateAppTheme(_user.value?.user?.id ?: "")
             _user.value = null
             setUserIdUseCase.setUserId("")
             setCookieUseCase.deleteLoginCookie()
@@ -981,7 +984,9 @@ class MainViewModel @Inject constructor(
                     name = "",
                     pass = _newPassword.value,
                     stamps = "",
-                    stampList = emptyList()
+                    stampList = emptyList(),
+                    false,
+                    0
                 )
                 val response = getUserUseCase.updatePassword(newUser)
 
@@ -1120,6 +1125,20 @@ class MainViewModel @Inject constructor(
                     validateGrade()
                     val newUser = _user.value
                     if (newUser != null) {
+                        _appThemeName.value = when (newUser.user.appTheme) {
+                            1 -> "봄"
+
+                            2 -> "여름"
+
+                            3 -> "가을"
+
+                            4 -> "겨울"
+
+                            else -> "기본"
+                        }
+                        _isPushReceiving.value = newUser.user.alarmMode
+                        setAppThemeUseCase.setAppTheme(_appThemeName.value)
+                        setAlarmReceiveModeUseCase.setAlarmReceiveMode(_isPushReceiving.value)
                         getCoupons(newUser.user.id)
                         getAlarms(newUser.user.id)
                     }
@@ -1215,6 +1234,7 @@ class MainViewModel @Inject constructor(
             validateNoticeState()
         }
     }
+
     private fun initJoinInfo() {
         _joinId.value = ""
         _joinPass.value = ""
@@ -1240,14 +1260,59 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun updateAlarmMode(userId: String) {
+        viewModelScope.launch {
+            val newUser = User(
+                id = userId,
+                name = "",
+                pass = "",
+                stamps = "",
+                stampList = emptyList(),
+                alarmMode = _isPushReceiving.value,
+                appTheme = 0
+            )
+
+            getUserUseCase.updateAlarmMode(newUser)
+        }
+    }
+
+    private fun updateAppTheme(userId: String) {
+        viewModelScope.launch {
+            val newUser = User(
+                id = userId,
+                name = "",
+                pass = "",
+                stamps = "",
+                stampList = emptyList(),
+                alarmMode = false,
+                appTheme = when (_appThemeName.value) {
+                    "봄" -> 1
+
+                    "여름" -> 2
+
+                    "가을" -> 3
+
+                    "겨울" -> 4
+
+                    else -> 0
+                }
+            )
+
+            val response = getUserUseCase.updateAppTheme(newUser)
+            Timber.d("테마 바뀌었나요?: ${response.data}")
+        }
+    }
+
     /*** Get Dto ***/
     private fun getUserBody(
         id: String,
         name: String,
         password: String,
         stamps: String,
-        stampList: List<Stamp>
-    ): User = User(id, name, password, stamps, stampList)
+        stampList: List<Stamp>,
+        alarmMode: Boolean,
+        appTheme: Int
+    ): User = User(id, name, password, stamps, stampList, alarmMode, appTheme)
 
     /*** Use Case ***/
     private fun login() {
@@ -1258,7 +1323,9 @@ class MainViewModel @Inject constructor(
                     "",
                     _userPass.value,
                     "0",
-                    emptyList()
+                    emptyList(),
+                    false,
+                    0
                 )
             )
 
@@ -1294,7 +1361,9 @@ class MainViewModel @Inject constructor(
                     _joinName.value,
                     _joinPass.value,
                     "0",
-                    emptyList()
+                    emptyList(),
+                    false,
+                    0
                 )
             )
 

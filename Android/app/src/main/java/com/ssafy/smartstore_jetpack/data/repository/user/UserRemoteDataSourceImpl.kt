@@ -25,4 +25,10 @@ class UserRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun putPassword(user: User): Response<Boolean> =
         userApi.putPassword(user)
+
+    override suspend fun putAlarmMode(user: User): Response<Boolean> =
+        userApi.putAlarmMode(user)
+
+    override suspend fun putAppTheme(user: User): Response<Boolean> =
+        userApi.putAppTheme(user)
 }

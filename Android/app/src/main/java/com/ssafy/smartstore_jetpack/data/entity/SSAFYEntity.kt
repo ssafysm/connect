@@ -49,7 +49,13 @@ data class UserEntity(
     val stamps: Int,
 
     @Json(name = "stampList")
-    val stampList: List<StampEntity>
+    val stampList: List<StampEntity>,
+
+    @Json(name = "alarmMode")
+    val alarmMode: Boolean,
+
+    @Json(name = "appTheme")
+    val appTheme: Int
 )
 
 @JsonClass(generateAdapter = true)

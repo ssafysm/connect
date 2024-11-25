@@ -20,7 +20,9 @@
             id,
             name,
             pass,
-            stamps
+            stamps,
+            alarm_mode,
+            app_theme
         FROM t_user
         WHERE id = #{id}
     </select>
@@ -30,7 +32,9 @@
             id,
             name,
             pass,
-            stamps
+            stamps,
+            alarm_mode,
+            app_theme
         FROM t_user
         WHERE id = #{id} AND pass = #{pass}
     </select>
@@ -39,6 +43,20 @@
     	update t_user 
         set 
         	pass = #{pass}
+        where id = #{id}
+    </update>
+    
+    <update id="updateAlarmMode" parameterType="User">
+    	update t_user 
+        set 
+        	alarm_mode = #{alarmMode}
+        where id = #{id}
+    </update>
+    
+    <update id="updateAppTheme" parameterType="User">
+    	update t_user 
+        set 
+        	app_theme = #{appTheme}
         where id = #{id}
     </update>
 </mapper>
