@@ -29,4 +29,10 @@ public interface ProductDao {
      * @return 상위 메뉴 목록
      */
     List<ProductWithComment> selectTopProductsByRating(int limit);
+    
+    /**
+     * 평점 기준 상위 5개의 제품을 반환한다.
+     * @return
+     */
+    List<ProductWithComment> selectTop5Products();
 }

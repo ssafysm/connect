@@ -211,16 +211,16 @@ INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('프�
 INSERT INTO t_product (name, type, price, img, description, mode) VALUES ('스콘 & 잼', 'food', 9000, 'sconejam.png', '고소한 스콘에 잼과 버터를 곁들인 메뉴', 'HOT');
 
 -- t_comment 데이터 삽입
-INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id01', 1, 1, 'comment 01');
+INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id01', 1, 5, '좋아요 고소하네요.');
 INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id02', 1, 2, 'comment 02');
 INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id03', 1, 3, 'comment 03');
-INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id04', 4, 4, 'comment 04');
-INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id05', 5, 5, 'comment 05');
+INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id04', 4, 4, '깊은 맛이느껴집니다.');
+INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id05', 5, 5, '천사의 맛.');
 INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id06', 6, 1, 'comment 06');
 INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id07', 7, 2, 'comment 07');
-INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id08', 8, 3, 'comment 08');
-INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id09', 9, 4, 'comment 09');
-INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id10', 10, 5, 'comment 10');
+INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id08', 8, 3, '살짝 싱거움');
+INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id09', 9, 4, '호출호 없을 맛');
+INSERT INTO t_comment (user_id, product_id, rating, comment) VALUES ('id10', 10, 5, '누가 먹어도 맛있음');
 
 -- t_order 데이터 삽입
 INSERT INTO t_order (user_id, order_table) VALUES ('id01', 'order_table_01');

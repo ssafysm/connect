@@ -53,5 +53,25 @@
 	    ORDER BY averageRating DESC, totalSells DESC, p.id DESC
 	    LIMIT #{limit}
 	</select>
+	
+	<select id="selectTop5Products" resultType="com.ssafy.cafe.model.dto.ProductWithComment">
+	    SELECT
+	        p.id,
+	        p.name,
+	        p.type,
+	        p.price,
+	        p.img,
+	        p.description,
+	        p.mode,
+	        COUNT(c.id) AS commentCount,
+	        COALESCE(AVG(c.rating), 0) AS averageStars,
+	        COALESCE(SUM(d.quantity), 0) AS totalSells
+	    FROM t_product p
+	    LEFT JOIN t_comment c ON p.id = c.product_id
+	    LEFT JOIN t_order_detail d ON p.id = d.product_id
+	    GROUP BY p.id
+	    ORDER BY averageStars DESC
+	    LIMIT 5
+	</select>
     
 </mapper>

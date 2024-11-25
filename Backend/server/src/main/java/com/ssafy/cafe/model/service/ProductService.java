@@ -26,5 +26,9 @@ public interface ProductService {
      * @return 상위 메뉴와 댓글 목록
      */
     List<ProductWithComment> getTopProductsWithComments(int limit);
-    
+    /**
+     * 평점 기준 상위 5개의 제품을 반환한다.
+     * @return
+     */
+    List<ProductWithComment> getTop5Products();
 }

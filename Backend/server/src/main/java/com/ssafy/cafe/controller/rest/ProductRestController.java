@@ -11,6 +11,8 @@ import com.ssafy.cafe.model.dto.ProductWithComment;
 import com.ssafy.cafe.model.service.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import com.ssafy.cafe.model.service.ChatGptService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/rest/product")
@@ -19,6 +21,9 @@ public class ProductRestController {
 
     @Autowired
     ProductService ps;
+    
+    @Autowired
+    private ChatGptService chatGptService;
 
     @Operation(summary = "전체 상품의 목록을 반환한다.")
     @GetMapping("")
@@ -39,5 +44,29 @@ public class ProductRestController {
     public ResponseEntity<?> getTop5Products() {
         List<ProductWithComment> topProducts = ps.getTopProductsWithComments(5);
         return ResponseEntity.ok(topProducts);
+    }
+    
+    @Operation(summary = "GPT를 활용하여 Top 5 메뉴의 장단점을 반환한다.")
+    @GetMapping("/gpt-summary")
+    public ResponseEntity<?> getGptSummary() {
+        try {
+            // Top 5 제품 가져오기
+            List<ProductWithComment> topProducts = ps.getTop5Products();
+
+            // 제품 정보를 JSON 문자열로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonProducts = objectMapper.writeValueAsString(topProducts);
+
+            // ChatGPT에 전달할 프롬프트 생성
+            String prompt = jsonProducts + " 이렇게 top5 메뉴 설명이 있는데, 이걸 코멘트를 참고해서 이용자에게 각 메뉴의 장단점을 소개만 해.";
+
+            // ChatGPT API 호출
+            String chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
+
+            return ResponseEntity.ok(chatGptResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("GPT 요약 중 오류가 발생했습니다.");
+        }
     }
 }

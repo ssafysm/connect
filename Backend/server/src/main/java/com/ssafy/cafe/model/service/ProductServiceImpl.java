@@ -53,5 +53,22 @@ public class ProductServiceImpl implements ProductService{
         }
         return topProducts;
     }
+    @Override
+    public List<ProductWithComment> getTop5Products() {
+        List<ProductWithComment> products = pDao.selectTop5Products();
+        for (ProductWithComment product : products) {
+            List<CommentWithInfo> comments = cDao.selectByProduct(product.getId());
+            product.setComments(comments);
+            product.setCommentCount(comments.size());
+            // 평균 평점 계산
+            double rateSum = 0.0;
+            for (CommentWithInfo c : comments) {
+                rateSum += c.getRating();
+            }
+            double averageStars = comments.size() > 0 ? rateSum / comments.size() : 0;
+            product.setAverageStars(averageStars);
+        }
+        return products;
+    }
 
 }

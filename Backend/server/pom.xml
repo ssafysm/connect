@@ -108,6 +108,19 @@
 	        <artifactId>okhttp</artifactId>
 	        <version>4.9.3</version>
 	    </dependency>
+	    
+        <!-- JSON 처리 라이브러리 -->
+	    <dependency>
+	        <groupId>org.json</groupId>
+	        <artifactId>json</artifactId>
+	        <version>20210307</version>
+	    </dependency>
+	    
+	    <!-- Jackson 라이브러리 -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	    </dependency>
 
 	</dependencies>
 
