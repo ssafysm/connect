@@ -139,6 +139,17 @@ CREATE TABLE t_coupon_template (
     menu_count INT
 );
 
+-- t_attendance 테이블 생성
+CREATE TABLE t_attendance (
+    user_id VARCHAR(100) NOT NULL,
+    year INT NOT NULL,
+    month INT NOT NULL,
+    day INT NOT NULL CHECK (day BETWEEN 1 AND 31),
+    attended BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (user_id, year, month, day),
+    CONSTRAINT fk_attendance_user FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE
+);
+
 -- t_user 데이터 삽입
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id01', 'name01', 'pass01', 4);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id02', 'name02', 'pass02', 1);

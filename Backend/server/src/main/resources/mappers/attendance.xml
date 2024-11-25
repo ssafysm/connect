@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.cafe.model.dao.AttendanceDao">
+
+    <insert id="insert" parameterType="com.ssafy.cafe.model.dto.Attendance">
+        INSERT INTO t_attendance (user_id, year, month, day, attended)
+        VALUES (#{userId}, #{year}, #{month}, #{day}, #{attended})
+    </insert>
+
+    <update id="update" parameterType="com.ssafy.cafe.model.dto.Attendance">
+        UPDATE t_attendance
+        SET attended = #{attended}
+        WHERE user_id = #{userId} AND year = #{year} AND month = #{month} AND day = #{day}
+    </update>
+
+    <select id="selectByUserIdAndDate" parameterType="com.ssafy.cafe.model.dto.Attendance" resultType="com.ssafy.cafe.model.dto.Attendance">
+        SELECT user_id, year, month, day, attended
+        FROM t_attendance
+        WHERE user_id = #{userId} AND year = #{year} AND month = #{month} AND day = #{day}
+    </select>
+
+    <select id="selectByUserIdAndMonth" parameterType="map" resultType="com.ssafy.cafe.model.dto.Attendance">
+        SELECT user_id, year, month, day, attended
+        FROM t_attendance
+        WHERE user_id = #{userId} AND year = #{year} AND month = #{month}
+        ORDER BY day ASC
+    </select>
+
+</mapper>
