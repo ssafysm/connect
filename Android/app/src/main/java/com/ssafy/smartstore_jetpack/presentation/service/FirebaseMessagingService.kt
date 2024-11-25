@@ -1,4 +1,4 @@
-package com.ssafy.smartstore_jetpack.service
+package com.ssafy.smartstore_jetpack.presentation.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
