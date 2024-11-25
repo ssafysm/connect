@@ -1504,7 +1504,7 @@ class MainViewModel @Inject constructor(
             val newOrder = Order(
                 id = 0,
                 userId = getUserId().first(),
-                orderTable = _tableNumber.value.toString(),
+                orderTable = "${_tableNumber.value} : ${_selectShop.value?.name ?: ""}",
                 orderTime = "",
                 completed = "N",
                 details = newDetails.toList()
@@ -1521,6 +1521,7 @@ class MainViewModel @Inject constructor(
                     _couponDetailUiEvent.emit(CouponDetailUiEvent.FinishCouponOrder(orderId))
                     _totalOrder.value = "0"
                     _totalPrice.value = "￦0"
+                    _tableNumber.value = 0
                     getUser()
                     getLastMonthOrders()
                     getLast6MonthsOrders()
