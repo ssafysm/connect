@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.cafe.model.dto.Alarm;
+import com.ssafy.cafe.model.dto.ApiResponse; // ApiResponse 클래스 임포트
 import com.ssafy.cafe.model.dto.Chat;
 import com.ssafy.cafe.model.dto.UploadPlanRequest;
 import com.ssafy.cafe.model.service.AlarmService;
@@ -43,14 +44,15 @@ public class ChatRestController {
     @Operation(summary = "손글씨 이미지를 업로드하고 계획을 저장한다.")
     @PostMapping("/upload")
     public ResponseEntity<?> uploadPlan(@RequestBody UploadPlanRequest request) {
-        // ChatGPT에게 이미지를 기반으로 조언 요청
         String chatGptResponse = "";
+        boolean isSuccess = true;
         try {
             String prompt = "다음은 이미지로 작성된 계획입니다: " + request.getBase64Image() + "\n이 계획에 대한 조언을 제공해 주세요.";
             chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
         } catch (IOException e) {
             e.printStackTrace();
-            // 오류 처리
+            isSuccess = false;
+            chatGptResponse = "ChatGPT 응답 중 오류가 발생했습니다.";
         }
 
         // level에 따른 알람 주기 설정
@@ -83,20 +85,23 @@ public class ChatRestController {
             chatService.addChat(chat);
         }
 
-        return ResponseEntity.ok("계획이 성공적으로 업로드되었습니다.\nChatGPT의 응답: " + chatGptResponse);
+        // 응답 객체 생성
+        ApiResponse response = new ApiResponse(chatGptResponse, isSuccess);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "텍스트 계획을 입력하고 저장한다.")
     @PostMapping("/text")
     public ResponseEntity<?> addTextPlan(@RequestBody Chat chatRequest) {
-        // ChatGPT에게 계획에 대한 조언 요청
         String chatGptResponse = "";
+        boolean isSuccess = true;
         try {
             String prompt = "다음은 계획입니다: " + chatRequest.getPlan() + "\n이 계획에 대한 조언을 제공해 주세요.";
             chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
         } catch (IOException e) {
             e.printStackTrace();
-            // 오류 처리
+            isSuccess = false;
+            chatGptResponse = "ChatGPT 응답 중 오류가 발생했습니다.";
         }
 
         // level에 따른 알람 주기 설정
@@ -129,7 +134,9 @@ public class ChatRestController {
             chatService.addChat(chat);
         }
 
-        return ResponseEntity.ok("계획이 성공적으로 추가되었습니다.\nChatGPT의 응답: " + chatGptResponse);
+        // 응답 객체 생성
+        ApiResponse response = new ApiResponse(chatGptResponse, isSuccess);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "진행 상황을 업데이트한다.")
@@ -137,19 +144,22 @@ public class ChatRestController {
     public ResponseEntity<?> updateProgress(@PathVariable String userId, @RequestBody String progress) {
         Chat chat = chatService.getChatByUserId(userId);
         if (chat == null) {
-            return ResponseEntity.status(404).body("해당 유저의 계획을 찾을 수 없습니다.");
+            ApiResponse response = new ApiResponse("해당 유저의 계획을 찾을 수 없습니다.", false);
+            return ResponseEntity.status(404).body(response);
         }
 
         chat.setProgress(progress);
 
         // 초기 계획과 진행 상황을 ChatGPT에게 전달하여 조언 받기
         String advice = "";
+        boolean isSuccess = true;
         try {
             String prompt = "계획: " + chat.getPlan() + "\n진행 상황: " + progress + "\n계획과 진행 상황에 기반한 조언을 제공해 주세요.";
             advice = chatGptService.getSummaryFromChatGpt(prompt);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("ChatGPT로부터 조언을 받지 못했습니다.");
+            isSuccess = false;
+            advice = "ChatGPT로부터 조언을 받지 못했습니다.";
         }
 
         // FCM을 통해 사용자에게 조언 전달
@@ -171,6 +181,8 @@ public class ChatRestController {
 
         chatService.updateChat(chat);
 
-        return ResponseEntity.ok("진행 상황이 업데이트되었으며, 조언이 전송되었습니다.");
+        // 응답 객체 생성
+        ApiResponse response = new ApiResponse(advice, isSuccess);
+        return ResponseEntity.ok(response);
     }
 }
