@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentHomeBinding
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.math.abs
 
 @AndroidEntryPoint
@@ -59,17 +61,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun initRecyclerView() {
         binding.orderAdapter = OrderAdapter(viewModel)
-        binding.vpTodayEventHome.adapter = EventAdapter()
-        binding.vpTodayEventHome.offscreenPageLimit = 5
+        binding.vpTodayEventHome.adapter = EventAdapter().apply {
+            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+        binding.vpTodayEventHome.offscreenPageLimit = 4
         binding.vpTodayEventHome.setPageTransformer { page, position ->
-//            val scaleFactor = 0.85F + (1 - abs(position)) * 0.15F
-//            page.scaleX = scaleFactor
-//            page.scaleY = scaleFactor
-            page.scaleY = if (position == 0f) 1f else 0.85f
-            page.scaleX = if (position == 0f) 1f else 0.85f
-            page.alpha = 0.8F + (1 - abs(position)) * 0.2F
+            page.scaleY = if (position == 0f) 1F else 0.85F
+            page.scaleX = if (position == 0f) 1F else 0.85F
         }
         pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+
+            override fun onPageSelected(position: Int) {
+                if (position == 0) {
+                    binding.vpTodayEventHome.setCurrentItem(1, false)
+                }
+            }
+
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
 
@@ -94,16 +101,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 delay(interval)
                 val currentItem = viewPager.currentItem
 
-                val itemCount = when (viewPager.adapter) {
-                    null -> 1
+                val itemCount = viewPager.adapter?.itemCount ?: 1
 
-                    else -> viewPager.adapter!!.itemCount
-                }
+                if (itemCount > 1) {
+                    Timber.d("Current Event: $currentItem")
+                    when (currentItem) {
+                        itemCount - 2 -> viewPager.setCurrentItem(1, true)
 
-                when (currentItem) {
-                    itemCount - 2 -> viewPager.setCurrentItem(1, true)
-
-                    else -> viewPager.currentItem = (currentItem + 1) % itemCount
+                        else -> viewPager.setCurrentItem(currentItem + 1, true)
+                    }
                 }
             }
         }

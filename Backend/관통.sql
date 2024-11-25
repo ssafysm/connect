@@ -15,7 +15,7 @@ CREATE TABLE t_user(
     name VARCHAR(100) NOT NULL,
     pass VARCHAR(100) NOT NULL,
     stamps INTEGER DEFAULT 0,
-    alarm_mode BOOLEAN DEFAULT FALSE,
+    alarm_mode BOOLEAN DEFAULT TRUE,
     app_theme INTEGER DEFAULT 0
 );
 
@@ -278,9 +278,10 @@ INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES 
 주말 09:00 ~ 21:00', 36.12225927143425, 128.32358396526578);
 
 -- t_event 데이터 삽입(Mock-Up 이벤트 데이터)
-INSERT INTO t_event (name, image, url) VALUES ('이벤트 01', 'https://img.freepik.com/free-psd/coffee-concept-banner-template_23-2148448356.jpg', 'https://www.starbucks.co.kr/index.do');
-INSERT INTO t_event (name, image, url) VALUES ('이벤트 02', 'https://img.freepik.com/free-psd/coffee-shop-template-design_23-2150855323.jpg', 'https://www.starbucks.co.kr/index.do');
-INSERT INTO t_event (name, image, url) VALUES ('이벤트 03', 'https://img.freepik.com/free-psd/coffee-cup-banner-template_23-2148818258.jpg?semt=ais_hybrid', 'https://www.starbucks.co.kr/index.do');
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 01', 'event_banner_01.png', 'https://www.starbucks.co.kr/index.do');
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 02', 'event_banner_02.png', 'https://www.starbucks.co.kr/index.do');
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 03', 'event_banner_03.png', 'https://www.starbucks.co.kr/index.do');
+INSERT INTO t_event (name, image, url) VALUES ('이벤트 04', 'event_banner_04.png', 'https://www.starbucks.co.kr/index.do');
 
 INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VALUES('id01', '테스트용 쿠폰', '테스트용 쿠폰입니다.', 'americano_coupon.png', 1, 1);
 INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count) VALUES('id01', '테스트용 쿠폰', '테스트용 쿠폰입니다.', 'americano_coupon.png', 1, 1);
