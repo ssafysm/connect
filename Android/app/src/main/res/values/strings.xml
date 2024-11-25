@@ -140,6 +140,17 @@
     <!-- Pay -->
     <string name="text_pay">결제 정보</string>
 
+    <!-- Attendance -->
+    <string name="text_nothing">-</string>
+    <string name="text_year">년</string>
+    <string name="text_sunday">일</string>
+    <string name="text_monday">월</string>
+    <string name="text_tuesday">화</string>
+    <string name="text_wednesday">수</string>
+    <string name="text_thursday">목</string>
+    <string name="text_friday">금</string>
+    <string name="text_saturday">토</string>
+
     <!-- Order -->
     <string name="text_menu">메뉴</string>
 

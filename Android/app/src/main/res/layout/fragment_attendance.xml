@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.views.main.attendance.AttendanceFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start_attendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_top_attendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/margin_padding_less_larger" />
+
+        <TextView
+            android:id="@+id/tv_title_attendance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardbold"
+            android:text="출석"
+            android:textColor="@color/neutral_100"
+            android:textSize="@dimen/font_size_title"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_attendance"
+            app:layout_constraintStart_toEndOf="@id/gl_start_attendance"
+            app:layout_constraintTop_toBottomOf="@id/gl_top_attendance" />
+
+        <TextView
+            android:id="@+id/tv_date_attendance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_normal"
+            android:fontFamily="@font/pretendardsemibold"
+            android:textColor="@color/neutral_100"
+            android:textSize="@dimen/font_size_normal"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_attendance"
+            app:layout_constraintStart_toEndOf="@id/gl_start_attendance"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_attendance" />
+
+        <TextView
+            android:id="@+id/tv_successive_attendance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_regular"
+            android:fontFamily="@font/pretendardsemibold"
+            android:text="@{vm.successiveAttendances}"
+            android:textColor="@color/neutral_70"
+            android:textSize="@dimen/font_size_regular"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_attendance"
+            app:layout_constraintStart_toEndOf="@id/gl_start_attendance"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_attendance" />
+
+        <com.ssafy.smartstore_jetpack.presentation.views.main.attendance.CalendarView
+            android:id="@+id/calendar_view_custom_calendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_regular"
+            app:layout_constraintEnd_toStartOf="@id/gl_end_attendance"
+            app:layout_constraintStart_toEndOf="@id/gl_start_attendance"
+            app:layout_constraintTop_toBottomOf="@id/tv_successive_attendance" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end_attendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_bottom_attendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/margin_padding_regular" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

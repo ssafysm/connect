@@ -42,6 +42,31 @@
 
     </style>
 
+    <!-- Calendar Custom View -->
+    <style name="Calendar" />
+
+    <style name="Calendar.HeaderDateStyle">
+
+        <item name="android:textSize">20sp</item>
+
+        <item name="android:textColor">@color/neutral_70</item>
+
+    </style>
+
+    <style name="Calendar.CalendarViewStyle">
+
+        <item name="calendarItemHeight">44dp</item>
+
+    </style>
+
+    <style name="Calendar.CalendarItemViewStyle">
+
+        <item name="calendarItemTextSize">14sp</item>
+
+        <item name="calendarItemFontFamily">@font/pretendardregular</item>
+
+    </style>
+
     <!-- Concept Theme -->
     <style name="Theme.Spring" parent="Theme.SmartstoreUI">
 

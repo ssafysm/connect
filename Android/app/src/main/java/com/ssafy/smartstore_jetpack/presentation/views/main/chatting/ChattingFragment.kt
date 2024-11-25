@@ -6,16 +6,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.FragmentChattingBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment_chatting) {
@@ -35,8 +31,6 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
         setEditText()
 
         collectLatestFlow(viewModel.chattingUiEvent) { handleUiEvent(it) }
-
-        // 채팅 올라올 때마다 스크롤 내리기
     }
 
     override fun onResume() {
@@ -46,7 +40,7 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
     }
 
     private fun initRecyclerView() {
-        binding.rvChatting.adapter = ChatAdapter()
+        binding.rvChatting.adapter = ChatAdapter(viewModel)
         binding.rvChatting.setHasFixedSize(true)
     }
 

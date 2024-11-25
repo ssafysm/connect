@@ -3,6 +3,8 @@ package com.ssafy.smartstore_jetpack.presentation.views.main
 import android.content.Context
 import android.location.Location
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +26,7 @@ import com.ssafy.smartstore_jetpack.domain.usecase.AddFcmTokenUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAlarmReceiveModeUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAlarmUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetAppThemeUseCase
+import com.ssafy.smartstore_jetpack.domain.usecase.GetAttendanceUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCommentUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCookieUseCase
 import com.ssafy.smartstore_jetpack.domain.usecase.GetCouponUseCase
@@ -105,6 +108,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -118,6 +122,8 @@ class MainViewModel @Inject constructor(
     private val getEventUseCase: GetEventUseCase,
     private val getCouponUseCase: GetCouponUseCase,
     private val getAlarmUseCase: GetAlarmUseCase,
+    private val getAttendanceUseCase: GetAttendanceUseCase,
+    private val addFcmTokenUseCase: AddFcmTokenUseCase,
     private val getUserIdUseCase: GetUserIdUseCase,
     private val setUserIdUseCase: SetUserIdUseCase,
     private val getCookieUseCase: GetCookieUseCase,
@@ -127,8 +133,7 @@ class MainViewModel @Inject constructor(
     private val getAlarmReceiveModeUseCase: GetAlarmReceiveModeUseCase,
     private val setAlarmReceiveModeUseCase: SetAlarmReceiveModeUseCase,
     private val getNoticesUseCase: GetNoticesUseCase,
-    private val setNoticesUseCase: SetNoticesUseCase,
-    private val addFcmTokenUseCase: AddFcmTokenUseCase
+    private val setNoticesUseCase: SetNoticesUseCase
 
 ) : ViewModel(), HomeClickListener, LoginClickListener, JoinClickListener, MyPageClickListener,
     ProductClickListener, CommentClickListener, ShoppingListClickListener, SettingClickListener,
@@ -200,6 +205,56 @@ class MainViewModel @Inject constructor(
     private val _alarms = MutableStateFlow<List<Alarm>>(emptyList())
     val alarms = _alarms.asStateFlow()
 
+    private val _year = MutableStateFlow<Int>(0)
+    val year = _year.asStateFlow()
+
+    private val _month = MutableStateFlow<Int>(0)
+    val month = _month.asStateFlow()
+
+    private val _day = MutableStateFlow<Int>(0)
+    val day = _day.asStateFlow()
+
+    private val _attendances = MutableStateFlow<List<Boolean>>(listOf())
+    val attendances = _attendances.asStateFlow()
+
+    private val _successiveAttendances = MutableStateFlow<String>("마지막으로 0일 연속 출석중이에요.")
+    val successiveAttendances = _successiveAttendances.asStateFlow()
+
+    private fun makeAttendanceMark() {
+        viewModelScope.launch {
+            val today = LocalDateTime.now()
+            _year.value = today.year
+            _month.value = today.monthValue
+            _day.value = today.dayOfMonth
+            getAttendanceUseCase.postAttendanceMark(_user.value?.user?.id ?: "", _year.value, _month.value, _day.value)
+        }
+    }
+
+    private fun getAttendances() {
+        viewModelScope.launch {
+            val response = getAttendanceUseCase.getAttendances(_user.value?.user?.id ?: "", _year.value, _month.value)
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { attendances ->
+                        _attendances.value = attendances
+                        var successive = 0
+                        for (d in _day.value downTo 1) {
+                            when (_attendances.value[d - 1]) {
+                                true -> successive++
+
+                                else -> break
+                            }
+                        }
+                        _successiveAttendances.value = "마지막으로 ${successive}일 연속 출석중이에요."
+                    }
+                }
+
+                else -> {}
+            }
+        }
+    }
+
     /*** Chatting ***/
     private val _chatMessage = MutableStateFlow<String>("")
     val chatMessage = _chatMessage
@@ -238,6 +293,19 @@ class MainViewModel @Inject constructor(
 
     override fun onClickMenuChatting() {
         viewModelScope.launch {
+            _chattingUiState.update { it.copy(
+                isSendValidState = InputValidState.NONE,
+                chatImageValidState = InputValidState.NONE,
+                buttonsEnableState = InputValidState.NONE
+            ) }
+            addMessage(
+                ChatMessage(
+                    text = "인기 메뉴가 뭔가요?",
+                    imageUri = null,
+                    isSender = true,
+                    senderName = _user.value?.user?.name ?: ""
+                )
+            )
             val response = getProductUseCase.getProductTop5()
 
             when (response.status) {
@@ -251,6 +319,15 @@ class MainViewModel @Inject constructor(
                             senderName = "GPT-4"
                         )
                     )
+                    _chattingUiState.update { it.copy(
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                        isSendValidState = when (_chatMessage.value.isBlank()) {
+                            true -> InputValidState.NONE
+
+                            else -> InputValidState.VALID
+                        }
+                    ) }
                 }
 
                 else -> {
@@ -263,6 +340,15 @@ class MainViewModel @Inject constructor(
                             senderName = "GPT-4"
                         )
                     )
+                    _chattingUiState.update { it.copy(
+                        chatImageValidState = InputValidState.VALID,
+                        buttonsEnableState = InputValidState.VALID,
+                        isSendValidState = when (_chatMessage.value.isBlank()) {
+                            true -> InputValidState.NONE
+
+                            else -> InputValidState.VALID
+                        }
+                    ) }
                 }
             }
         }
@@ -595,13 +681,15 @@ class MainViewModel @Inject constructor(
             _planGrade.value = 0
             _imagePlan.value = null
             _textPlan.value = ""
-            _chattingUiState.update { it.copy(
-                chatMessageValidState = InputValidState.NONE,
-                isSendValidState = InputValidState.VALID,
-                chatImageValidState = InputValidState.NONE,
-                buttonsValidateState = InputValidState.NONE,
-                planSecondTextMode = InputValidState.NONE
-            ) }
+            _chattingUiState.update {
+                it.copy(
+                    chatMessageValidState = InputValidState.NONE,
+                    isSendValidState = InputValidState.VALID,
+                    chatImageValidState = InputValidState.NONE,
+                    buttonsValidateState = InputValidState.NONE,
+                    planSecondTextMode = InputValidState.NONE
+                )
+            }
             _homeUiEvent.emit(HomeUiEvent.GoToChatting)
         }
     }
@@ -1125,6 +1213,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickPay() {
         viewModelScope.launch {
+            getAttendances()
             _myPageUiEvent.emit(MyPageUiEvent.GoToPay)
         }
     }
@@ -1367,6 +1456,8 @@ class MainViewModel @Inject constructor(
                     validateGrade()
                     val newUser = _user.value
                     if (newUser != null) {
+                        makeAttendanceMark()
+                        getAttendances()
                         _appThemeName.value = when (newUser.user.appTheme) {
                             1 -> "봄"
 

@@ -679,7 +679,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/button_disabled">
+                        app:backgroundCustomSubTheme="@{vm.appThemeName}">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_pay_my_page"

@@ -3,6 +3,7 @@ package com.ssafy.smartstore_jetpack.data.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.smartstore_jetpack.data.api.AlarmApi
+import com.ssafy.smartstore_jetpack.data.api.AttendanceApi
 import com.ssafy.smartstore_jetpack.data.base.AddCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.base.ReceivedCookiesInterceptor
 import com.ssafy.smartstore_jetpack.data.api.CommentApi
@@ -126,10 +127,15 @@ object NetworkModule {
         return retrofit.create(AlarmApi::class.java)
     }
 
-    // FcmApi 추가
     @Provides
     @Singleton
     fun provideFcmApiService(@Named("SSAFY") retrofit: Retrofit): FcmApi {
         return retrofit.create(FcmApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAttendanceApiService(@Named("SSAFY") retrofit: Retrofit): AttendanceApi {
+        return retrofit.create(AttendanceApi::class.java)
     }
 }

@@ -124,6 +124,10 @@
             android:id="@+id/action_my_page_to_pay"
             app:destination="@id/fragment_pay" />
 
+        <action
+            android:id="@+id/action_my_page_to_attendance"
+            app:destination="@id/fragment_attendance" />
+
     </fragment>
 
     <fragment
@@ -185,6 +189,12 @@
         android:name="com.ssafy.smartstore_jetpack.presentation.views.main.pay.PayFragment"
         android:label="Pay"
         tools:layout="@layout/fragment_pay" />
+
+    <fragment
+        android:id="@+id/fragment_attendance"
+        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.attendance.AttendanceFragment"
+        android:label="Attendance"
+        tools:layout="@layout/fragment_attendance" />
 
     <fragment
         android:id="@+id/fragment_password"

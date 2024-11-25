@@ -18,6 +18,7 @@ object CommonUtils {
 
     private val idRegex = "^[a-zA-Z0-9]{2,12}$".toRegex()
     private val passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>])[A-Za-z\\d!@#$%^&*(),.?\":{}|<>]{8,16}$".toRegex()
+    val days = listOf<String>("일", "월", "화", "수", "목", "금", "토")
 
     fun validateId(id: CharSequence): Boolean = idRegex.matches(id)
 

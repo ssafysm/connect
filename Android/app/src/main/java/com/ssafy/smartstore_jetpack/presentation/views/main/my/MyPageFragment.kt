@@ -1,7 +1,9 @@
 package com.ssafy.smartstore_jetpack.presentation.views.main.my
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ssafy.smartstore_jetpack.R
@@ -10,6 +12,7 @@ import com.ssafy.smartstore_jetpack.presentation.config.BaseFragment
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
 
@@ -67,7 +70,11 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         }
 
         is MyPageUiEvent.GoToPay -> {
-            showToastMessage(getString(R.string.message_disabled_pay))
+            when (viewModel.user.value) {
+                null -> showToastMessage(getString(R.string.message_need_to_login))
+
+                else -> findNavController().navigateSafely(R.id.action_my_page_to_attendance)
+            }
         }
     }
 }

@@ -157,6 +157,36 @@ fun ImageView.bindGradeAsTitle(title: String?) {
     }
 }
 
+@BindingAdapter("app:myMessage9Patch")
+fun TextView.bingMyMessage(appThemeName: String?) {
+    when (appThemeName) {
+        "봄" -> setBackgroundResource(R.drawable.my_message_spring)
+
+        "여름" -> setBackgroundResource(R.drawable.my_message_summer)
+
+        "가을" -> setBackgroundResource(R.drawable.my_message_autumn)
+
+        "겨울" -> setBackgroundResource(R.drawable.my_message_winter)
+
+        else -> setBackgroundResource(R.drawable.my_message)
+    }
+}
+
+@BindingAdapter("app:otherMessage9Patch")
+fun TextView.bingOtherMessage(appThemeName: String?) {
+    when (appThemeName) {
+        "봄" -> setBackgroundResource(R.drawable.other_message_spring)
+
+        "여름" -> setBackgroundResource(R.drawable.other_message_summer)
+
+        "가을" -> setBackgroundResource(R.drawable.other_message_autumn)
+
+        "겨울" -> setBackgroundResource(R.drawable.other_message_winter)
+
+        else -> setBackgroundResource(R.drawable.other_message)
+    }
+}
+
 @SuppressLint("UseCompatLoadingForDrawables")
 @BindingAdapter("app:progressAsTitle")
 fun ProgressBar.bindProgressAsTitle(grade: Grade?) {
@@ -316,12 +346,10 @@ fun ImageView.bindImage(src: String?) {
 @BindingAdapter("app:eventImage")
 fun ImageView.bindEventImage(src: String?) {
     if (!src.isNullOrEmpty()) {
-        Timber.d("이미지 로딩")
         load(src) {
             transformations(RoundedCornersTransformation(20F))
         }
     } else {
-        Timber.d("이미지 로딩 실패")
         this.setImageResource(R.drawable.logo)
     }
     scaleType = ImageView.ScaleType.CENTER_CROP

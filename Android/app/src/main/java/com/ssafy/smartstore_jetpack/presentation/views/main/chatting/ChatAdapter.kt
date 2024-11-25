@@ -7,16 +7,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ssafy.smartstore_jetpack.R
 import com.ssafy.smartstore_jetpack.databinding.ItemChatGptBinding
 import com.ssafy.smartstore_jetpack.databinding.ItemChatUserBinding
+import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
 
-class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) {
+class ChatAdapter(private val viewModel: MainViewModel) : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) {
 
 	class UserViewHolder(private val binding: ItemChatUserBinding) :
 		RecyclerView.ViewHolder(binding.root) {
 
-		fun bind(chat: ChatMessage) {
+		fun bind(chat: ChatMessage, viewModel: MainViewModel) {
+			binding.vm = viewModel
 			binding.chatName.text = chat.senderName
 			binding.chatText.text = chat.text
 
@@ -29,7 +30,6 @@ class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) 
 				binding.chatImage.visibility = View.GONE
 			}
 
-			binding.chatIcon.setImageResource(R.drawable.cookie)
 			binding.chatIcon.visibility = View.VISIBLE
 		}
 	}
@@ -37,7 +37,8 @@ class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) 
 	class GptViewHolder(private val binding: ItemChatGptBinding) :
 		RecyclerView.ViewHolder(binding.root) {
 
-		fun bind(chat: ChatMessage) {
+		fun bind(chat: ChatMessage, viewModel: MainViewModel) {
+			binding.vm = viewModel
 			binding.chatName.text = chat.senderName
 			binding.chatText.text = chat.text
 
@@ -50,7 +51,6 @@ class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) 
 				binding.chatImage.visibility = View.GONE
 			}
 
-			binding.chatIcon.setImageResource(R.drawable.coffee1)
 			binding.chatIcon.visibility = View.VISIBLE
 		}
 	}
@@ -68,9 +68,9 @@ class ChatAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) 
 	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 		val chat = currentList[position]
 		if (holder is UserViewHolder) {
-			holder.bind(chat)
+			holder.bind(chat, viewModel)
 		} else if (holder is GptViewHolder) {
-			holder.bind(chat)
+			holder.bind(chat, viewModel)
 		}
 	}
 
