@@ -1,7 +1,8 @@
 package com.ssafy.cafe.controller.rest;
 
 import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,10 +64,18 @@ public class ProductRestController {
             // ChatGPT API 호출
             String chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
 
-            return ResponseEntity.ok(chatGptResponse);
+            // JSON 형식으로 응답 생성
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("summary", chatGptResponse);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("GPT 요약 중 오류가 발생했습니다.");
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", "GPT 요약 중 오류가 발생했습니다.");
+            return ResponseEntity.status(500).body(errorResponse);
         }
     }
 }

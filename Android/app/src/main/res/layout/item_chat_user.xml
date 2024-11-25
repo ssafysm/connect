@@ -7,27 +7,31 @@
     android:padding="8dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="end">
+        android:gravity="end"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/chatName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textAlignment="viewEnd" />
+            android:fontFamily="@font/pretendardsemibold"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/neutral_100"
+            android:textSize="@dimen/font_size_small" />
+
 
         <TextView
             android:id="@+id/chatText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_radius"
-            android:textSize="16sp"
+            android:background="@drawable/ic_message"
+            android:fontFamily="@font/pretendardregular"
             android:padding="8dp"
-            android:textAlignment="viewEnd" />
+            android:textAlignment="viewEnd"
+            android:textColor="@color/neutral_70"
+            android:textSize="@dimen/font_size_small" />
 
         <ImageView
             android:id="@+id/chatImage"
@@ -35,6 +39,7 @@
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:visibility="gone" />
+
     </LinearLayout>
 
     <ImageView
@@ -43,4 +48,5 @@
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:src="@drawable/cookie" />
+
 </LinearLayout>

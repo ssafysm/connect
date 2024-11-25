@@ -245,7 +245,7 @@ class MainViewModel @Inject constructor(
                     Timber.d("성공")
                     addMessage(
                         ChatMessage(
-                            text = response.data ?: "",
+                            text = response.data?.summary ?: "",
                             imageUri = null,
                             isSender = false,
                             senderName = "GPT-4"

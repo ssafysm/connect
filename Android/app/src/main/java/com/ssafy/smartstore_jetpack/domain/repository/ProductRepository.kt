@@ -1,5 +1,6 @@
 package com.ssafy.smartstore_jetpack.domain.repository
 
+import com.ssafy.smartstore_jetpack.domain.model.GPTMenu
 import com.ssafy.smartstore_jetpack.domain.model.Product
 import com.ssafy.smartstore_jetpack.domain.model.Result
 
@@ -9,5 +10,5 @@ interface ProductRepository {
 
     suspend fun getProductWithComment(productId: Int): Result<Product>
 
-    suspend fun getProductTop5(): Result<String>
+    suspend fun getProductTop5(): Result<GPTMenu>
 }

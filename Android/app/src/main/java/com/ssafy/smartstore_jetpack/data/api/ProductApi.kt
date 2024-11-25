@@ -1,5 +1,6 @@
 package com.ssafy.smartstore_jetpack.data.api
 
+import com.ssafy.smartstore_jetpack.data.entity.GPTMenuEntity
 import com.ssafy.smartstore_jetpack.data.entity.ProductEntity
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,5 +17,5 @@ interface ProductApi {
     ): Response<ProductEntity>
 
     @GET("rest/product/gpt-summary")
-    suspend fun getProductTop5(): Response<String>
+    suspend fun getProductTop5(): Response<GPTMenuEntity>
 }

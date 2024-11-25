@@ -1,5 +1,6 @@
 package com.ssafy.smartstore_jetpack.domain.usecase
 
+import com.ssafy.smartstore_jetpack.domain.model.GPTMenu
 import com.ssafy.smartstore_jetpack.domain.model.Product
 import com.ssafy.smartstore_jetpack.domain.model.Result
 import com.ssafy.smartstore_jetpack.domain.repository.ProductRepository
@@ -17,7 +18,7 @@ class GetProductUseCase @Inject constructor(
         return productRepository.getProductWithComment(productId)
     }
 
-    suspend fun getProductTop5(): Result<String> {
+    suspend fun getProductTop5(): Result<GPTMenu> {
         return productRepository.getProductTop5()
     }
 }

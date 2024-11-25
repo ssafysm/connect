@@ -1,6 +1,7 @@
 package com.ssafy.smartstore_jetpack.data.repository.product
 
 import com.ssafy.smartstore_jetpack.data.api.ProductApi
+import com.ssafy.smartstore_jetpack.data.entity.GPTMenuEntity
 import com.ssafy.smartstore_jetpack.data.entity.ProductEntity
 import retrofit2.Response
 import javax.inject.Inject
@@ -14,6 +15,6 @@ class ProductRemoteDataSourceImpl @Inject constructor(
     override suspend fun getProductWithComment(productId: Int): Response<ProductEntity> =
         productApi.getProductWithComments(productId)
 
-    override suspend fun getProductTop5(): Response<String> =
+    override suspend fun getProductTop5(): Response<GPTMenuEntity> =
         productApi.getProductTop5()
 }

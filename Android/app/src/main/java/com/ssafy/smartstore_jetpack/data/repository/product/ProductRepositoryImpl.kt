@@ -1,14 +1,15 @@
 package com.ssafy.smartstore_jetpack.data.repository.product
 
+import com.ssafy.smartstore_jetpack.data.mapper.GPTMenuMapper
 import com.ssafy.smartstore_jetpack.data.mapper.ProductMapper
 import com.ssafy.smartstore_jetpack.data.mapper.ProductsMapper
+import com.ssafy.smartstore_jetpack.domain.model.GPTMenu
 import com.ssafy.smartstore_jetpack.domain.model.Product
 import com.ssafy.smartstore_jetpack.domain.model.Result
 import com.ssafy.smartstore_jetpack.domain.repository.ProductRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
@@ -47,22 +48,19 @@ class ProductRepositoryImpl @Inject constructor(
             Result.fail()
         }
 
-    override suspend fun getProductTop5(): Result<String> =
+    override suspend fun getProductTop5(): Result<GPTMenu> =
         try {
             val response = withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
                 productRemoteDataSource.getProductTop5()
             }
 
             val body = response.body()
-            Timber.d("Body: $body")
             if (response.isSuccessful && (body != null)) {
-                Result.success(body)
+                Result.success(GPTMenuMapper(body))
             } else {
-                Timber.d("Error: ${response.errorBody().toString()}")
                 Result.error(response.errorBody().toString(), null)
             }
         } catch (e: Exception) {
-            Timber.d("Exception: ${e.message}")
             Result.fail()
         }
 }

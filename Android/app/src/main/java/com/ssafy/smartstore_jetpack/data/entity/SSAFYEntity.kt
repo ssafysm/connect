@@ -267,3 +267,12 @@ data class AlarmEntity(
     @Json(name = "sentTime")
     val sentTime: String?
 )
+
+@JsonClass(generateAdapter = true)
+data class GPTMenuEntity(
+    @Json(name = "summary")
+    val summary: String?,
+
+    @Json(name = "success")
+    val success: Boolean?
+)

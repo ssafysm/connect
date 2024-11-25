@@ -31,41 +31,57 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="@dimen/margin_padding_regular" />
 
-        <TextView
-            android:id="@+id/tv_title_greeting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@string/text_greeting"
-            android:textSize="@dimen/font_size_regular"
-            app:layout_constraintEnd_toStartOf="@id/tv_title_name_greeting"
-            app:layout_constraintStart_toEndOf="@id/gl_start_chatting"
-            app:layout_constraintTop_toBottomOf="@id/gl_top_chatting" />
-
-        <TextView
-            android:id="@+id/tv_title_name_greeting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_smaller"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@{vm.user.user.name}"
-            android:textSize="@dimen/font_size_regular"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title_greeting"
-            app:layout_constraintEnd_toStartOf="@id/tv_title_end_greeting"
-            app:layout_constraintStart_toEndOf="@id/tv_title_greeting"
-            app:layout_constraintTop_toTopOf="@id/tv_title_greeting" />
-
-        <TextView
-            android:id="@+id/tv_title_end_greeting"
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendardsemibold"
-            android:text="@string/text_name_end"
-            android:textSize="@dimen/font_size_regular"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title_greeting"
-            app:layout_constraintEnd_toStartOf="@id/gl_end_chatting"
-            app:layout_constraintStart_toEndOf="@id/tv_title_name_greeting"
-            app:layout_constraintTop_toTopOf="@id/tv_title_greeting" />
+            android:layout_height="?attr/actionBarSize"
+            android:padding="@dimen/margin_padding_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_title_greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/text_greeting"
+                    android:textSize="@dimen/font_size_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_title_name_greeting"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_title_name_greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_padding_smaller"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@{vm.user.user.name}"
+                    android:textSize="@dimen/font_size_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_title_end_greeting"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_title_end_greeting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardsemibold"
+                    android:text="@string/text_name_end"
+                    android:textSize="@dimen/font_size_regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_title_name_greeting"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chatting"
@@ -78,7 +94,7 @@
             app:layout_constraintBottom_toTopOf="@id/cl_bottom_chatting"
             app:layout_constraintEnd_toStartOf="@id/gl_end_chatting"
             app:layout_constraintStart_toEndOf="@id/gl_start_chatting"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_greeting"
+            app:layout_constraintTop_toBottomOf="@id/gl_top_chatting"
             app:stackFromEnd="true"
             app:submitDataChatting="@{vm.chattings}" />
 
