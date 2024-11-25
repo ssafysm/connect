@@ -10,9 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.cafe.model.dto.Alarm;
-import com.ssafy.cafe.model.dto.ApiResponse; // ApiResponse 클래스 임포트
+import com.ssafy.cafe.model.dto.ApiResponse;
 import com.ssafy.cafe.model.dto.Chat;
 import com.ssafy.cafe.model.dto.UploadPlanRequest;
+import com.ssafy.cafe.model.dto.UpdateProgressRequest; // 추가된 DTO 클래스
 import com.ssafy.cafe.model.service.AlarmService;
 import com.ssafy.cafe.model.service.ChatGptService;
 import com.ssafy.cafe.model.service.ChatService;
@@ -141,7 +142,8 @@ public class ChatRestController {
 
     @Operation(summary = "진행 상황을 업데이트한다.")
     @PostMapping("/progress/{userId}")
-    public ResponseEntity<?> updateProgress(@PathVariable String userId, @RequestBody String progress) {
+    public ResponseEntity<?> updateProgress(@PathVariable String userId, @RequestBody UpdateProgressRequest request) {
+        String progress = request.getProgress();
         Chat chat = chatService.getChatByUserId(userId);
         if (chat == null) {
             ApiResponse response = new ApiResponse("해당 유저의 계획을 찾을 수 없습니다.", false);
@@ -168,8 +170,8 @@ public class ChatRestController {
             try {
                 alarmService.addAlarm(new Alarm(chat.getUserId(), "계획 조언", advice));
                 firebaseCloudMessageService.sendMessageTo(token, "계획 조언", advice);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
 
