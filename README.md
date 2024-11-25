@@ -31,7 +31,7 @@
 ## ⚒ 기술스택
 | Category     | TechStack                                                                |
 |--------------|--------------------------------------------------------------------------|
-| Architecture | MVVM                                                                     | 
+| Architecture | MVVM, Clean Architecture                                                 | 
 | Network      | Retrofit, OkHttp, Moshi                                                  | 
 | DI           | Hilt                                                                     |
 | Asynchronous | Coroutines                                                               | 
