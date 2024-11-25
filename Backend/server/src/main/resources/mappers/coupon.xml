@@ -14,7 +14,7 @@
         <result column="menu_count" property="menuCount"/>
         <result column="id" property="id"/>
     </resultMap>
-    
+
     <select id="getCoupons" parameterType="string" resultMap="CouponResultMap">
         SELECT *
         FROM t_coupon
@@ -28,8 +28,13 @@
     </insert>
 
     <delete id="deleteCoupon" parameterType="int">
-        delete from t_coupon 
-        where id = #{couponId}
+        DELETE FROM t_coupon 
+        WHERE id = #{couponId}
     </delete>
-    
+
+    <!-- 새로운 메서드 추가 -->
+    <insert id="insertCoupon" parameterType="Coupon">
+        INSERT INTO t_coupon (user_id, name, description, image, menu_id, menu_count)
+        VALUES (#{userId}, #{name}, #{description}, #{image}, #{menuId}, #{menuCount})
+    </insert>
 </mapper>

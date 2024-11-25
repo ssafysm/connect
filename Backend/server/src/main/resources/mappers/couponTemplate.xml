@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.cafe.model.dao.CouponTemplateDao">
+
+    <select id="getCouponTemplates" resultType="com.ssafy.cafe.model.dto.CouponTemplate">
+        SELECT id, name, description, image, menu_id AS menuId, menu_count AS menuCount
+        FROM t_coupon_template
+    </select>
+
+    <select id="selectCouponTemplateById" parameterType="int" resultType="com.ssafy.cafe.model.dto.CouponTemplate">
+        SELECT id, name, description, image, menu_id AS menuId, menu_count AS menuCount
+        FROM t_coupon_template
+        WHERE id = #{id}
+    </select>
+
+</mapper>

@@ -129,6 +129,16 @@ CREATE TABLE t_alarm (
     CONSTRAINT fk_alarm_user FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE
 );
 
+-- t_coupon_template 테이블 생성
+CREATE TABLE t_coupon_template (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    description VARCHAR(255),
+    image VARCHAR(255),
+    menu_id INT,
+    menu_count INT
+);
+
 -- t_user 데이터 삽입
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id01', 'name01', 'pass01', 4);
 INSERT INTO t_user (id, name, pass, stamps) VALUES ('id02', 'name02', 'pass02', 1);
@@ -285,6 +295,16 @@ select
         join t_product p on d.product_id = p.id
         where p.id = 11
         order by d.d_id ASC;
+
+-- t_coupon_template 테이블에 t_product 데이터를 삽입하는 SQL
+INSERT INTO t_coupon_template (name, description, image, menu_id, menu_count)
+SELECT 
+    name,                       -- 메뉴 이름
+    description,                -- 메뉴 설명
+    img,                        -- 이미지 파일 경로
+    id AS menu_id,              -- 메뉴 ID
+    1 AS menu_count             -- 기본 쿠폰 발행 개수 (1개)
+FROM t_product;
 
 -- 트랜잭션 커밋
 COMMIT;

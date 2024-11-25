@@ -3,6 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <title>FCM 메시지 전송</title>
+<script>
+    // 쿠폰 템플릿을 가져와서 select 요소에 추가하는 함수
+    function loadCouponTemplates() {
+        fetch('/rest/coupon/templates')
+        .then(response => response.json())
+        .then(data => {
+            var select = document.getElementById('couponTemplateSelect');
+            data.forEach(function(template) {
+                var option = document.createElement('option');
+                option.value = template.id;
+                option.text = template.name + ' - ' + template.description;
+                select.add(option);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    window.onload = function() {
+        loadCouponTemplates();
+    };
+</script>
 </head>
 <body>
 
@@ -24,6 +44,18 @@
 
     <h1>전체 사용자에게 메시지 전송</h1>
     <form action="/rest/fcm/broadcast" method="post">
+        <input type="text" name="title" placeholder="제목을 입력하세요"><br>
+        <textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
+        <input type="submit"><input type="reset">
+    </form>
+
+    <h1>특정 사용자에게 쿠폰 지급 및 알림 전송</h1>
+    <form action="/rest/coupon/giveCouponWithNotification" method="post">
+        <input type="text" name="userId" placeholder="사용자 ID를 입력하세요"><br>
+        <label for="couponTemplateSelect">쿠폰 선택:</label>
+        <select name="couponTemplateId" id="couponTemplateSelect">
+            <!-- JavaScript를 통해 옵션이 추가됩니다 -->
+        </select><br>
         <input type="text" name="title" placeholder="제목을 입력하세요"><br>
         <textarea rows="5" name="body" cols="100" placeholder="내용을 입력하세요"></textarea><br>
         <input type="submit"><input type="reset">
