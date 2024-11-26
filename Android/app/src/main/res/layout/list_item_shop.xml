@@ -25,7 +25,7 @@
             android:layout_width="@dimen/menu_image_size"
             android:layout_height="@dimen/menu_image_size"
             android:scaleType="centerCrop"
-            app:eventImage="@{shop.image}"
+            app:photoUrl="@{shop.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

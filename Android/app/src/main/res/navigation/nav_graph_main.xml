@@ -125,10 +125,6 @@
             app:destination="@id/fragment_coupon" />
 
         <action
-            android:id="@+id/action_my_page_to_pay"
-            app:destination="@id/fragment_pay" />
-
-        <action
             android:id="@+id/action_my_page_to_attendance"
             app:destination="@id/fragment_attendance" />
 
@@ -187,12 +183,6 @@
             app:destination="@id/fragment_shop_select_bottom_sheet_dialog" />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/fragment_pay"
-        android:name="com.ssafy.smartstore_jetpack.presentation.views.main.pay.PayFragment"
-        android:label="Pay"
-        tools:layout="@layout/fragment_pay" />
 
     <fragment
         android:id="@+id/fragment_attendance"

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App Name -->
-    <string name="app_name">Smartstore Jetpack Starter</string>
+    <string name="app_name">Connecting The Dots</string>
 
     <!-- Common -->
     <string name="api_key">AIzaSyCnaS2BwLjhQ5mWZU0U8z4ppydasbHF_Sk</string>

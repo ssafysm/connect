@@ -3,6 +3,8 @@ package com.ssafy.smartstore_jetpack.presentation.views.main
 import android.content.Context
 import android.location.Location
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.smartstore_jetpack.domain.model.Alarm
@@ -51,6 +53,7 @@ import com.ssafy.smartstore_jetpack.presentation.util.InputValidState
 import com.ssafy.smartstore_jetpack.presentation.util.PasswordState
 import com.ssafy.smartstore_jetpack.presentation.util.SelectState
 import com.ssafy.smartstore_jetpack.presentation.util.ShopSelectValidState
+import com.ssafy.smartstore_jetpack.presentation.views.main.attendance.AttendanceUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShopSelectUiState
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListClickListener
 import com.ssafy.smartstore_jetpack.presentation.views.main.cart.ShoppingListUiEvent
@@ -109,6 +112,7 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.math.abs
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getCommentUseCase: GetCommentUseCase,
@@ -375,7 +379,14 @@ class MainViewModel @Inject constructor(
     private val _couponDetailUiEvent = MutableSharedFlow<CouponDetailUiEvent>()
     val couponDetailUiEvent = _couponDetailUiEvent.asSharedFlow()
 
+    private val _attendanceUiEvent = MutableSharedFlow<AttendanceUiEvent>()
+    val attendanceUiEvent = _attendanceUiEvent.asSharedFlow()
+
     init {
+        val today = LocalDateTime.now()
+        _year.value = today.year
+        _month.value = today.monthValue
+        _day.value = today.dayOfMonth
         setEvents()
     }
 
@@ -1186,7 +1197,7 @@ class MainViewModel @Inject constructor(
 
     override fun onClickPay() {
         viewModelScope.launch {
-            getAttendances()
+            setAttendances()
             _myPageUiEvent.emit(MyPageUiEvent.GoToPay)
         }
     }
@@ -1429,8 +1440,7 @@ class MainViewModel @Inject constructor(
                     validateGrade()
                     val newUser = _user.value
                     if (newUser != null) {
-                        makeAttendanceMark()
-                        getAttendances()
+                        setAttendances()
                         _appThemeName.value = when (newUser.user.appTheme) {
                             1 -> "봄"
 
@@ -1539,7 +1549,30 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getAttendances() {
+    fun getAttendancesForBeacon() {
+        viewModelScope.launch {
+            val response = getAttendanceUseCase.getAttendances(
+                _user.value?.user?.id ?: "",
+                _year.value,
+                _month.value
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { attendances ->
+                        if (!attendances[_day.value - 1]) {
+                            _attendanceUiEvent.emit(AttendanceUiEvent.getBeacon)
+                            makeAttendanceMark()
+                        }
+                    }
+                }
+
+                else -> {}
+            }
+        }
+    }
+
+    private fun setAttendances() {
         viewModelScope.launch {
             val response = getAttendanceUseCase.getAttendances(
                 _user.value?.user?.id ?: "",
@@ -1734,16 +1767,23 @@ class MainViewModel @Inject constructor(
 
     private fun makeAttendanceMark() {
         viewModelScope.launch {
-            val today = LocalDateTime.now()
-            _year.value = today.year
-            _month.value = today.monthValue
-            _day.value = today.dayOfMonth
-            getAttendanceUseCase.postAttendanceMark(
+            val response = getAttendanceUseCase.postAttendanceMark(
                 _user.value?.user?.id ?: "",
                 _year.value,
                 _month.value,
                 _day.value
             )
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    Timber.d("Beacon, 출석 성공")
+                    setAttendances()
+                }
+
+                else -> {
+                    Timber.d("출석 실패")
+                }
+            }
         }
     }
 

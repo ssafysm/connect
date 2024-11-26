@@ -31,6 +31,7 @@ import com.ssafy.smartstore_jetpack.app.SharedPreferencesUtil
 import com.ssafy.smartstore_jetpack.databinding.ActivityMainBinding
 import com.ssafy.smartstore_jetpack.presentation.config.BaseActivity
 import com.ssafy.smartstore_jetpack.presentation.util.PermissionChecker
+import com.ssafy.smartstore_jetpack.presentation.views.main.attendance.AttendanceUiEvent
 import com.ssafy.smartstore_jetpack.presentation.views.main.home.StoreEventDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -122,6 +123,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         lifecycleScope.launch {
             viewModel.appThemeName.collectLatest { themeName ->
                 applyTheme(themeName)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.attendanceUiEvent.collectLatest {
+                if (it == AttendanceUiEvent.getBeacon) {
+                    showStoreEventDialog()
+                }
             }
         }
 
@@ -267,6 +276,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun shouldShowNotification(): Boolean {
         val lastShownTime = preferencesUtil.getLastPopupShownTime()
         val currentTime = System.currentTimeMillis()
+
+        viewModel.getAttendancesForBeacon()
+
         return (currentTime - lastShownTime) >= 24 * 60 * 60 * 1000 // 24시간
         // return (currentTime - lastShownTime) >= 30 * 1000 // 30초 (테스트용)
     }

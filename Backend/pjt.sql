@@ -283,24 +283,24 @@ INSERT INTO t_fcm (user_id, fcm_token) VALUES ('id04', 'fcm_token_06');
 INSERT INTO t_fcm (user_id, fcm_token) VALUES ('id05', 'fcm_token_07');
 
 -- t_shop 데이터 삽입(Mock-Up 매장 데이터)
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미인동', 'https://mblogthumb-phinf.pstatic.net/MjAyNDAxMThfMjUz/MDAxNzA1NTY2Mzg0Mzk2.gVwa4ygCav1gbmwGq2tWEtDvHU5ufrJVjJs-JZBIrM0g.QwyYd_P-C2LCjsTh3fEHJfAQl91scMSVaYR2gjown3Ag.JPEG.yosulpp/SE-b60fa36a-b42d-11ee-9a89-976840ec37c2.jpg?type=w800', '경상북도 구미시 인동가산로9-3, 노블레스타워 1층(황상동)', '평일 06:00 ~ 23:00
-주말 07:00 ~ 23:00', 36.107860277822844, 128.41873514292232);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미인의DT', 'https://mblogthumb-phinf.pstatic.net/MjAyNDAxMDVfODIg/MDAxNzA0NDU3ODE1NjE2.3eBnacAfnkYIPrf0m1X5KrLaLfkmPak_na1ei7bZnMEg.kLKFbCAieqLlg1v80b0BWxBHfYWFCZtWA_y4oJJbrBUg.JPEG.m_4862/output_2270109392.jpg?type=w800', '경상북도 구미시 인동북길 149(인의동)', '평일 06:00 ~ 23:00
-주말 07:00 ~ 23:00', 36.09565743046543, 128.43098473779384);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미공단', 'https://naverbooking-phinf.pstatic.net/20240611_120/1718104723924coCrQ_JPEG/image.jpg?type=f750_420_60_sharpen', '경상북도 구미시 1공단로212, HALLA SIGMA VALLEY 104...', '평일 06:00 ~ 23:00
-주말 07:00 ~ 23:00', 36.101684061858755, 128.38592779265716);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미광평DT', 'https://naverbooking-phinf.pstatic.net/20240611_257/1718104467893XeEyG_JPEG/image.jpg?type=f750_420_60_sharpen', '경상북도 구미시 구미대로 188(광평동)', '평일 06:00 ~ 23:00
-주말 07:00 ~ 23:00', 36.10361637149451, 128.36360282794408);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미옥계', 'https://mblogthumb-phinf.pstatic.net/MjAyMTA3MTRfMTEg/MDAxNjI2MjYyNzE4NDI5.AMdA_uB_i8FJNyhVzFx4pkGRyKqgzTkRRPUwbTEqflcg.wAI4J4M6MfW0_k3LKPyTGRpcii_cw-Alju6rgTGu0gog.JPEG.kilrboy89/SE-01f7a5c6-9709-4736-8f30-9f3c6d81df8a.jpg?type=w800', '경상북도 구미시 옥계북로20(양포동)', '평일 06:00 ~ 23:00
-주말 07:00 ~ 23:00', 36.138290806168214, 128.4195495105708);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미확장단지', 'https://naverbooking-phinf.pstatic.net/20240611_236/1718104453700MIgDS_JPEG/image.jpg?type=f750_420_60_sharpen', '경상북도 구미시 산동면 신당1로4길 19', '평일 09:00 ~ 21:00
-주말 09:00 ~ 21:00', 36.156240703496046, 128.4301959592791);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미시청DT', 'https://naverbooking-phinf.pstatic.net/20240611_31/1718104161298DQzaH_JPEG/image.jpg', '경상북도 구미시 송정대로 27', '평일 09:00 ~ 21:00
-주말 09:00 ~ 21:00', 36.156240703496046, 128.4301959592791);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미상모DT', 'https://mblogthumb-phinf.pstatic.net/MjAyNDA1MDlfMzYg/MDAxNzE1MjM5MDMyNjEw.3TGO5p1aI4G3QUdCRZRIkRUTSr1skGAXGd3GLIrv4Kwg.MCoRjRujN8Y-UdhM5Hk-e0AYQIsR5z54-6hD0QGtUAAg.JPEG/20240509%EF%BC%BF161612%EF%BC%BF835.jpg?type=w800', '경상북도 구미시 금오대로 439', '평일 09:00 ~ 21:00
-주말 09:00 ~ 21:00', 36.08225546213961, 128.35640083138827);
-INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미금오산DT', 'https://blog.kakaocdn.net/dn/Kd17x/btrTRedi8j3/mxrTFcMeK8OGbz9ZE5arAk/img.jpg', '경상북도 구미시 남통동 금오산로 205', '평일 09:00 ~ 21:00
-주말 09:00 ~ 21:00', 36.12225927143425, 128.32358396526578);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미인동', 'gumi_indong.jpg', '경상북도 구미시 인동가산로9-3, 노블레스타워 1층(황상동)', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.107860277822844, 128.41873514292232);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미인의DT', 'gumi_inuidt.jpg', '경상북도 구미시 인동북길 149(인의동)', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.09565743046543, 128.43098473779384);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미공단', 'gumi_gongdan.jpg', '경상북도 구미시 1공단로212, HALLA SIGMA VALLEY 104...', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.101684061858755, 128.38592779265716);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미광평DT', 'gumi_gwangpyeongdt.jpg', '경상북도 구미시 구미대로 188(광평동)', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.10361637149451, 128.36360282794408);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미옥계', 'gumi_okgae.jpg', '경상북도 구미시 옥계북로20(양포동)', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.138290806168214, 128.4195495105708);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미확장단지', 'gumi_hwakjang.jpg', '경상북도 구미시 산동면 신당1로4길 19', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.156240703496046, 128.4301959592791);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미시청DT', 'gumi_shicheongdt.jpg', '경상북도 구미시 송정대로 27', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.156240703496046, 128.4301959592791);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미상모DT', 'gumi_sangmodt.jpg', '경상북도 구미시 금오대로 439', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.08225546213961, 128.35640083138827);
+INSERT INTO t_shop (name, image, description, time, latitude, longitude) VALUES ('구미금오산DT', 'gumi_geumosandt.jpg', '경상북도 구미시 남통동 금오산로 205', '평일 08:00 ~ 23:00
+주말 08:00 ~ 23:00', 36.12225927143425, 128.32358396526578);
 
 -- t_event 데이터 삽입(Mock-Up 이벤트 데이터)
 INSERT INTO t_event (name, image, url) VALUES ('이벤트 01', 'event_banner_01.png', 'https://www.starbucks.co.kr/index.do');
