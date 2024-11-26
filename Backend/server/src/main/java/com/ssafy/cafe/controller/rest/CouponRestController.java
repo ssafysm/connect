@@ -85,6 +85,7 @@ public class CouponRestController {
             return ResponseEntity.status(500).body("쿠폰 지급 실패");
         }
     }
+    @Operation(summary = "특정 사용자 ID로 쿠폰 데이터를 삭제한다.")
     @DeleteMapping("/{couponId}")
     public ResponseEntity<?> deleteCoupon(@PathVariable String couponId) {
     	int result = cs.deleteCoupon(Integer.parseInt(couponId));
