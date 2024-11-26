@@ -164,7 +164,7 @@
                             android:id="@+id/iv_shop_coupon_detail"
                             android:layout_width="@dimen/toolbar_button_big"
                             android:layout_height="@dimen/toolbar_button_big"
-                            android:src="@drawable/ic_deliver"
+                            android:src="@drawable/ic_store"
                             app:layout_constraintBottom_toTopOf="@id/tv_shop_coupon_detail"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

@@ -103,13 +103,13 @@ class JoinFragment : BaseFragment<FragmentJoinBinding>(R.layout.fragment_join) {
                 false -> {
                     binding.etPwJoin.requestFocus()
                     showKeyboard(binding.etPwJoin)
-                    showToastMessage(getString(R.string.message_join_id_duplicate))
+                    showToastMessage(getString(R.string.message_join_id_able))
                 }
 
                 else -> {
                     binding.etIdJoin.requestFocus()
                     showKeyboard(binding.etIdJoin)
-                    showToastMessage(getString(R.string.message_join_id_able))
+                    showToastMessage(getString(R.string.message_join_id_duplicate))
                 }
             }
         }
