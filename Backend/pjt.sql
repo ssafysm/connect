@@ -150,12 +150,12 @@ CREATE TABLE t_attendance (
     CONSTRAINT fk_attendance_user FOREIGN KEY (user_id) REFERENCES t_user(id) ON DELETE CASCADE
 );
 
--- t_chat 테이블 생성
+-- t_chat 테이블 생성 (수정된 버전)
 CREATE TABLE t_chat (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(100) NOT NULL,
     level TINYINT NOT NULL,
-    plan TEXT NOT NULL,
+    plan LONGTEXT NOT NULL,               -- plan 컬럼을 LONGTEXT로 변경
     progress TEXT,
     alert_interval_minutes INT DEFAULT NULL,
     next_alarm_time TIMESTAMP DEFAULT NULL,

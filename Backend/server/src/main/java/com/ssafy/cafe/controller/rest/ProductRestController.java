@@ -62,7 +62,7 @@ public class ProductRestController {
             String prompt = jsonProducts + " 이렇게 top5 메뉴 설명이 있는데, 이걸 코멘트를 참고해서 이용자에게 각 메뉴의 장단점을 소개만 해.";
 
             // ChatGPT API 호출
-            String chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
+            String chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt, null);
 
             // JSON 형식으로 응답 생성
             Map<String, Object> response = new HashMap<>();

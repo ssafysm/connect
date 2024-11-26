@@ -17,24 +17,44 @@ public class ChatGptService {
     @Value("${openai.api.key}")
     private String openaiApiKey;
 
-    public String getSummaryFromChatGpt(String prompt) throws IOException {
-        // HTTP 클라이언트 생성
+    public String getSummaryFromChatGpt(String text, String base64Image) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
-        // 요청 바디 생성
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         JSONObject jsonBody = new JSONObject();
-        jsonBody.put("model", "gpt-4o-mini"); // 사용하고자 하는 모델명
+        jsonBody.put("model", "gpt-4o-mini");
+
         JSONArray messages = new JSONArray();
         JSONObject message = new JSONObject();
         message.put("role", "user");
-        message.put("content", prompt);
+
+        // 콘텐츠 배열 생성
+        JSONArray contentArray = new JSONArray();
+
+        if (text != null && !text.isEmpty()) {
+            JSONObject textObject = new JSONObject();
+            textObject.put("type", "text");
+            textObject.put("text", text);
+            contentArray.put(textObject);
+        }
+
+        if (base64Image != null && !base64Image.isEmpty()) {
+            JSONObject imageObject = new JSONObject();
+            imageObject.put("type", "image_url");
+            JSONObject imageUrlObject = new JSONObject();
+            imageUrlObject.put("url", base64Image);
+            imageObject.put("image_url", imageUrlObject);
+            contentArray.put(imageObject);
+        }
+
+        message.put("content", contentArray);
         messages.put(message);
+
         jsonBody.put("messages", messages);
+        jsonBody.put("max_tokens", 10000);
 
         RequestBody body = RequestBody.create(mediaType, jsonBody.toString());
 
-        // 요청 생성
         Request request = new Request.Builder()
                 .url(OPENAI_API_URL)
                 .post(body)
@@ -42,11 +62,15 @@ public class ChatGptService {
                 .addHeader("Authorization", "Bearer " + openaiApiKey)
                 .build();
 
-        // 요청 보내기
         Response response = client.newCall(request).execute();
 
         if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
+            switch (response.code()) {
+                case 429:
+                    throw new IOException("API 한도 초과입니다.");
+                default:
+                    throw new IOException("오류가 있습니다. 코드: " + response.code());
+            }
         }
 
         // 응답 파싱

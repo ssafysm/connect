@@ -13,7 +13,7 @@ import com.ssafy.cafe.model.dto.Alarm;
 import com.ssafy.cafe.model.dto.ApiResponse;
 import com.ssafy.cafe.model.dto.Chat;
 import com.ssafy.cafe.model.dto.UploadPlanRequest;
-import com.ssafy.cafe.model.dto.UpdateProgressRequest; // 추가된 DTO 클래스
+import com.ssafy.cafe.model.dto.UpdateProgressRequest;
 import com.ssafy.cafe.model.service.AlarmService;
 import com.ssafy.cafe.model.service.ChatGptService;
 import com.ssafy.cafe.model.service.ChatService;
@@ -48,8 +48,15 @@ public class ChatRestController {
         String chatGptResponse = "";
         boolean isSuccess = true;
         try {
-            String prompt = "다음은 이미지로 작성된 계획입니다: " + request.getBase64Image() + "\n이 계획에 대한 조언을 제공해 주세요.";
-            chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
+            String base64Image = request.getBase64Image();
+            // 이미지 데이터가 "data:image/jpeg;base64,"로 시작하지 않으면 추가
+            if (base64Image != null && !base64Image.startsWith("data:image/")) {
+                base64Image = "data:image/jpeg;base64," + base64Image;
+            }
+
+            String text = "다음은 이미지로 작성된 계획입니다 읽고, 계획에 대한 조언을 제공해주세요";
+            chatGptResponse = chatGptService.getSummaryFromChatGpt(text, base64Image);
+
         } catch (IOException e) {
             e.printStackTrace();
             isSuccess = false;
@@ -98,7 +105,7 @@ public class ChatRestController {
         boolean isSuccess = true;
         try {
             String prompt = "다음은 계획입니다: " + chatRequest.getPlan() + "\n이 계획에 대한 조언을 제공해 주세요.";
-            chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt);
+            chatGptResponse = chatGptService.getSummaryFromChatGpt(prompt, null);
         } catch (IOException e) {
             e.printStackTrace();
             isSuccess = false;
@@ -157,7 +164,7 @@ public class ChatRestController {
         boolean isSuccess = true;
         try {
             String prompt = "계획: " + chat.getPlan() + "\n진행 상황: " + progress + "\n계획과 진행 상황에 기반한 조언을 제공해 주세요.";
-            advice = chatGptService.getSummaryFromChatGpt(prompt);
+            advice = chatGptService.getSummaryFromChatGpt(prompt, null);
         } catch (IOException e) {
             e.printStackTrace();
             isSuccess = false;
