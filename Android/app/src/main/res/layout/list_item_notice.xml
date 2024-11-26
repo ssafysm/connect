@@ -64,7 +64,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_small"
                     android:fontFamily="@font/pretendardregular"
-                    android:text="@{alarm.content}"
                     android:textColor="@color/neutral_70"
                     android:textSize="@dimen/font_size_regular"
                     app:layout_constraintEnd_toEndOf="@id/tv_title_notify"
