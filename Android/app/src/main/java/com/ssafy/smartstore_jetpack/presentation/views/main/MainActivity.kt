@@ -262,12 +262,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
                 if (beacon.distance <= BEACON_DISTANCE && shouldShowNotification()) {
                     runOnUiThread {
-                        showStoreEventDialog()
-                        Toast.makeText(
-                            applicationContext,
-                            "지정된 비콘 감지! 거리: ${String.format("%.2f", beacon.distance)}m",
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        showStoreEventDialog()
+//                        Toast.makeText(
+//                            applicationContext,
+//                            "지정된 비콘 감지! 거리: ${String.format("%.2f", beacon.distance)}m",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
                     }
                     updateLastNotificationTime()
                     return@forEach

@@ -2198,7 +2198,7 @@ class MainViewModel @Inject constructor(
             val newOrder = Order(
                 id = 0,
                 userId = getUserId().first(),
-                orderTable = _tableNumber.value.toString(),
+                orderTable = "${_tableNumber.value} : ${_selectShop.value?.name ?: ""}",
                 orderTime = "",
                 completed = "N",
                 details = newDetails.toList()
