@@ -10,16 +10,19 @@ import com.bumptech.glide.Glide
 import com.ssafy.smartstore_jetpack.databinding.ItemChatGptBinding
 import com.ssafy.smartstore_jetpack.databinding.ItemChatUserBinding
 import com.ssafy.smartstore_jetpack.presentation.views.main.MainViewModel
+import io.noties.markwon.Markwon
 
 class ChatAdapter(private val viewModel: MainViewModel) : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(diffUtil) {
 
-	class UserViewHolder(private val binding: ItemChatUserBinding) :
-		RecyclerView.ViewHolder(binding.root) {
+	class UserViewHolder(private val binding: ItemChatUserBinding,
+						 private val markwon: Markwon
+	) : RecyclerView.ViewHolder(binding.root) {
 
 		fun bind(chat: ChatMessage, viewModel: MainViewModel) {
 			binding.vm = viewModel
 			binding.chatName.text = chat.senderName
-			binding.chatText.text = chat.text
+			// Markwon을 사용하여 Markdown 처리
+			markwon.setMarkdown(binding.chatText, chat.text)
 
 			if (chat.imageUri != null) {
 				binding.chatImage.visibility = View.VISIBLE
@@ -34,13 +37,15 @@ class ChatAdapter(private val viewModel: MainViewModel) : ListAdapter<ChatMessag
 		}
 	}
 
-	class GptViewHolder(private val binding: ItemChatGptBinding) :
-		RecyclerView.ViewHolder(binding.root) {
+	class GptViewHolder(private val binding: ItemChatGptBinding,
+						private val markwon: Markwon
+	) : RecyclerView.ViewHolder(binding.root) {
 
 		fun bind(chat: ChatMessage, viewModel: MainViewModel) {
 			binding.vm = viewModel
 			binding.chatName.text = chat.senderName
-			binding.chatText.text = chat.text
+			// Markwon을 사용하여 Markdown 처리
+			markwon.setMarkdown(binding.chatText, chat.text)
 
 			if (chat.imageUri != null) {
 				binding.chatImage.visibility = View.VISIBLE
@@ -54,14 +59,20 @@ class ChatAdapter(private val viewModel: MainViewModel) : ListAdapter<ChatMessag
 			binding.chatIcon.visibility = View.VISIBLE
 		}
 	}
+	private lateinit var markwon: Markwon
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+		// Markwon 인스턴스를 생성 (Context 필요)
+		if (!::markwon.isInitialized) {
+			markwon = Markwon.create(parent.context)
+		}
 		return if (viewType == VIEW_TYPE_USER) {
 			val binding = ItemChatUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-			UserViewHolder(binding)
+			UserViewHolder(binding, markwon)
 		} else {
 			val binding = ItemChatGptBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-			GptViewHolder(binding)
+			GptViewHolder(binding, markwon)
 		}
 	}
 

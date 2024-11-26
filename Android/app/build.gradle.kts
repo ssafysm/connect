@@ -138,6 +138,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation ("io.noties.markwon:core:4.6.2")
 }
 
 kapt {
