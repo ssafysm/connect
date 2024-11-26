@@ -10,7 +10,7 @@ sealed class ChattingUiEvent {
 
     data object GoToMenu : ChattingUiEvent()
 
-    data object GoToOrder : ChattingUiEvent()
+    data class ChatPlanDelete(val isSuccess: Boolean) : ChattingUiEvent()
 
     data object GoToShop : ChattingUiEvent()
 

@@ -23,4 +23,8 @@ class SetChatUseCase @Inject constructor(
     suspend fun submitProgress(userId: String, progress: ChatProgressRequest): Result<GPTMenu> {
         return chatRepository.submitProgress(userId, progress)
     }
+
+    suspend fun deleteChatPlan(userId: String): Result<GPTMenu> {
+        return chatRepository.deleteChatPlan(userId)
+    }
 }

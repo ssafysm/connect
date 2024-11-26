@@ -257,6 +257,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val rangeNotifier = RangeNotifier { beacons, _ ->
         beacons?.forEach { beacon ->
             if (beacon.bluetoothAddress == BLUETOOTH_ADDRESS) {  // 특정 비콘만 감지
+                if (viewModel.user.value == null) {
+                    return@forEach
+                }
                 if (beacon.distance <= BEACON_DISTANCE && shouldShowNotification()) {
                     runOnUiThread {
                         showStoreEventDialog()
@@ -279,8 +282,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         viewModel.getAttendancesForBeacon()
 
-        return (currentTime - lastShownTime) >= 24 * 60 * 60 * 1000 // 24시간
-        // return (currentTime - lastShownTime) >= 30 * 1000 // 30초 (테스트용)
+        // return (currentTime - lastShownTime) >= 24 * 60 * 60 * 1000 // 24시간
+        return (currentTime - lastShownTime) >= 30 * 1000 // 30초 (테스트용)
     }
 
     private fun updateLastNotificationTime() {

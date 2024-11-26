@@ -40,3 +40,6 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(R.layout.fragment_not
         }
     }
 }
+
+
+

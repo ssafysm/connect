@@ -13,4 +13,6 @@ interface ChatRemoteDataSource {
     suspend fun postChatText(chatTextRequest: ChatTextRequest): Response<GPTPlanEntity>
 
     suspend fun postProgress(userId: String, progress: ChatProgressRequest): Response<GPTPlanEntity>
+
+    suspend fun deleteChatPlan(userId: String): Response<GPTPlanEntity>
 }

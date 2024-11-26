@@ -6,6 +6,7 @@ import com.ssafy.smartstore_jetpack.domain.model.ChatProgressRequest
 import com.ssafy.smartstore_jetpack.domain.model.ChatTextRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -25,5 +26,10 @@ interface ChatApi {
     suspend fun postChatProgress(
         @Path("userId") userId: String,
         @Body progress: ChatProgressRequest
+    ): Response<GPTPlanEntity>
+
+    @DELETE("rest/chat/{userId}")
+    suspend fun deleteChatPlan(
+        @Path("userId") userId: String
     ): Response<GPTPlanEntity>
 }

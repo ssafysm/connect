@@ -27,10 +27,10 @@
     <string name="text_today_event">오늘의 이벤트</string>
 
     <!-- Chatting -->
-    <string name="text_menu_chatting">인기\n메뉴</string>
-    <string name="text_order_chatting">최근\n주문</string>
+    <string name="text_menu_chatting">인기 메뉴</string>
+    <string name="text_order_chatting">플랜 체크\n중단</string>
     <string name="text_shop_chatting">플랜 현황\n보고</string>
-    <string name="text_plan_chatting">플랜\n체크</string>
+    <string name="text_plan_chatting">플랜 체크</string>
     <string name="description_image_upload">이미지 업로드</string>
     <string name="text_send">전송</string>
     <string name="text_question">궁금한 사항을 질문해주세요!</string>
@@ -48,6 +48,8 @@
     <string name="text_need_plan_progress">플랜 현황을 입력하세요.</string>
     <string name="message_plan_submit">플랜 전송을 완료했어요.</string>
     <string name="message_plan_progress_submit">플랜 현황 전송을 완료했어요.</string>
+    <string name="message_plan_delete">플랜이 삭제되었어요.</string>
+    <string name="message_plan_delete_fail">플랜 삭제에 실패했어요.</string>
 
     <!-- Login, Join -->
     <string name="text_login">로그인</string>

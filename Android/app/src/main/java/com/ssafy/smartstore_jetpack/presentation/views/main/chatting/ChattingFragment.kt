@@ -74,10 +74,6 @@ class ChattingFragment : BaseFragment<FragmentChattingBinding>(R.layout.fragment
             showToastMessage(getString(R.string.message_preparing_menu))
         }
 
-        is ChattingUiEvent.GoToOrder -> {
-            showToastMessage(getString(R.string.message_preparing_menu))
-        }
-
         is ChattingUiEvent.GoToShop -> {
             findNavController().navigateSafely(R.id.action_chatting_to_plan_progress)
         }

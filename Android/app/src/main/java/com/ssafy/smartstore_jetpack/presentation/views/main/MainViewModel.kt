@@ -574,7 +574,33 @@ class MainViewModel @Inject constructor(
 
     override fun onClickOrderChatting() {
         viewModelScope.launch {
-            _chattingUiEvent.emit(ChattingUiEvent.GoToOrder)
+            val response = setChatUseCase.deleteChatPlan(_user.value?.user?.id ?: "")
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    _chattingUiEvent.emit(ChattingUiEvent.ChatPlanDelete(response.data?.success ?: false))
+                    addMessage(
+                        ChatMessage(
+                            text = "플랜을 삭제했어요. 새로운 플랜을 등록하세요.",
+                            imageUri = null,
+                            isSender = false,
+                            senderName = "GPT-4"
+                        )
+                    )
+                }
+
+                else -> {
+                    _chattingUiEvent.emit(ChattingUiEvent.ChatPlanDelete(false))
+                    addMessage(
+                        ChatMessage(
+                            text = "플랜 삭제에 실패했어요.",
+                            imageUri = null,
+                            isSender = false,
+                            senderName = "GPT-4"
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -1551,6 +1577,7 @@ class MainViewModel @Inject constructor(
 
     fun getAttendancesForBeacon() {
         viewModelScope.launch {
+            if (_user.value == null) return@launch
             val response = getAttendanceUseCase.getAttendances(
                 _user.value?.user?.id ?: "",
                 _year.value,

@@ -13,4 +13,6 @@ interface ChatRepository {
     suspend fun submitChatText(chatTextRequest: ChatTextRequest): Result<GPTMenu>
 
     suspend fun submitProgress(userId: String, progress: ChatProgressRequest): Result<GPTMenu>
+
+    suspend fun deleteChatPlan(userId: String): Result<GPTMenu>
 }

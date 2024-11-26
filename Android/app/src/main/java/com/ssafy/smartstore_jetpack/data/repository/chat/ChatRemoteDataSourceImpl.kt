@@ -20,4 +20,7 @@ class ChatRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun postProgress(userId: String, progress: ChatProgressRequest): Response<GPTPlanEntity> =
         chatApi.postChatProgress(userId, progress)
+
+    override suspend fun deleteChatPlan(userId: String): Response<GPTPlanEntity> =
+        chatApi.deleteChatPlan(userId)
 }
