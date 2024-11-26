@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Pending Orders</title>
+	<link rel="stylesheet" type="text/css" href="admin.css">
 </head>
 <body>
     <h1>픽업 대기 중인 주문</h1>
@@ -49,10 +50,8 @@
                         : data.filter(order => order.orderTable.includes(selectedStore));
 
                     filteredOrders.forEach(order => {
-                        const orderDiv = document.createElement('div');
-                        orderDiv.style.border = '1px solid black';
-                        orderDiv.style.padding = '10px';
-                        orderDiv.style.margin = '10px';
+						const orderDiv = document.createElement('div');
+						orderDiv.classList.add('order');
 
                         const { tableInfo, storeName } = parseOrderTable(order.orderTable);
 

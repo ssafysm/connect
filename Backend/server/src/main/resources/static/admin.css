@@ -1,0 +1,177 @@
+/* admin.css */
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1 {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    margin: 0;
+    font-size: 26px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+select, input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    font-size: 16px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+select {
+    height: 45px;
+}
+
+input[type="submit"], input[type="reset"], button {
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover, button:hover {
+    background-color: #2ecc71;
+}
+
+form {
+    background-color: #fff;
+    padding: 30px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+textarea {
+    resize: vertical;
+}
+
+#orders {
+    padding: 20px;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1000px;
+}
+
+/* Order Styles */
+.order {
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.order p {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.order ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.order ul li {
+    background-color: #ecf0f1;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+.order button {
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.order button:hover {
+    background-color: #3498db;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    form, #orders {
+        width: 95%;
+    }
+
+    input[type="submit"], input[type="reset"], button {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .order {
+        padding: 20px;
+    }
+
+    .order button {
+        position: static;
+        width: 100%;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    .order {
+        padding: 15px;
+    }
+
+    .order p {
+        font-size: 16px;
+    }
+
+    .order ul li {
+        font-size: 14px;
+    }
+}
