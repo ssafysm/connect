@@ -194,14 +194,18 @@ public class ChatRestController {
         ApiResponse response = new ApiResponse(advice, isSuccess);
         return ResponseEntity.ok(response);
     }
+
     @Operation(summary = "특정 사용자 ID로 t_chat 데이터를 삭제한다.")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteChatByUserId(@PathVariable String userId) {
         int deletedCount = chatService.deleteChatByUserId(userId);
         if (deletedCount > 0) {
-            return ResponseEntity.ok("삭제 성공: " + deletedCount + "개의 레코드가 삭제되었습니다.");
+            String message = "삭제 성공: " + deletedCount + "개의 레코드가 삭제되었습니다.";
+            return ResponseEntity.ok(new ApiResponse(message, true));
         } else {
-            return ResponseEntity.status(404).body("삭제 실패: 해당 사용자의 데이터가 존재하지 않습니다.");
+            String message = "삭제 실패: 해당 사용자의 데이터가 존재하지 않습니다.";
+            return ResponseEntity.status(404).body(new ApiResponse(message, false));
         }
     }
+
 }
